@@ -38,6 +38,12 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"score":1337,"playerName":"Sean Plott","cheatMode":false}' \
   http://localhost:1337/parse/classes/GameScore
+  
+curl -X POST \
+  -H "X-Parse-Application-Id: myAppId" \
+  -H "Content-Type: application/json" \
+  -d '{}' \
+  http://localhost:1337/parse/functions/hello
 ```
 
 Example using it via JavaScript:
