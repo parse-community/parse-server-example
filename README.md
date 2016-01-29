@@ -2,6 +2,8 @@
 
 Example project using the parse-server module on Express.
 
+Read the full server guide here: https://parse.com/docs/server/guide
+
 ### For Local Development
 
 * Make sure you have at least Node 4.1. `node --version`
