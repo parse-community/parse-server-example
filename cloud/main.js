@@ -1,4 +1,4 @@
 
 Parse.Cloud.define('hello', function(req, res) {
-  res.success('Hi');
+  res.success('Hello from Azure.');
 });
