@@ -18,6 +18,12 @@ Read the full server guide here: https://parse.com/docs/server/guide
 
 ### Getting Started With Heroku + Mongolab Development
 
+#### With the Heroku Button
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+#### Without It
+
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
 * Use the [MongoLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox`
