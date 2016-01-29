@@ -6,7 +6,6 @@ Read the full server guide here: https://parse.com/docs/server/guide
 
 ### For Local Development
 
-* Make sure you have at least Node 4.1. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`
 * Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
@@ -16,15 +15,9 @@ Read the full server guide here: https://parse.com/docs/server/guide
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Getting Started With Heroku + Mongolab Development
+### Getting Started With Azure App Service + Mongolab Development
 
-* Clone the repo and change directory to it
-* Use the Heroku Toolbelt to log in and prepare the app
-* Use the MongoLab addon: `heroku addons:create mongolab:sandbox`
-* Use `heroku config` and note the URI provided by MongoLab under the var MONGOLAB_URI 
-* Copy this URI and set it as a new config variable: `heroku config:set DATABASE_URI=mongodb://...`
-* By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
-* Deploy it with: `git push heroku master`
+A detailed guide on how to create a site and deploy the Parse server is provided here: [URL] 
 
 ### Using it
 
