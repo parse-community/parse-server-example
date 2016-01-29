@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/open-api-server"
+    "url": "https://github.com/ParsePlatform/parse-server-example"
   },
   "license": "MIT",
   "dependencies": {
