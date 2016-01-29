@@ -8,6 +8,14 @@
     "PARSE_MOUNT": {
       "description": "Configure Parse API route.",
       "value": "/parse"
+    },
+    "APP_ID": {
+      "description": "A unique identifier for your app.",
+      "value": "myAppId"
+    },
+    "MASTER_KEY": {
+      "description": "A key that overrides all permissions. Keep this secret.",
+      "value": "myMasterKey"
     }
   },
   "image": "heroku/nodejs",
