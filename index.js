@@ -10,7 +10,7 @@ if (!process.env.DATABASE_URI) {
 }
 
 var api = new ParseServer({
-  databaseURI: process.env.DATABASE_URI || 'mongodb://192.168.99.100:27017',
+  databaseURI: process.env.DATABASE_URI || 'mongodb://dmathewwws:or4dmdmuR6jekc@ds051645.mongolab.com:51645/parse-server-example',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: 'myAppId',
   masterKey: 'myMasterKey'
