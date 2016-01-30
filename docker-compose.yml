@@ -1,0 +1,10 @@
+web:
+  build: .
+  volumes:
+    - .:/data
+  ports:
+    - "1337:1337"
+  links:
+    - mongodb
+mongodb:
+  image: mongo:3.2.1
