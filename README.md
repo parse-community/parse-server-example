@@ -1,10 +1,10 @@
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
-
 # Azure parse-server-example
 
 Example project using the parse-server module on Express.
 
 Read the full server guide here: https://parse.com/docs/server/guide
+
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 ### For Local Development
 
