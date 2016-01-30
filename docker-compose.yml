@@ -1,7 +1,7 @@
 web:
   build: .
   volumes:
-    - .:/data
+    - .:/data/db
   ports:
     - "1337:1337"
   links:
