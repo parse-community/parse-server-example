@@ -108,6 +108,10 @@
             {
             "name": "PARSE_MASTER_KEY",
             "value": "[parameters('parseMasterKey')]"
+            },
+            {
+                "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                "value": "4.1.2"
             }
             ]
           }
