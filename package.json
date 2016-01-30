@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
+    "url": "https://github.com/Azure/parse-server-example"
   },
   "license": "MIT",
   "dependencies": {
@@ -17,6 +17,6 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": ">=4.1"
+    "node": "4.2.3"
   }
 }
