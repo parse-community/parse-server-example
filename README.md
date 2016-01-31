@@ -45,6 +45,8 @@ curl -X POST \
   -d '{}' \
   http://localhost:1337/parse/functions/hello
 ```
+> If you are not runnning on *localhost*, you still have to set your `REST-API-KEY` 
+
 
 Example using it via JavaScript:
 
