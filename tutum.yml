@@ -1,0 +1,21 @@
+parse:
+  image: didierfranc/parse-server
+  ports:
+    - "1337:1337"
+  tags:
+    - parse
+  environment:
+    - APP_ID=1111
+    - MASTER_KEY=1111
+    - ENV PARSE_MOUNT=/parse
+    - CLOUD_CODE_MAIN=/parse/cloud/main.js
+    - DATABASE_URI=mongodb://mongo:27017/parse
+  deployment_strategy: every_node
+ 
+mongo:
+  image: tutum/mongodb
+  tags:
+    - parse
+  environment:
+    - AUTH=no
+  deployment_strategy: every_node
