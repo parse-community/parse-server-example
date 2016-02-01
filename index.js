@@ -3,7 +3,6 @@
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
-var http = require('http');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI
 
@@ -33,7 +32,6 @@ app.get('/', function(req, res) {
 });
 
 var port = process.env.PORT || 1337;
-var httpServer = http.createServer(app);
-httpServer.listen(port, function() {
-  console.log('parse-server-example running on port ' + port + '.');
+app.listen(port, function() {
+    console.log('parse-server-example running on port ' + port + '.');
 });
