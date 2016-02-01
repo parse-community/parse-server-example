@@ -43,6 +43,20 @@
       "type": "string",
       "minLength": 1,
       "defaultValue": "myMasterKey"
+    },
+    "repoURL": {
+      "type": "string",
+      "defaultValue": "https://github.com/christopheranderson/node-chat-sample.git",
+      "metadata": {
+        "description": "The URL for the GitHub repository that contains the project to deploy."
+      }
+    },
+    "branch": {
+      "type": "string",
+      "defaultValue": "master",
+      "metadata": {
+        "description": "The branch of the GitHub repository to use."
+      }
     }
   },
   "resources": [
@@ -94,8 +108,25 @@
             {
             "name": "PARSE_MASTER_KEY",
             "value": "[parameters('parseMasterKey')]"
+            },
+            {
+                "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                "value": "4.2.3"
             }
             ]
+          }
+        },
+        {
+          "apiVersion": "2015-04-01",
+          "name": "web",
+          "type": "sourcecontrols",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+          ],
+          "properties": {
+            "RepoUrl": "[parameters('repoURL')]",
+            "branch": "[parameters('branch')]",
+            "IsManualIntegration": true
           }
         }
       ]
