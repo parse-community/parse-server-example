@@ -18,11 +18,15 @@ Read the full server guide here: https://parse.com/docs/server/guide
 
 ### Getting Started With Heroku + Mongolab Development
 
+#### With the Heroku Button
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+#### Without It
+
 * Clone the repo and change directory to it
-* Use the Heroku Toolbelt to log in and prepare the app
-* Use the MongoLab addon: `heroku addons:create mongolab:sandbox`
-* Use `heroku config` and note the URI provided by MongoLab under the var MONGOLAB_URI 
-* Copy this URI and set it as a new config variable: `heroku config:set DATABASE_URI=mongodb://...`
+* Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
+* Use the [MongoLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox`
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
