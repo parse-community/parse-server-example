@@ -30,6 +30,17 @@ Read the full server guide here: https://parse.com/docs/server/guide
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
+### Getting Started Microsoft Azure App Service
+
+#### With the Deploy to Azure Button
+
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+#### Without It
+
+A detailed tutorial is available here:
+[Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
+
 ### Using it
 
 You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
