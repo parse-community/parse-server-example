@@ -102,11 +102,11 @@
                 "value": "[parameters('mongoConnectionString')]"
               },
             {
-            "name": "PARSE_APP_ID",
+            "name": "APP_ID",
             "value": "[parameters('parseAppId')]"
             },
             {
-            "name": "PARSE_MASTER_KEY",
+            "name": "MASTER_KEY",
             "value": "[parameters('parseMasterKey')]"
             },
             {
