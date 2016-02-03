@@ -30,7 +30,7 @@ Read the full server guide here: https://parse.com/docs/server/guide
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
-### Getting Started Microsoft Azure App Service
+### Getting Started With Microsoft Azure App Service
 
 #### With the Deploy to Azure Button
 
