@@ -41,6 +41,12 @@ Read the full server guide here: https://parse.com/docs/server/guide
 A detailed tutorial is available here:
 [Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
 
+### Getting Started With AWS Elastic Beanstalk
+
+* Clone the repo and change directory to it
+* Log in with the [AWS Elastic Beanstalk CLI](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), select a region, and create an app: `eb init`
+* Create an environment and pass in MongoDB URI, App ID, and Master Key: `eb create --envvars DATABASE_URI=<replace with URI>,APP_ID=<replace with Parse app ID>,MASTER_KEY=<replace with Parse master key>`
+
 ### Using it
 
 You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
