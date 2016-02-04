@@ -1,5 +1,5 @@
 parse:
-  image: didierfranc/parse-server
+  image: didierfranc/parse-server-auto
   ports:
     - "1337:1337"
   tags:
