@@ -12,7 +12,7 @@
     "express": "~4.2.x",
     "kerberos": "~0.0.x",
     "parse": "~1.6.12",
-    "parse-server": "~2.0.0"
+    "parse-server": "~2.0"
   },
   "scripts": {
     "start": "node index.js"
