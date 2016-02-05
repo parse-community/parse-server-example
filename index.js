@@ -10,13 +10,13 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
-puts ENV['MONGODB_URL']
+puts process.env.MONGODB_URL
 
 var api = new ParseServer({
-  databaseURI: databaseUri || ENV['MONGODB_URL'],
+  databaseURI: databaseUri || process.env.MONGODB_URL,
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || ENV['APP_ID'],
-  masterKey: process.env.MASTER_KEY || ENV['MASTER_KEY']
+  appId: process.env.APP_ID || process.env.APP_ID,
+  masterKey: process.env.MASTER_KEY || process.env.MASTER_KEY
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
