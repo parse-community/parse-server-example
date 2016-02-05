@@ -10,10 +10,10 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
-puts ENV['DATABASE_URI']
+puts ENV['MONGODB_URL']
 
 var api = new ParseServer({
-  databaseURI: databaseUri || ENV['DATABASE_URI'],
+  databaseURI: databaseUri || ENV['MONGODB_URL'],
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || ENV['APP_ID'],
   masterKey: process.env.MASTER_KEY || ENV['MASTER_KEY']
