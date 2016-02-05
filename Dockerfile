@@ -8,7 +8,7 @@ RUN npm install
 
 ENV APP_ID ENV['APP_ID']
 ENV MASTER_KEY ENV['MASTER_KEY']
-ENV DATABASE_URI ENV['MONGODB_URL']
+ENV DATABASE_URI ENV['MONGODB_DATABASE']
 
 # Optional (default : 'parse/cloud/main.js')
 # ENV CLOUD_CODE_MAIN cloudCodePath
