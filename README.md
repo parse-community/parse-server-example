@@ -53,6 +53,21 @@ Read the full server guide here: https://parse.com/docs/server/guide
 A detailed tutorial is available here:
 [Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
 
+### Getting Started With Scalingo
+
+#### With the Scalingo button
+
+[![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy)
+
+#### Without it
+
+* Clone the repo and change directory to it
+* Log in with the [Scalingo CLI](http://cli.scalingo.com/) and create an app: `scalingo create my-parse`
+* Use the [Scalingo MongoDB addon](https://scalingo.com/addons/scalingo-mongodb): `scalingo addons-add scalingo-mongodb free`
+* Setup MongoDB connection string: `scalingo env-set DATABASE_URI='$SCALINGO_MONGO_URL'`
+* By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
+* Deploy it with: `git push scalingo master`
+
 ### Using it
 
 You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
