@@ -13,8 +13,7 @@ RUN npm install
 # ENV PARSE_MOUNT mountPath
 
 EXPOSE 1337
-
--p 80 1337 1338
+EXPOSE 1338
 
 # Uncomment if you want to access cloud code outside of your container
 # A main.js file must be present, if not Parse will not start
