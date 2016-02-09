@@ -9,10 +9,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "~4.2.x",
     "kerberos": "~0.0.x",
-    "parse": "~1.6.12",
-    "parse-server": "~2.0"
+    "parse-server": "~2.0.7"
   },
   "scripts": {
     "start": "node index.js"
