@@ -1,13 +1,12 @@
-# Azure parse-server-example
+# parse-server-example
 
 Example project using the parse-server module on Express.
 
 Read the full server guide here: https://parse.com/docs/server/guide
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
-
 ### For Local Development
 
+* Make sure you have at least Node 4.1. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`
 * Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
@@ -17,9 +16,16 @@ Read the full server guide here: https://parse.com/docs/server/guide
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Getting Started With Azure App Service + Mongolab Development
+### Getting Started Microsoft Azure App Service
 
-A detailed guide on how to create a site and deploy the Parse server is provided here: [URL] 
+#### With the Deploy to Azure Button
+
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+#### Without It
+
+A detailed tutorial is available here:
+[Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
 
 ### Using it
 
