@@ -6,6 +6,12 @@ Read the full server guide here: https://parse.com/docs/server/guide
 
 ### For Local Development
 
+### With azk Button
+
+[![Run project](https://s3-sa-east-1.amazonaws.com/assets.azk.io/run-project.png)](http://run.azk.io/start/?repo=marcusgadbem/parse-server-example)
+
+### Without It
+
 * Make sure you have at least Node 4.1. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`
@@ -87,6 +93,8 @@ curl -X POST \
   -d '{}' \
   http://localhost:1337/parse/functions/hello
 ```
+
+Note: change `http://localhost:1337/` to `http://parse-server.dev.azk.io` if you are using `azk`.
 
 Example using it via JavaScript:
 
