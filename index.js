@@ -30,6 +30,10 @@ app.use(mountPath, api);
 app.get('/', function(req, res) {
   res.status(200).send('I dream of being a web site.');
 });
+ // If you are migrating a webapp hosted on domain.parseapp.com:
+ // Remove statement above serving the 200 status (app.get('/ function()});
+ // Uncomment app.use below and set the absolute path for serving files in the /public dir
+ // app.use(express.static(__dirname + '/public'));
 
 var port = process.env.PORT || 1337;
 app.listen(port, function() {
