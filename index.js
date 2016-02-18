@@ -2,6 +2,7 @@
 // compatible API routes.
 
 var express = require('express');
+var cors = require('cors');
 var ParseServer = require('parse-server').ParseServer;
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
@@ -22,6 +23,7 @@ var api = new ParseServer({
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 var app = express();
+app.use(cors());
 
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
