@@ -28,7 +28,7 @@ var JOB_END_TIME = '10:15 PM';      // GMT in Daylight Saving, "11:15 PM" not in
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world ... ...");
+  response.success("Hello world. process.env.APP_ID = " + process.env.APP_ID);
 });
  
 Parse.Cloud.define("getDateInAEST", function(request, response) {
