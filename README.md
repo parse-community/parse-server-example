@@ -68,7 +68,7 @@ A detailed tutorial is available here:
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
 * Deploy it with: `git push scalingo master`
 
-### Using it
+# Using it
 
 You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
@@ -102,6 +102,22 @@ obj.save().then(function(obj) {
     console.log(objAgain.toJSON());
   }, function(err) {console.log(err); });
 }, function(err) { console.log(err); });
+```
+
+Example using it on Android:
+```
+//in your application class
+
+Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+        .applicationId("myAppId")
+        .clientKey("myClientKey")
+        .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+        .build());
+        
+  ParseObject testObject = new ParseObject("TestObject");
+  testObject.put("foo", "bar");
+  testObject.saveInBackground();
+
 ```
 
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
