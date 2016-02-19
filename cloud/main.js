@@ -8,8 +8,8 @@ var SUPERPASSWORD = "Passw0rd";
 var NULL_VAL_INT = -1;
 var NULL_VAL_DBL = -1.0;
  
-var APP_ID = "yuVQ0NWXvdDVnHEiQzhxJwBQh6vCoYEwBvDN6065";
-var MASTER_KEY = "xPPv9daJpRF5YXniU29g9v64fpz4Es4GcXsmLDAe";
+var APP_ID = process.env.APP_ID;
+var MASTER_KEY = process.env.MASTER_KEY;
  
 var MG_DOMAIN = 'sandbox72753f1629ce4624804952fa8953d193.mailgun.org';
 var MG_KEY = 'key-ef9829f1ee460b7753bd7e8589aa7964';
@@ -28,7 +28,8 @@ var JOB_END_TIME = '10:15 PM';      // GMT in Daylight Saving, "11:15 PM" not in
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world. process.env.APP_ID = " + process.env.APP_ID);
+  console.log(APP_ID + "," + MASTER_KEY);
+  response.success("Hello world");
 });
  
 Parse.Cloud.define("getDateInAEST", function(request, response) {
