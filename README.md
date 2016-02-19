@@ -104,4 +104,14 @@ obj.save().then(function(obj) {
 }, function(err) { console.log(err); });
 ```
 
+Example using it on Android:
+```
+Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+        .applicationId("myAppId")
+        .clientKey("myClientKey")
+        .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+        .build());
+
+```
+
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
