@@ -106,6 +106,8 @@ obj.save().then(function(obj) {
 
 Example using it on Android:
 ```
+//in your application class
+
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
         .applicationId("myAppId")
         .clientKey("myClientKey")
