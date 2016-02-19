@@ -111,6 +111,10 @@ Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
         .clientKey("myClientKey")
         .server("http://myServerUrl/parse/")   // '/' important after 'parse'
         .build());
+        
+  ParseObject testObject = new ParseObject("TestObject");
+  testObject.put("foo", "bar");
+  testObject.saveInBackground();
 
 ```
 
