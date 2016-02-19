@@ -68,7 +68,7 @@ A detailed tutorial is available here:
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
 * Deploy it with: `git push scalingo master`
 
-##### Using it
+# Using it
 
 You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
