@@ -1,11 +1,11 @@
 {
-  "name": "parse-server-example",
+  "name": "parse-server-example-nsw",
   "version": "1.1.0",
   "description": "An example Parse API server using the parse-server module",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/grassland-curing-cfa/parse-server-example"
+    "url": "https://github.com/grassland-curing-cfa/parse-server-example-nsw"
   },
   "license": "MIT",
   "dependencies": {
