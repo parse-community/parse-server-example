@@ -53,6 +53,23 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 A detailed tutorial is available here:
 [Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
 
+
+### Getting Started With Google App Engine
+
+1. Clone the repo and change directory to it 
+1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
+1. [Enable billing](https://console.cloud.google.com/project/_/settings) for your project.
+1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
+1. Setup a MongoDB server.  You have a few options:
+  1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
+  1. Use [MongoLab](https://mongolab.com/google/) to create a free MongoDB deployment on Google Cloud Platform.
+1. Modify `app.yaml` to update your environment variables.
+1. Delete `Dockerfile`
+1. Deploy it with `gcloud preview app deploy`
+
+A detailed tutorial is available here:
+[Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
+
 ### Getting Started With Scalingo
 
 #### With the Scalingo button
