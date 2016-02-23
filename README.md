@@ -6,7 +6,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 ### For Local Development
 
-* Make sure you have at least Node 4.1. `node --version`
+* Make sure you have at least Node 4.3. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`
 * Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
