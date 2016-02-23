@@ -6,11 +6,17 @@ Read the full server guide here: https://parse.com/docs/server/guide
 
 ### For Local Development
 
-### With azk Button
+#### With `Run Project` Button
 
-[![Run project](https://s3-sa-east-1.amazonaws.com/assets.azk.io/run-project.png)](http://run.azk.io/start/?repo=marcusgadbem/parse-server-example)
+Click the button bellow to quickly and safely install this project on your local machine.
 
-### Without It
+[![Run project](https://s3-sa-east-1.amazonaws.com/assets.azk.io/run-project.png)](http://run.azk.io/start/?repo=run-project/parse-server-example)
+
+The `Run Project` button employs `azk`, a lightweight open source orchestration tool that will automatically isolate and configure the application's environment for you.
+
+Learn more about `azk` [here](https://github.com/azukiapp/azk).
+
+#### Without It
 
 * Make sure you have at least Node 4.1. `node --version`
 * Clone this repo and change directory to it.
@@ -21,6 +27,29 @@ Read the full server guide here: https://parse.com/docs/server/guide
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `export PARSE_MOUNT=/1` before launching the server.
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
+
+### Getting Started With DigitalOcean
+
+After you run this project locally using [`Run Project` button](#with-run-project-button), deploying to [DigitalOcean](http://digitalocean.com/) is very simple.
+
+First, be sure you have SSH keys configured in your machine. If you don't have it yet (or if you aren't sure about it), just follow steps 1 and 2 of [this tutorial](https://help.github.com/articles/generating-ssh-keys/).
+
+Next, put your [personal access token](https://cloud.digitalocean.com/settings/applications) into a `.env` file:
+
+```bash
+$ cd path/to/the/project
+$ echo "DEPLOY_API_TOKEN=<YOUR-PERSONAL-ACCESS-TOKEN>" >> .env
+```
+
+Then, just run the following:
+
+```bash
+$ azk deploy
+```
+
+The `Run Project` button employs `azk`, a lightweight open source orchestration tool that will automatically isolate and configure the application's environment for you.
+
+Find instructions for further resources (mostly customizations) to deploy to DigitalOcean using `azk` [here](http://docs.azk.io/en/deploy).
 
 ### Getting Started With Heroku + Mongolab Development
 
