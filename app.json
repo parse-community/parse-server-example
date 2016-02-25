@@ -16,6 +16,10 @@
     "MASTER_KEY": {
       "description": "A key that overrides all permissions. Keep this secret.",
       "value": "myMasterKey"
+    },
+    "SERVER_URL": {
+      "description": "URL of your Heroku instance",
+      "value": "http://myapp.herokuapp.com/parse"
     }
   },
   "image": "heroku/nodejs",
