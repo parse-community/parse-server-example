@@ -18,7 +18,7 @@
       "value": "myMasterKey"
     },
     "SERVER_URL": {
-      "description": "URL to connect to your Heroku instance (leave as http://localhost)",
+      "description": "URL to connect to your Heroku instance (leave as http://localhost/ + PARSE_MOUNT)",
       "value": "http://localhost/parse"
     }
   },
