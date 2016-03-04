@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "~4.2.x",
+    "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.6.12",
     "parse-server": "~2.1.2"
