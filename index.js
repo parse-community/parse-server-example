@@ -18,9 +18,9 @@ if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
 }
 
 if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
-    pushConfig['ios'] = { pfx: process.env.PFX || '',
-                              bundleId: process.env.BUNDLEID || '',
-                              production: process.env.PRODUCTION || ''};
+    pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || '',
+                              bundleId: process.env.IOS_PUSH_BUNDLEID || '',
+                              production: process.env.IOS_PUSH_PRODUCTION || ''};
 }
 
 //Mailgun - reset password
