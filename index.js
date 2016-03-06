@@ -36,3 +36,27 @@ var port = process.env.PORT || 1337;
 app.listen(port, function() {
     console.log('parse-server-example running on port ' + port + '.');
 });
+
+//Mailgun - reset password
+var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
+var api = new ParseServer({
+   databaseURI: 'mongodb://medidate:MedidateMongoDBPass123@ds059135.mlab.com:59135/medidate',
+   cloud: 'xxx',
+   appId: 'UcZ65On55ZBEVjKG1ScD1zMDYaQavPzXxdoGhuci',
+   appName: 'Medidate',
+   masterKey: 'YnYE8XssFAe1KKjrPuIPBcR6df2MLYUrADMVZiMl',
+   serverURL: 'https://medidate.herokuapp.com/parse/',
+   publicServerURL: 'https://medidate.herokuapp.com/parse/',
+   emailAdapter: SimpleMailgunAdapter({
+      apiKey: 'key-c101ac1bf89065d49887ba4d2ef69771',
+      domain: 'medidatewith.me',
+      fromAddress: 'no-reply@medidatewith.me',
+   })
+  // ,
+  // customPages: {
+  //   invalidLink: 'http://yourdomain.com/invalid_link.html',
+  //   verifyEmailSuccess: 'http://yourdomain.com/verify_email_success.html',
+  //   choosePassword: 'http://yourdomain.com/choose_password.html',
+  //   passwordResetSuccess: 'http://yourdomain.com/password_reset_success.html'
+  // }
+});
