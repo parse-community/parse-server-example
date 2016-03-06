@@ -18,7 +18,8 @@ if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
 }
 
 if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
-    pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || '',
+    // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
+    pushConfig['ios'] = { pfx: __dirname + '/ios_push/Medidate_prod_p12_new.p12',
                               bundleId: process.env.IOS_PUSH_BUNDLEID || '',
                               production: process.env.IOS_PUSH_PRODUCTION || ''};
 }
