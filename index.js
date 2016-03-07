@@ -34,7 +34,7 @@ var api = new ParseServer({
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   push: pushConfig,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
-  publicServerURL: process.env.SERVER_URL
+  publicServerURL: process.env.SERVER_URL,
   emailAdapter: SimpleMailgunAdapter({
       apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
       domain: process.env.DOMAIN || 'medidatewith.me',
