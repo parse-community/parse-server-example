@@ -41,10 +41,10 @@ var api = new ParseServer({
       fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
    }),
   customPages: {
-    invalidLink: 'https://translate.google.co.il/',
-    verifyEmailSuccess: 'http://yourdomain.com/verify_email_success.html',
-    choosePassword: 'http://www.appums.com/',
-    passwordResetSuccess: 'http://yourdomain.com/password_reset_success.html'
+    invalidLink: process.env.SERVER_URL + 'invalid_link.html',
+    verifyEmailSuccess: process.env.SERVER_URL + 'verify_email_success.html',
+    choosePassword: process.env.SERVER_URL + 'choose_password.html',
+    passwordResetSuccess: process.env.SERVER_URL + 'password_reset_success.html'
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
