@@ -6,12 +6,13 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
 
   var customData = params.customData;//JSON of push
   var users = params.attenders;//ids of relevant users
+  console.log("#### Data " + customData);
 
   //Filter only user with thier ids in it
   var userQuery = new Parse.Query(Parse.User);
   userQuery.containedIn("objectId", users);
   for (var i = 0; i < users.length; i++) {
-     console.log("#### users[i]]");
+     console.log("#### User Ids " + users[i]);
   }
 
   var pushQuery = new Parse.Query(Parse.Installation);
@@ -29,5 +30,5 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
      console.log("#### PUSH ERROR" + error.message);
   }, useMasterKey: true});
 
-  response.success('success\n' + customData);
+  response.success('success');
 });
