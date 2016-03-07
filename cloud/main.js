@@ -4,17 +4,15 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   var params = request.params;
   var user = request.user;
 
-  // var action = params.action;
-  // var message = params.message;
   var customData = params.customData;//JSON of push
-  var users = params.attenders;
+  var users = params.attenders;//ids of relevant users
 
-  // use to custom tweak whatever payload you wish to send
+  //Filter only user with thier ids in it
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.containedIn("objectId", users);
+
   var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.containedIn("user", users);
-  // pushQuery.equalTo('channels', 'MSessions');
-  // pushQuery.equalTo("deviceType", "android");
-  // pushQuery.equalTo("deviceType", "ios");
+  pushQuery.containedIn("user", userQuery);
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
   Parse.Push.send({
