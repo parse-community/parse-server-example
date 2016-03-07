@@ -12,17 +12,17 @@ if (!databaseUri) {
 
 var pushConfig = {};
 
-// if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
-//     pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
-//                               apiKey: process.env.GCM_API_KEY || ''};
-// }
+if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
+    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
+                              apiKey: process.env.GCM_API_KEY || ''};
+}
 
-// if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
-//     // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
-//     pushConfig['ios'] = { pfx: __dirname + '/ios_push/Medidate_prod_p12_new.p12',
-//                               bundleId: process.env.IOS_PUSH_BUNDLEID || '',
-//                               production: process.env.IOS_PUSH_PRODUCTION || ''};
-// }
+if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
+    // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
+    pushConfig['ios'] = { pfx: __dirname + '/ios_push/Medidate_prod_p12_new.p12',
+                              bundleId: process.env.IOS_PUSH_BUNDLEID || '',
+                              production: process.env.IOS_PUSH_PRODUCTION || ''};
+}
 
 //DUMMY DATA
 // if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
@@ -58,10 +58,21 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'myAppId',
   appName: 'Medidate',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  push: {
-    adapter: oneSignalPushAdapter
-  },
+  // push: {
+  //   adapter: oneSignalPushAdapter
+  // },
   // push: pushConfig,
+  push: {
+		android: {
+			senderId: process.env.GCM_SENDER_ID, // The Sender ID of GCM
+			apiKey: process.env.GCM_API_KEY // The Server API Key of GCM
+		},
+		ios: {
+			pdx: __dirname + '/ios_push/Medidate_prod_p12_new.p12', // the path and filename to the .p12 file you exported earlier. 
+			bundleId: process.env.IOS_PUSH_BUNDLEID, // The bundle identifier associated with your app
+			production: true
+		}
+	},
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
   publicServerURL: process.env.PUBLIC_SERVER_URL,
   emailAdapter: simpleMailgunAdapter
