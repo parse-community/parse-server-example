@@ -12,17 +12,17 @@ if (!databaseUri) {
 
 var pushConfig = {};
 
-// if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
-//     pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
-//                               apiKey: process.env.GCM_API_KEY || ''};
-// }
+if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
+    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
+                              apiKey: process.env.GCM_API_KEY || ''};
+}
 
-// if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
-//     // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
-//     pushConfig['ios'] = { pfx: __dirname + '/ios_push/Medidate_prod_p12_new.p12',
-//                               bundleId: process.env.IOS_PUSH_BUNDLEID || '',
-//                               production: process.env.IOS_PUSH_PRODUCTION || ''};
-// }
+if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
+    // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
+    pushConfig['ios'] = { pfx: __dirname + '/ios_push/Medidate_prod_p12_new.p12',
+                              bundleId: process.env.IOS_PUSH_BUNDLEID || '',
+                              production: process.env.IOS_PUSH_PRODUCTION || ''};
+}
 
 //DUMMY DATA
 // if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
@@ -39,13 +39,18 @@ var pushConfig = {};
 
 //Mailgun - reset password
 var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
+var simpleMailgunAdapter = new SimpleMailgunAdapter({
+  apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
+  domain: process.env.DOMAIN || 'medidatewith.me',
+  fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
+});
 
 //Push Adapter
-// var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
-// var oneSignalPushAdapter = new OneSignalPushAdapter({
-//   oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
-//   oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
-// });
+var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
+var oneSignalPushAdapter = new OneSignalPushAdapter({
+  oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
+  oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
+});
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
@@ -53,17 +58,14 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'myAppId',
   appName: 'Medidate',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  // push: {
-  //   adapter: oneSignalPushAdapter
-  // },
+  push: {
+    push: pushConfig,
+    adapter: oneSignalPushAdapter
+  },
   // push: pushConfig,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
   publicServerURL: process.env.PUBLIC_SERVER_URL,
-  emailAdapter: SimpleMailgunAdapter({
-      apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
-      domain: process.env.DOMAIN || 'medidatewith.me',
-      fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
-   })
+  emailAdapter: simpleMailgunAdapter
   // ,
   // customPages: {
   //   invalidLink: process.env.SERVER_URL + 'invalid_link.html',
