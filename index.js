@@ -59,8 +59,9 @@ var api = new ParseServer({
   appName: 'Medidate',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   push: {
-    push: pushConfig,
-    adapter: oneSignalPushAdapter
+    push: pushConfig
+    // ,
+    // adapter: oneSignalPushAdapter
   },
   // push: pushConfig,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
