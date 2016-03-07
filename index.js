@@ -39,13 +39,14 @@ var api = new ParseServer({
       apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
       domain: process.env.DOMAIN || 'medidatewith.me',
       fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
-   }),
-  customPages: {
-    invalidLink: process.env.SERVER_URL + 'invalid_link.html',
-    verifyEmailSuccess: process.env.SERVER_URL + 'verify_email_success.html',
-    choosePassword: process.env.SERVER_URL + 'choose_password.html',
-    passwordResetSuccess: process.env.SERVER_URL + 'password_reset_success.html'
-  }
+   })
+  // ,
+  // customPages: {
+  //   invalidLink: process.env.SERVER_URL + 'invalid_link.html',
+  //   verifyEmailSuccess: process.env.SERVER_URL + 'verify_email_success.html',
+  //   choosePassword: process.env.SERVER_URL + 'choose_password.html',
+  //   passwordResetSuccess: process.env.SERVER_URL + 'password_reset_success.html'
+  // }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
