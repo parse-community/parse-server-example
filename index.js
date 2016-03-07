@@ -26,13 +26,24 @@ if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS
 
 //Mailgun - reset password
 var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
+
+//Push Adapter
+var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
+var oneSignalPushAdapter = new OneSignalPushAdapter({
+  oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
+  oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
+});
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   appName: 'Medidate',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  push: pushConfig,
+  push: {
+    adapter: oneSignalPushAdapter
+  },
+  // push: pushConfig,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
   publicServerURL: process.env.PUBLIC_SERVER_URL,
   emailAdapter: SimpleMailgunAdapter({
