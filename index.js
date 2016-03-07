@@ -69,12 +69,13 @@ var api = new ParseServer({
 	android: {
 		senderId: process.env.GCM_SENDER_ID, // The Sender ID of GCM
 		apiKey: process.env.GCM_API_KEY // The Server API Key of GCM
-		},
-	ios: {
-		pdx: __dirname + '/ios_push/Medidate_prod_p12_new.p12', // the path and filename to the .p12 file you exported earlier. 
-		bundleId: process.env.IOS_PUSH_BUNDLEID, // The bundle identifier associated with your app
-		production: true
 		}
+	// 	,
+	// ios: {
+	// 	pdx: __dirname + '/ios_push/Medidate_prod_p12_new.p12', // the path and filename to the .p12 file you exported earlier. 
+	// 	bundleId: process.env.IOS_PUSH_BUNDLEID, // The bundle identifier associated with your app
+	// 	production: true
+	// 	}
 	}
   // ,
   // customPages: {
