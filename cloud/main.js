@@ -54,9 +54,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   Parse.Push.send({
       where: pushQuery, 
       data: {
-        alert: "Test Push"//customData
-        // ,
-        // customdata: customData
+        alert: customData
       }
   }, { success: function() {
      console.log("#### PUSH OK");
