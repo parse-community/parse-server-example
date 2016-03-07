@@ -25,10 +25,10 @@ var pushConfig = {};
 // }
 
 //DUMMY DATA
-if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
-    pushConfig['android'] = { senderId: '',
-                              apiKey: ''};
-}
+// if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
+//     pushConfig['android'] = { senderId: '',
+//                               apiKey: ''};
+// }
 
 // if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
 //     // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
@@ -41,11 +41,11 @@ if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
 var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
 
 //Push Adapter
-var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
-var oneSignalPushAdapter = new OneSignalPushAdapter({
-  oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
-  oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
-});
+// var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
+// var oneSignalPushAdapter = new OneSignalPushAdapter({
+//   oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
+//   oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
+// });
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
@@ -56,7 +56,7 @@ var api = new ParseServer({
   // push: {
   //   adapter: oneSignalPushAdapter
   // },
-  push: pushConfig,
+  // push: pushConfig,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
   publicServerURL: process.env.PUBLIC_SERVER_URL,
   emailAdapter: SimpleMailgunAdapter({
