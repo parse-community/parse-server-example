@@ -30,12 +30,12 @@ if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
                               apiKey: ''};
 }
 
-if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
-    // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
-    pushConfig['ios'] = { pfx: '',
-                              bundleId: '',
-                              production: ''};
-}
+// if (process.env.IOS_PUSH_PFX && process.env.IOS_PUSH_BUNDLEID && process.env.IOS_PUSH_PRODUCTION) {
+//     // pushConfig['ios'] = { pfx: process.env.IOS_PUSH_PFX || __dirname + '/ios_push/Medidate_prod_p12_new.p12',
+//     pushConfig['ios'] = { pfx: '',
+//                               bundleId: '',
+//                               production: ''};
+// }
 
 //Mailgun - reset password
 var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
