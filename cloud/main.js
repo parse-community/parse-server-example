@@ -62,12 +62,26 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   userQuery.find({
   success: function(results) {
     pushQuery.containedIn("user", results);
-    //alert("Successfully retrieved " + results.length + " scores.");
-    // Do something with the returned Parse.Object values
-    // for (var i = 0; i < results.length; i++) {
-    //   var object = results[i];
-    //   alert(object.id + ' - ' + object.get('playerName'));
-    // }
+    Parse.Push.send({
+        where: pushQuery, 
+        data: {
+          alert: alert,
+          title: push_title,
+          session_alert: session_alert,
+          push_title: push_title,
+          push_type: push_type,
+          message_object_id: message_object_id,
+          push_notification_id: push_notification_id,
+          push_object_id: push_object_id,
+          custom: custom
+        }
+    }, { success: function() {
+       console.log("#### PUSH OK");
+    }, error: function(error) {
+       console.log("#### PUSH ERROR" + error.message);
+    }, useMasterKey: true});
+  
+    response.success('success');
   },
   error: function(error) {
     alert("Error: " + error.code + " " + error.message);
@@ -76,24 +90,24 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   //pushQuery.containedIn("user", userQuery);
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
-  Parse.Push.send({
-      where: pushQuery, 
-      data: {
-        alert: alert,
-        title: push_title,
-        session_alert: session_alert,
-        push_title: push_title,
-        push_type: push_type,
-        message_object_id: message_object_id,
-        push_notification_id: push_notification_id,
-        push_object_id: push_object_id,
-        custom: custom
-      }
-  }, { success: function() {
-     console.log("#### PUSH OK");
-  }, error: function(error) {
-     console.log("#### PUSH ERROR" + error.message);
-  }, useMasterKey: true});
+  // Parse.Push.send({
+  //     where: pushQuery, 
+  //     data: {
+  //       alert: alert,
+  //       title: push_title,
+  //       session_alert: session_alert,
+  //       push_title: push_title,
+  //       push_type: push_type,
+  //       message_object_id: message_object_id,
+  //       push_notification_id: push_notification_id,
+  //       push_object_id: push_object_id,
+  //       custom: custom
+  //     }
+  // }, { success: function() {
+  //   console.log("#### PUSH OK");
+  // }, error: function(error) {
+  //   console.log("#### PUSH ERROR" + error.message);
+  // }, useMasterKey: true});
 
-  response.success('success');
+  // response.success('success');
 });
