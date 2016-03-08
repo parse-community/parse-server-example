@@ -19,11 +19,11 @@ var simpleMailgunAdapter = new SimpleMailgunAdapter({
 });
 
 //Push Adapter
-// var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
-// var oneSignalPushAdapter = new OneSignalPushAdapter({
-//   oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
-//   oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
-// });
+var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
+var oneSignalPushAdapter = new OneSignalPushAdapter({
+  oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
+  oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
+});
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
@@ -34,22 +34,23 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
   publicServerURL: process.env.PUBLIC_SERVER_URL,
   emailAdapter: simpleMailgunAdapter,
-  //push: {
-  //   adapter: oneSignalPushAdapter
-  //},
+  push: {
+     adapter: oneSignalPushAdapter
+  }
+  //,
   // push: pushConfig,
-   push: {
-	android: {
-		senderId: process.env.GCM_SENDER_ID, // The Sender ID of GCM
-		apiKey: process.env.GCM_API_KEY // The Server API Key of GCM
-		}
-		,
-	ios: {
-		pdx: __dirname + '/ios_push/Medidate_prod_p12_new.p12', // the path and filename to the .p12 file you exported earlier. 
-		bundleId: process.env.IOS_PUSH_BUNDLEID, // The bundle identifier associated with your app
-		production: true
-		}
-	}
+ //  push: {
+	// android: {
+	// 	senderId: process.env.GCM_SENDER_ID, // The Sender ID of GCM
+	// 	apiKey: process.env.GCM_API_KEY // The Server API Key of GCM
+	// 	}
+	// 	,
+	// ios: {
+	// 	pdx: __dirname + '/ios_push/Medidate_prod_p12_new.p12', // the path and filename to the .p12 file you exported earlier. 
+	// 	bundleId: process.env.IOS_PUSH_BUNDLEID, // The bundle identifier associated with your app
+	// 	production: true
+	// 	}
+	// }
   // ,
   // customPages: {
   //   invalidLink: process.env.SERVER_URL + 'invalid_link.html',
