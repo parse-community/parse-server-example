@@ -65,7 +65,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
       where: pushQuery, 
       data: {
         alert: alert,
-        title: {"en": push_title},
+        title: push_title,
         session_alert: session_alert,
         push_title: push_title,
         push_type: push_type,
