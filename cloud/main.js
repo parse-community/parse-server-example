@@ -4,11 +4,18 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   var params = request.params;
   var user = request.user;
 
-  var customData = params.customData;//JSON of push
-  var pushType = params.pushType;//Type of push
+  var custom = params.custom;//JSON string of push
   var users = params.attenders;//ids of relevant users
   console.log("#### Push Data " + customData);
   console.log("#### Push Type " + pushType);
+  
+  //Parsing Json for iOS Platforms
+  var jsonObject= JSON.parse(custom);
+  var alert = jsonObject.alert;
+  var session_alert = jsonObject.session_alert;
+  var push_title = jsonObject.push_title;
+  var push_type = jsonObject.push_type;
+  var message_object_id = jsonObject.message_object_id;
 
   //Filter only users with thier ids in it
   // var userQuery = new Parse.Query(Parse.User);
@@ -18,7 +25,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   // }
 
   var pushQuery = new Parse.Query(Parse.Installation);
-  // switch (pushType) {
+  // switch (push_type) {
   //     case 0:
   //         pushQuery.equalTo("session_changed_push", true);
   //         console.log("#### session_changed_push");
@@ -54,7 +61,12 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   Parse.Push.send({
       where: pushQuery, 
       data: {
-        alert: customData
+        alert: alert,
+        session_alert: session_alert,
+        push_title: push_title,
+        push_type: push_type,
+        message_object_id: message_object_id,
+        custom: custom
       }
   }, { success: function() {
      console.log("#### PUSH OK");
