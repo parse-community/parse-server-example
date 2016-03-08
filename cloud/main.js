@@ -58,8 +58,8 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
           console.log("#### session_changed_push");
           break;
   }
-  // pushQuery.matchesQuery('user', userQuery);
-  pushQuery.containedIn('user', userQuery);
+  pushQuery.matchesQuery('user', userQuery);
+  // pushQuery.containedIn('user', userQuery);
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
   Parse.Push.send({
