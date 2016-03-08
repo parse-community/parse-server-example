@@ -24,7 +24,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   var userQuery = new Parse.Query(Parse.User);
   userQuery.containedIn("objectId", users);
   for (var i = 0; i < users.length; i++) {
-    console.log("#### User Id " + users[i]);
+    console.log("#### User Id Before Filtering " + users[i]);
   }
 
   var pushQuery = new Parse.Query(Parse.Installation);
@@ -61,6 +61,10 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   
   userQuery.find({
   success: function(results) {
+    for (var i = 0; i < results.length; i++) {
+      console.log("#### User Id After Filtering " + results[i]);
+    }
+
     pushQuery.containedIn("user", results);
     Parse.Push.send({
         where: pushQuery, 
