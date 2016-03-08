@@ -71,6 +71,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
         message_object_id: message_object_id,
         push_notification_id: push_notification_id,
         push_object_id: push_object_id,
+        message: '',
         custom: custom
       }
   }, { success: function() {
