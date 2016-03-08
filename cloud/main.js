@@ -58,7 +58,22 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
           console.log("#### session_changed_push");
           break;
   }
-  pushQuery.containedIn("user", userQuery);
+  
+  userQuery.find({
+  success: function(results) {
+    pushQuery.containedIn("user", results);
+    //alert("Successfully retrieved " + results.length + " scores.");
+    // Do something with the returned Parse.Object values
+    // for (var i = 0; i < results.length; i++) {
+    //   var object = results[i];
+    //   alert(object.id + ' - ' + object.get('playerName'));
+    // }
+  },
+  error: function(error) {
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
+  //pushQuery.containedIn("user", userQuery);
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
   Parse.Push.send({
