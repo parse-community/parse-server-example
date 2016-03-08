@@ -7,7 +7,6 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   var custom = params.custom;//JSON string of push
   var users = params.attenders;//ids of relevant users
   console.log("#### Push Data " + custom);
-  console.log("#### Push Type " + pushType);
   
   //Parsing Json for iOS Platforms
   var jsonObject= JSON.parse(custom);
@@ -16,6 +15,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   var push_title = jsonObject.push_title;
   var push_type = jsonObject.push_type;
   var message_object_id = jsonObject.message_object_id;
+  console.log("#### Push Type " + push_type);
 
   //Filter only users with thier ids in it
   // var userQuery = new Parse.Query(Parse.User);
