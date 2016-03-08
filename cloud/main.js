@@ -15,6 +15,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   var push_title = jsonObject.push_title;
   var push_type = jsonObject.push_type;
   var message_object_id = jsonObject.message_object_id;
+  var push_notification_id = jsonObject.push_notification_id;
   console.log("#### Push Type " + push_type);
 
   //Filter only users with thier ids in it
@@ -66,6 +67,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
         push_title: push_title,
         push_type: push_type,
         message_object_id: message_object_id,
+        push_notification_id: push_notification_id,
         custom: custom
       }
   }, { success: function() {
