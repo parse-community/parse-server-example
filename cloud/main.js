@@ -59,7 +59,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
           break;
   }
 
-  pushQuery.mathesQuery('user', userQuery);
+  pushQuery.matchesQuery('user', userQuery);
 //   userQuery.find({
 //   success: function(results) {
 //     for (var i = 0; i < results.length; i++) {
