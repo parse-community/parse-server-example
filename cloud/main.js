@@ -62,7 +62,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   userQuery.find({
   success: function(results) {
     for (var i = 0; i < results.length; i++) {
-      console.log("#### User Id After Filtering " + results[i].objectId);
+      console.log("#### User Id After Filtering " + results[i].get("username"));
     }
 
     pushQuery.containedIn("user", results);
