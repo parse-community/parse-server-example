@@ -61,7 +61,7 @@ var api = new ParseServer({
    customPages: {
      invalidLink: process.env.SERVER_URL + 'invalid_link.html',
      verifyEmailSuccess: process.env.SERVER_URL + 'verify_email_success.html',
-     choosePassword: 'http://matandahan.wix.com/medidate#!reset-password/ldxuc',
+     choosePassword: 'http://medidateapp.com/choose_password.html',
      passwordResetSuccess: process.env.SERVER_URL + 'password_reset_success.html'
    }
 });
