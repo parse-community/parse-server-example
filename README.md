@@ -127,24 +127,23 @@ Example using it on Android:
 //in your application class
 
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-        .applicationId("myAppId")
-        .clientKey("myClientKey")
-        .server("http://myServerUrl/parse/")   // '/' important after 'parse'
-        .build());
-        
-  ParseObject testObject = new ParseObject("TestObject");
-  testObject.put("foo", "bar");
-  testObject.saveInBackground();
+  .applicationId("myAppId")
+  .clientKey("myClientKey")
+  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .build());
 
+ParseObject testObject = new ParseObject("TestObject");
+testObject.put("foo", "bar");
+testObject.saveInBackground();
 ```
 Example using it on iOS (Swift):
 ```swift
 //in your AppDelegate
 
 Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
-     configuration.server = "https://<# Your Heroku server #>/parse"
-     configuration.applicationId = "<# Your APP_ID #>"
-     configuration.clientKey = "<# Your CLIENT_KEY #>"
+  configuration.server = "https://<# Your Heroku server #>/parse/" // '/' important after 'parse'
+  configuration.applicationId = "<# Your APP_ID #>"
+  configuration.clientKey = "<# Your CLIENT_KEY #>"
 }))
 ```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
