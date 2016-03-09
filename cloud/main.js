@@ -83,3 +83,77 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
 
   response.success('success');
 });
+
+Parse.Cloud.define('updateRecurringSessions', function(request, response) {
+
+  var excludeMinusOccurences = [0, -1, -2, -3];
+  var then = new Date();
+  then.setHours(then.getHours() - 1);
+  
+  var pushQuery = new Parse.Query("MSession");
+  pushQuery.lessThanOrEqualTo("date", then);
+  pushQuery.notContainedIn("occurrence",excludeMinusOccurences);
+  pushQuery.find({
+    success: function(results) {
+      var newRecurringSessionsArray = new Array(results.length);
+      var edittedRecurringSessionsArray = new Array(results.length);
+      
+      //var sum = 0;
+      for (var i = 0; i < results.length; ++i) {
+        var newSession = results[i].clone();
+        newSession.set("attenders_count", 0);
+        var date = newSession.get("date");
+           switch (newSession.get("occurrence"))
+            {
+               case 1: 
+                  do {
+                     date.setHours(then.getHours() + 24);
+                  } while (date <= then);
+               break;
+            
+               case 2: 
+                  do {
+                     date.setHours(then.getHours() + 7 * 24);
+                  } while (date <= then);
+               break;
+            
+               case 3: 
+                  do {
+                     date.setHours(then.getHours() + 4 * 7 * 24);
+                  } while (date <= then);
+               break;
+               //default:  ;
+            }
+            newSession.set("date", date);
+            newSession.set("day", date.getDay() + 1);
+            results[i].set("occurrence", -1 * results[i].get("occurrence"));
+            
+            newRecurringSessionsArray.push(newSession);
+            edittedRecurringSessionsArray.push(results[i]);
+      }
+      if(newRecurringSessionsArray.length > 0 && edittedRecurringSessionsArray.length > 0)
+      {
+        Parse.Object.saveAll(newRecurringSessionsArray, {
+          success: function(list) {
+            Parse.Object.saveAll(edittedRecurringSessionsArray, {
+              success: function(list) {
+                response.success("success");
+              },
+              error: function(error) {
+                response.error("Wasn't able to save Editted Sessions");
+              },
+            });
+          },
+          error: function(error) {
+            response.error("Wasn't able to save New Sessions");
+          },
+        });
+      }
+      response.success(/*sum*/ / results.length);
+    },
+    error: function() {
+      response.error("Wasn't able to find Recurring Sessions");
+    }
+  });
+  response.success('success');
+});
