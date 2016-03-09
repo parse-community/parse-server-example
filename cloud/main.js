@@ -122,7 +122,7 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
                      date.setHours(then.getHours() + 4 * 7 * 24);
                   } while (date <= then);
                break;
-               //default:  ;
+               default:  ;
             }
             newSession.set("date", date);
             newSession.set("day", date.getDay() + 1);
