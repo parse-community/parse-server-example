@@ -15,11 +15,6 @@ var simpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgu
   domain: process.env.DOMAIN || 'medidatewith.me',
   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
 });
-// var simpleMailgunAdapter = new SimpleMailgunAdapter({
-//   apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
-//   domain: process.env.DOMAIN || 'medidatewith.me',
-//   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
-// });
 
 //Mailgun - reset password
 // var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
