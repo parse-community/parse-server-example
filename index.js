@@ -9,14 +9,25 @@ var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
-
-//Mailgun - reset password
-var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
-var simpleMailgunAdapter = new SimpleMailgunAdapter({
+//Ophir Test Initialize MailAdapter
+var simpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter')({
   apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
   domain: process.env.DOMAIN || 'medidatewith.me',
   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
 });
+// var simpleMailgunAdapter = new SimpleMailgunAdapter({
+//   apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
+//   domain: process.env.DOMAIN || 'medidatewith.me',
+//   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
+// });
+
+//Mailgun - reset password
+// var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
+// var simpleMailgunAdapter = new SimpleMailgunAdapter({
+//   apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
+//   domain: process.env.DOMAIN || 'medidatewith.me',
+//   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
+// });
 
 //Push Adapter
 var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
