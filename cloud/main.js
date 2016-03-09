@@ -140,19 +140,19 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
                 response.success('success');
               },
               error: function(error) {
-                response.error('Wasn't able to save Editted Sessions');
+                response.error('Wasnt able to save Editted Sessions');
               },
             });
           },
           error: function(error) {
-            response.error('Wasn't able to save New Sessions');
+            response.error('Wasnt able to save New Sessions');
           },
         });
       }
       response.success('success');
     },
     error: function() {
-      response.error('Wasn't able to find Recurring Sessions');
+      response.error('Wasnt able to find Recurring Sessions');
     }
   });
   response.success('success');
