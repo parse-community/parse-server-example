@@ -59,10 +59,10 @@ var api = new ParseServer({
 	// }
    ,
    customPages: {
-     invalidLink: 'https://www.youtube.com/'',
+     invalidLink: 'https://www.youtube.com/',
      verifyEmailSuccess: process.env.SERVER_URL + 'verify_email_success.html',
      choosePassword: 'http://medidateapp.com/choose_password.html',
-     passwordResetSuccess: 'http://translate.google.co.il/''
+     passwordResetSuccess: 'http://translate.google.co.il/'
    }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
