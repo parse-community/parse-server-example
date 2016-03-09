@@ -91,7 +91,7 @@ You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
 Example request to a server running locally:
 
-```
+```curl
 curl -X POST \
   -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
@@ -139,6 +139,8 @@ Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
 ```
 Example using it on iOS (Swift):
 ```swift
+//in your AppDelegate
+
 Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
      configuration.server = "https://<# Your Heroku server #>/parse"
      configuration.applicationId = "<# Your APP_ID #>"
