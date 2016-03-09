@@ -110,6 +110,7 @@ Example using it via JavaScript:
 ```javascript
 Parse.initialize('myAppId','unused');
 Parse.serverURL = 'https://whatever.herokuapp.com';
+
 var obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 obj.save().then(function(obj) {
@@ -140,8 +141,8 @@ Example using it on iOS (Swift):
 ```swift
 Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
      configuration.server = "https://<# Your Heroku server #>/parse"
-     configuration.applicationId ="<# Your APP_ID #>"
-     configuration.clientKey ="<# Your CLIENT_KEY #>"
+     configuration.applicationId = "<# Your APP_ID #>"
+     configuration.clientKey = "<# Your CLIENT_KEY #>"
 }))
 ```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
