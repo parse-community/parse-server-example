@@ -212,7 +212,7 @@ Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
         });
     },
     error: function(error) {
-        console.log("#### "Error: " + error.code + " " + error.message);
+        console.log("#### Error: " + error.code + " " + error.message);
         response.error(error);
     }
   });
