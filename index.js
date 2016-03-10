@@ -1,6 +1,6 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
-import OneSignalPushAdapter from './adapters';
+import OneSignalPushAdapter from __dirname + '/adapters/OneSignalPushAdapter';
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
@@ -10,20 +10,13 @@ var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
-//Ophir Test Initialize MailAdapter
+
+//Mailgun - reset password
 var simpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter')({
-  apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
+  apiKey: process.env.MAILGUN_KEY || '',
   domain: process.env.DOMAIN || 'medidatewith.me',
   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
 });
-
-//Mailgun - reset password
-// var SimpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgunAdapter');
-// var simpleMailgunAdapter = new SimpleMailgunAdapter({
-//   apiKey: process.env.MAILGUN_KEY || 'key-c101ac1bf89065d49887ba4d2ef69771',
-//   domain: process.env.DOMAIN || 'medidatewith.me',
-//   fromAddress: process.env.MAILGUN_FROM_ADDRESS || 'no-reply@medidatewith.me'
-// });
 
 //Push Adapter
 // var OneSignalPushAdapter = __dirname + '/adapters/OneSignalPushAdapter.js';
