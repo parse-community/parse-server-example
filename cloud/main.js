@@ -6,7 +6,6 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
     var users = params.attenders;//ids of relevant users
     console.log("#### Push Data " + custom);
     
-    //Parsing Json for iOS Platforms
     var jsonObject= JSON.parse(custom);
     var alert = jsonObject.alert;
     var session_alert = jsonObject.session_alert;
@@ -53,14 +52,25 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
       app_id: process.env.ONE_SIGNAL_APP_ID, 
       included_segments: ["All"],
       contents: {en: "English Message"},
-      include_player_ids: users,
-      tags: pushTags,
       data: {
         "title": push_title,
         "message": alert,
         "custom": custom,
       }
     };
+    
+    // var jsonBody = { 
+    //   app_id: process.env.ONE_SIGNAL_APP_ID, 
+    //   included_segments: ["All"],
+    //   contents: {en: "English Message"},
+    //   include_player_ids: users,
+    //   tags: pushTags,
+    //   data: {
+    //     "title": push_title,
+    //     "message": alert,
+    //     "custom": custom,
+    //   }
+    // };
     
     Parse.Cloud.httpRequest({
       method: "POST",
