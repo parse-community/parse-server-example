@@ -59,7 +59,8 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
       },
       data: {
         custom: custom,
-      }
+      },
+      tags: pushTags
     };
     
     // var jsonBody = { 
