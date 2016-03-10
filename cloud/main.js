@@ -241,20 +241,21 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
             {
                case 1: 
                   do {
-                     date.setHours(then.getHours() + 24);
+                    //  date.setHours(then.getHours() + 24);
+                     date.setDate(date.getDate() + 1);
                   } while (date <= then);
                break;
             
                case 2: 
                   do {
-                     date.setHours(then.getHours() + 7 * 24);
+                    //  date.setHours(then.getHours() + 7 * 24);
+                      date.setDate(date.getDate() + 7);
                   } while (date <= then);
                break;
             
                case 3: 
-                  do {
-                     date.setHours(then.getHours() + 4 * 7 * 24);
-                  } while (date <= then);
+                    //  date.setHours(then.getHours() + 4 * 7 * 24);
+                     date.addMonths(1);
                break;
                default:  ;
             }
@@ -265,8 +266,7 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
             newRecurringSessionsArray.push(newSession);
             edittedRecurringSessionsArray.push(results[i]);
       }
-      if(newRecurringSessionsArray.length > 0 && edittedRecurringSessionsArray.length > 0)
-      {
+      if(newRecurringSessionsArray.length > 0 && edittedRecurringSessionsArray.length > 0){
         Parse.Object.saveAll(newRecurringSessionsArray, {
           success: function(list) {
             Parse.Object.saveAll(edittedRecurringSessionsArray, {
@@ -290,4 +290,29 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
     }
   });
   response.success('success');
+  
+    Date.isLeapYear = function (year) { 
+        return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
+    };
+    
+    Date.getDaysInMonth = function (year, month) {
+        return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+    };
+    
+    Date.prototype.isLeapYear = function () { 
+        return Date.isLeapYear(this.getFullYear()); 
+    };
+    
+    Date.prototype.getDaysInMonth = function () { 
+        return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+    };
+    
+    Date.prototype.addMonths = function (value) {
+        var n = this.getDate();
+        this.setDate(1);
+        this.setMonth(this.getMonth() + value);
+        this.setDate(Math.min(n, this.getDaysInMonth()));
+        return this;
+    };
+
 });
