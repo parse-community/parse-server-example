@@ -78,7 +78,6 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
     });
   
     return promise;
-  };
 });
 
 Parse.Cloud.define('pushChannelMedidate', function(request, response) {
