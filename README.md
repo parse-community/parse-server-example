@@ -141,7 +141,7 @@ Example using it on iOS (Swift):
 //in your AppDelegate
 
 Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
-  configuration.server = "https://<# Your Heroku server #>/parse/" // '/' important after 'parse'
+  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
   configuration.applicationId = "<# Your APP_ID #>"
   configuration.clientKey = "<# Your CLIENT_KEY #>"
 }))
