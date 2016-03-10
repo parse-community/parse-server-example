@@ -229,6 +229,7 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
   pushQuery.notContainedIn("occurrence",excludeMinusOccurences);
   pushQuery.find({
     success: function(results) {
+    console.log("#### Sessions to Reoccurre " + results.length);
       var newRecurringSessionsArray = new Array(results.length);
       var edittedRecurringSessionsArray = new Array(results.length);
       
@@ -237,8 +238,7 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
         var newSession = results[i].clone();
         newSession.set("attenders_count", 0);
         var date = newSession.get("date");
-           switch (newSession.get("occurrence"))
-            {
+           switch (newSession.get("occurrence")){
                case 1: 
                   do {
                     //  date.setHours(then.getHours() + 24);
@@ -269,17 +269,19 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
       if(newRecurringSessionsArray.length > 0 && edittedRecurringSessionsArray.length > 0){
         Parse.Object.saveAll(newRecurringSessionsArray, {
           success: function(list) {
+            console.log("#### Saving New Recurring Sessions Array  " + newRecurringSessionsArray.length);
             Parse.Object.saveAll(edittedRecurringSessionsArray, {
               success: function(list) {
+            console.log("#### Saving Old Recurring Sessions Array  " + newRecurringSessionsArray.length);
                 response.success('success');
               },
               error: function(error) {
-                response.error('Wasnt able to save Editted Sessions');
+                response.error('Wasnt able to save Old Recurring Sessions');
               },
             });
           },
           error: function(error) {
-            response.error('Wasnt able to save New Sessions');
+            response.error('Wasnt able to save New Recurring Sessions');
           },
         });
       }
@@ -289,7 +291,7 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
       response.error('Wasnt able to find Recurring Sessions');
     }
   });
-  response.success('success');
+  response.success('Saved Reoccurred Sessions');
   
     Date.isLeapYear = function (year) { 
         return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
