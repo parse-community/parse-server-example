@@ -237,7 +237,7 @@ Parse.Cloud.define('updateRecurringSessions', function(request, response) {
       for (var i = 0; i < results.length; ++i) {
         var newSession = results[i].clone();
         newSession.set("attenders_count", 0);
-        var date = newSession.get("date");
+        var date =  new Date(newSession.get("date").getTime());
            switch (newSession.get("occurrence")){
                case 1: 
                   do {
