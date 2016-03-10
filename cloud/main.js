@@ -1,89 +1,86 @@
-Parse.Cloud.define('oneSignalPush', send = function(params) {
+Parse.Cloud.define('oneSignalPush', function(request, response) {
+  send = function(params) {
+    var promise = new Parse.Promise();
+    var params = request.params;
   
-  var promise = new Parse.Promise();
-  var params = request.params;
-
-  var custom = params.custom;//JSON string of push
-  var users = params.attenders;//ids of relevant users
-  console.log("#### Push Data " + custom);
+    var custom = params.custom;//JSON string of push
+    var users = params.attenders;//ids of relevant users
+    console.log("#### Push Data " + custom);
+    
+    //Parsing Json for iOS Platforms
+    var jsonObject= JSON.parse(custom);
+    var alert = jsonObject.alert;
+    var session_alert = jsonObject.session_alert;
+    var push_title = jsonObject.push_title;
+    var push_type = jsonObject.push_type;
+    var message_object_id = jsonObject.message_object_id;
+    var push_notification_id = jsonObject.push_notification_id;
+    var push_object_id = jsonObject.push_object_id;
+    console.log("#### Push Type " + push_type);
   
-  //Parsing Json for iOS Platforms
-  var jsonObject= JSON.parse(custom);
-  var alert = jsonObject.alert;
-  var session_alert = jsonObject.session_alert;
-  var push_title = jsonObject.push_title;
-  var push_type = jsonObject.push_type;
-  var message_object_id = jsonObject.message_object_id;
-  var push_notification_id = jsonObject.push_notification_id;
-  var push_object_id = jsonObject.push_object_id;
-  console.log("#### Push Type " + push_type);
-
-  var tags = [{"session_changed_push": "true"}];//Default
-  switch (push_type) {
-      case 0:
-          pushQuery.equalTo("session_changed_push", true);
-          tags = [{"session_changed_push": "true"}];
-          console.log("#### session_changed_push");
-          break;
-      case 1:
-          pushQuery.equalTo("user_followed_push", true);
-          tags = [{"user_followed_push": "true"}];
-          console.log("#### user_followed_push");
-          break;
-      case 2:
-          pushQuery.equalTo("session_attender_push", true);
-          tags = [{"session_attender_push": "true"}];
-          console.log("#### session_attender_push");
-          break;
-      case 3:
-          pushQuery.equalTo("new_follower_push", true);
-          tags = [{"new_follower_push": "true"}];
-          console.log("#### new_follower_push");
-          break;
-      case 4:
-          //NOTHING TO FILTER
-          console.log("#### session_deleted_push");
-          break;
-      case 5:
-          pushQuery.equalTo("session_message_push", true);
-          tags = [{"session_message_push": "true"}];
-          console.log("#### session_message_push");
-          break;
-      default:
-          pushQuery.equalTo("session_changed_push", true);
-          tags = [{"session_changed_push": "true"}];
-          console.log("#### session_changed_push");
-          break;
-  }
-  
-  var jsonBody = { 
-    app_id: process.env.ONE_SIGNAL_APP_ID, 
-    included_segments: ["All"],
-    contents: {en: "English Message"},
-    include_player_ids: users,
-    tags: tags,
-    data: {
-      "title": push_title,
-      "message": alert,
-      "custom": custom,
+    var pushTags = [{"session_changed_push": "true"}];//Default
+    switch (push_type) {
+        case 0:
+            pushTags = [{"session_changed_push": "true"}];
+            console.log("#### session_changed_push");
+            break;
+        case 1:
+            pushTags = [{"user_followed_push": "true"}];
+            console.log("#### user_followed_push");
+            break;
+        case 2:
+            pushTags = [{"session_attender_push": "true"}];
+            console.log("#### session_attender_push");
+            break;
+        case 3:
+            pushTags = [{"new_follower_push": "true"}];
+            console.log("#### new_follower_push");
+            break;
+        case 4:
+            //NOTHING TO FILTER
+            console.log("#### session_deleted_push");
+            break;
+        case 5:
+            pushTags = [{"session_message_push": "true"}];
+            console.log("#### session_message_push");
+            break;
+        default:
+            pushTags = [{"session_changed_push": "true"}];
+            console.log("#### session_changed_push");
+            break;
     }
-  };
-  
-  Parse.Cloud.httpRequest({
-    method: "POST",
-    url: "https://onesignal.com/api/v1/notifications",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-      "Authorization": "Basic "+ process.env.ONE_SIGNAL_REST_API_KEY
+    
+    var jsonBody = { 
+      app_id: process.env.ONE_SIGNAL_APP_ID, 
+      included_segments: ["All"],
+      contents: {en: "English Message"},
+      include_player_ids: users,
+      tags: tags,
+      data: {
+        "title": push_title,
+        "message": alert,
+        "custom": custom,
+      }
+    };
+    
+    Parse.Cloud.httpRequest({
+      method: "POST",
+      url: "https://onesignal.com/api/v1/notifications",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "Authorization": "Basic "+ process.env.ONE_SIGNAL_REST_API_KEY
+      },
+      body: JSON.stringify(jsonBody)
+    }).then(function (httpResponse) {
+      promise.resolve(httpResponse)
     },
-    body: JSON.stringify(jsonBody)
-  }).then(function (httpResponse) {
-    promise.resolve(httpResponse)
-  },
-  function (httpResponse) {
-    promise.reject(httpResponse);
-  });
-
+    function (httpResponse) {
+      promise.reject(httpResponse);
+    });
+  
+    return promise;
+  };
+  exports.send = send;
 });
 
 Parse.Cloud.define('pushChannelMedidate', function(request, response) {
