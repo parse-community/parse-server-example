@@ -184,6 +184,45 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   response.success('success');
 });
 
+Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
+  var params = request.params;
+  var user = request.user;
+
+  var token = params.token;//JSON string of push
+  var users = params.attenders;//ids of relevant users
+  console.log("#### Push Token " + token);
+  
+  //Filter only users with thier ids in it
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.containedIn("objectId", users);
+  for (var i = 0; i < users.length; i++) {
+    console.log("#### User Id Before Filtering " + users[i]);
+  }
+
+  var pushQuery = new Parse.Query(Parse.Installation);
+  pushQuery.matchesQuery('user', userQuery);
+  pushQuery.find({
+    success: function(results) {
+        alert("Successfully retrieved Installation" + results.length);
+        var userInstallation = results[0];
+        userInstallation.set("deviceToken", token);
+        userInstallation.save(null, {
+            success: function (listing) {
+                response.success('success');
+                console.log("Saved Token");
+            },
+            error: function (error) {
+                response.error(error);
+                console.log("Did Not Save Token...");
+            }
+        });
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
+});
+
 Parse.Cloud.define('updateRecurringSessions', function(request, response) {
 
   var excludeMinusOccurences = [0, -1, -2, -3];
