@@ -1,6 +1,6 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
-import OneSignalPushAdapter from __dirname + '/adapters/OneSignalPushAdapter';
+// import OneSignalPushAdapter from __dirname + '/adapters/OneSignalPushAdapter';
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
@@ -19,7 +19,7 @@ var simpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgu
 });
 
 //Push Adapter
-// var OneSignalPushAdapter = __dirname + '/adapters/OneSignalPushAdapter.js';
+var OneSignalPushAdapter = require('parse-server/lib/Adapters/Push/OneSignalPushAdapter');
 var oneSignalPushAdapter = new OneSignalPushAdapter({
   oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
   oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
