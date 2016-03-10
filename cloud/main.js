@@ -54,7 +54,7 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
       contents: {
         en: alert,
         title : push_title,
-      }
+      },
       data: {
         title: push_title,
         message: alert,
