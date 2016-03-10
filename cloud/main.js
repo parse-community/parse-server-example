@@ -194,7 +194,7 @@ Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
   console.log("#### User GCM Token " + token);
 
   var installationQuery = new Parse.Query(Parse.Installation);
-  installationQuery.equalTo('objectId', installation);
+  installationQuery.equalTo('objectId', installation[0]);
   installationQuery.find({
     success: function(installations) {
         console.log("#### Successfully retrieved Installation" + installations.length);
