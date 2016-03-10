@@ -188,37 +188,17 @@ Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
   var params = request.params;
   var user = request.user;
   var token = params.token;//JSON string of push
-  var users = params.attenders;//ids of relevant users
-  
-  //Filter only users with thier ids in it
-  var userQuery = new Parse.Query(Parse.User);
-  userQuery.containedIn("objectId", users);
-  console.log("#### User Id To Save Token " + users[0]);
-  console.log("#### User GCM Token " + token);
-
-  var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.matchesQuery('user', userQuery);
-  pushQuery.find({
-    success: function(results) {
-        alert("Successfully retrieved Installation" + results.length);
-        var userInstallation = results[0];
-        userInstallation.set("deviceToken", token);
-        userInstallation.save(null, {
-            success: function (listing) {
-                console.log("Saved Token");
-                response.success('success');
-            },
-            error: function (error) {
-                console.log("Did Not Save Token...");
-                response.error(error);
-            }
-        });
-    },
-    error: function(error) {
-      alert("Error: " + error.code + " " + error.message);
-      response.error(error);
-    }
-  });
+    user.set("deviceToken", token);
+    userInstallation.save(null, {
+        success: function (listing) {
+            console.log("Saved Token");
+            response.success('success');
+        },
+        error: function (error) {
+            console.log("Did Not Save Token...");
+            response.error(error);
+        }
+    });
 });
 
 Parse.Cloud.define('updateRecurringSessions', function(request, response) {
