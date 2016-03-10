@@ -16,22 +16,24 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
     var push_object_id = jsonObject.push_object_id;
     console.log("#### Push Type " + push_type);
   
-    var pushTags = [{"session_changed_push": "true"}];//Default
+    var pushTagKey = "session_changed_push";//Default
+    var pushTagRelation = "=";//Default
+    var pushTagValue = "true";//Default
     switch (push_type) {
         case 0:
-            pushTags = [{"session_changed_push": "true"}];
+            pushTagKey = "session_changed_push";
             console.log("#### session_changed_push");
             break;
         case 1:
-            pushTags = [{"user_followed_push": "true"}];
+            pushTagKey = "user_followed_push";
             console.log("#### user_followed_push");
             break;
         case 2:
-            pushTags = [{"session_attender_push": "true"}];
+            pushTagKey = "session_attender_push";
             console.log("#### session_attender_push");
             break;
         case 3:
-            pushTags = [{"new_follower_push": "true"}];
+            pushTagKey = "new_follower_push";
             console.log("#### new_follower_push");
             break;
         case 4:
@@ -39,11 +41,11 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
             console.log("#### session_deleted_push");
             break;
         case 5:
-            pushTags = [{"session_message_push": "true"}];
+            pushTagKey = "session_message_push";
             console.log("#### session_message_push");
             break;
         default:
-            pushTags = [{"session_changed_push": "true"}];
+            pushTagKey = "session_changed_push";
             console.log("#### session_changed_push");
             break;
     }
@@ -60,7 +62,7 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
       data: {
         custom: custom,
       },
-      tags: pushTags
+      tags: [{"key": pushTagKey, "relation": pushTagRelation, "value": pushTagValue}]
     };
     
     // var jsonBody = { 
