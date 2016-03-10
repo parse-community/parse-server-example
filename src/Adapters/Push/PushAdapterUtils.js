@@ -18,7 +18,7 @@ export function classifyInstallations(installations, validPushTypes) {
     let pushType = installation.deviceType;
     if (deviceMap[pushType]) {
       deviceMap[pushType].push({
-        deviceToken: installation.deviceToken,
+        deviceToken: installation.oneSignalRegistrationId,
         appIdentifier: installation.appIdentifier
       });
     } else {
