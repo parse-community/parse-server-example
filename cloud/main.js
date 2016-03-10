@@ -51,7 +51,8 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
     var jsonBody = { 
       app_id: process.env.ONE_SIGNAL_APP_ID, 
       included_segments: ["All"],
-      contents: {en: "English Message"},
+      title: push_title,
+      contents: {en: alert},
       data: {
         "title": push_title,
         "message": alert,
