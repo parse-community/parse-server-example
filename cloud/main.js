@@ -184,20 +184,17 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   response.success('success');
 });
 
-Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
+Parse.Cloud.beforeSave("saveAndroidUserDeviceToken", function(request, response) {
   var params = request.params;
   var user = request.user;
-
   var token = params.token;//JSON string of push
   var users = params.attenders;//ids of relevant users
-  console.log("#### Push Token " + token);
   
   //Filter only users with thier ids in it
   var userQuery = new Parse.Query(Parse.User);
   userQuery.containedIn("objectId", users);
-  for (var i = 0; i < users.length; i++) {
-    console.log("#### User Id Before Filtering " + users[i]);
-  }
+  console.log("#### User Id To Save Token " + users[0]);
+  console.log("#### User GCM Token " + token);
 
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.matchesQuery('user', userQuery);
@@ -208,17 +205,18 @@ Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
         userInstallation.set("deviceToken", token);
         userInstallation.save(null, {
             success: function (listing) {
-                response.success('success');
                 console.log("Saved Token");
+                response.success('success');
             },
             error: function (error) {
-                response.error(error);
                 console.log("Did Not Save Token...");
+                response.error(error);
             }
         });
     },
     error: function(error) {
       alert("Error: " + error.code + " " + error.message);
+      response.error(error);
     }
   });
 });
