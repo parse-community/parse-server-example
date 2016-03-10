@@ -184,7 +184,7 @@ Parse.Cloud.define('pushChannelMedidate', function(request, response) {
   response.success('success');
 });
 
-Parse.Cloud.beforeSave("saveAndroidUserDeviceToken", function(request, response) {
+Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
   var params = request.params;
   var user = request.user;
   var token = params.token;//JSON string of push
