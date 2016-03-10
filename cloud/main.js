@@ -1,5 +1,4 @@
 Parse.Cloud.define('oneSignalPush', function(request, response) {
-  send = function(params) {
     var promise = new Parse.Promise();
     var params = request.params;
   
@@ -80,7 +79,6 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
   
     return promise;
   };
-  exports.send = send;
 });
 
 Parse.Cloud.define('pushChannelMedidate', function(request, response) {
