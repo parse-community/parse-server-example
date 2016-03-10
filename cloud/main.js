@@ -190,7 +190,7 @@ Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
   var user = request.user;
   var token = params.token;//GCM TOKEN
   var installation = params.installation;//ids of relevant users
-  console.log("#### Installation Id To Save Token " + users[0]);
+  console.log("#### Installation Id To Save Token " + installation[0]);
   console.log("#### User GCM Token " + token);
 
   var installationQuery = new Parse.Query(Parse.Installation);
