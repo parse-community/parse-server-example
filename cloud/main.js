@@ -189,7 +189,7 @@ Parse.Cloud.define('saveAndroidUserDeviceToken', function(request, response) {
   var user = request.user;
   var token = params.token;//JSON string of push
     user.set("deviceToken", token);
-    userInstallation.save(null, {
+    user.save(null, {
         success: function (listing) {
             console.log("Saved Token");
             response.success('success');
