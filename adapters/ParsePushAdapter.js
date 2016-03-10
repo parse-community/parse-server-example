@@ -4,8 +4,8 @@
 // for ios push.
 
 const Parse = require('parse/node').Parse;
-const GCM = require('../../GCM');
-const APNS = require('../../APNS');
+const GCM = require('parse-server/src/GCM');
+const APNS = require('parse-server/src/APNS');
 import PushAdapter from './PushAdapter';
 import { classifyInstallations } from './PushAdapterUtils';
 
