@@ -54,7 +54,7 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
       included_segments: ["All"],
       contents: {en: "English Message"},
       include_player_ids: users,
-      tags: tags,
+      tags: pushTags,
       data: {
         "title": push_title,
         "message": alert,
