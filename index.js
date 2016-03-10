@@ -25,7 +25,7 @@ var simpleMailgunAdapter = require('parse-server/lib/Adapters/Email/SimpleMailgu
 // });
 
 //Push Adapter
-var OneSignalPushAdapter = require(__dirname + '/adapters/OneSignalPushAdapter');
+var OneSignalPushAdapter = require(__dirname + '/adapters/OneSignalPushAdapter.js');
 var oneSignalPushAdapter = new OneSignalPushAdapter({
   oneSignalAppId:process.env.ONE_SIGNAL_APP_ID,
   oneSignalApiKey:process.env.ONE_SIGNAL_REST_API_KEY
