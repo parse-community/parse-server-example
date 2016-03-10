@@ -17,7 +17,7 @@ Parse.Cloud.define('oneSignalPush', function(request, response) {
     console.log("#### Push Type " + push_type);
   
     var pushTagKey = "session_changed_push";//Default
-    var pushTagRelation = "=>";//Default
+    var pushTagRelation = "=";//Default
     var pushTagValue = "true";//Default
     switch (push_type) {
         case 0:
