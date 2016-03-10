@@ -53,10 +53,10 @@ var api = new ParseServer({
 	// }
    ,
    customPages: {
-     invalidLink: process.env.SERVER_URL + 'invalid_link.html',
-     verifyEmailSuccess: process.env.SERVER_URL + 'verify_email_success.html',
-     choosePassword: process.env.SERVER_URL + 'choose_password.html',
-     passwordResetSuccess: process.env.SERVER_URL + 'password_reset_success.html'
+     invalidLink: process.env.HOST_URL + 'invalid_link.html',
+     verifyEmailSuccess: process.env.HOST_URL + 'verify_email_success.html',
+     choosePassword: process.env.HOST_URL + 'choose_password.html',
+     passwordResetSuccess: process.env.HOST_URL + 'password_reset_success.html'
    }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
