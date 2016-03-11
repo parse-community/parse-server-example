@@ -1,5 +1,6 @@
 var process = {
   env: {
+    APP_NAME: "GoodgreensQA",
     APP_ID : "krHhv4yJmfmWZUE8mGPraozrcgA4x5WtTO8HyBQR",
     MASTER_KEY : "5dGvOwkNbCQhS3S8o3guzjdtHuAyEhDqfJQvblMa",
     RESTAPI_KEY : "CqtnmJlIuhIaRxq7pPVH0VsPb1HffReRIcCAjJNr",
@@ -27,21 +28,25 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-  mailConfig: {
-    service: 'mailgun',
-    apiKey: process.env.MAIL_APIKEY || 'apiKey',
-    domain:process.env.MAIL_DOMAIN || 'myEmailDomain',
-    fromAddress:process.env.MAIL_FROMADDRESS || 'My company <test@domain>'
-  },
-  verifyEmails: process.env.VERIFY_EMAILS || false,
+  databaseURI: process.env.DATABASE_URI || 'mongodb://localhost:27017/dev',
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
+  appName: process.env.APP_NAME || 'myApp',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   javascriptKey: process.env.JS_KEY || 'myRestKey',
   restAPIKEY: process.env.RESTAPI_KEY || 'myRestKey',
   fileKey: process.env.FILE_KEY || 'myFileKey',
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse'
+  verifyUserEmails: process.env.VERIFY_EMAILS || true,
+  emailAdapter: {
+    module: './Email/SimpleMailgunAdapter',
+    options: {
+      apiKey: process.env.MAIL_APIKEY || 'apiKey',
+      domain:process.env.MAIL_DOMAIN || 'myEmailDomain',
+      fromAddress:process.env.MAIL_FROMADDRESS || 'My company <test@domain>'
+    }
+  },
+  publicServerURL: process.env.SERVER_URL || 'http://localhost:1337/parse'
 });
 
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
