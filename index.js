@@ -11,6 +11,12 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
+  mailConfig: {
+    service: 'mailgun',
+    apiKey: 'key-d02990f041626caa1d336bfaa3f7e405',
+    domain:'sandboxfa9696fdd61a4879bf977bd8c3ede7bb.mailgun.org',
+    fromAddress:'Soin Labs <jquesada@soin.co.cr>'
+  },
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',

@@ -11,13 +11,8 @@
   "dependencies": {
     "express": "~4.2.x",
     "kerberos": "~0.0.x",
-<<<<<<< HEAD
     "parse": "~1.7.1",
-    "parse-server": "~2.0"
-=======
-    "parse": "~1.6.12",
-    "parse-server": "~2.1.4"
->>>>>>> upstream/master
+    "parse-server": "~2.1.5"
   },
   "scripts": {
     "start": "node index.js"
