@@ -29,7 +29,6 @@ if (!databaseUri) {
 
 var api = new ParseServer({
   databaseURI: process.env.DATABASE_URI || 'mongodb://localhost:27017/dev',
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   appName: process.env.APP_NAME || 'myApp',
@@ -46,7 +45,7 @@ var api = new ParseServer({
       fromAddress:process.env.MAIL_FROMADDRESS || 'My company <test@domain>'
     }
   },
-  publicServerURL: process.env.SERVER_URL || 'http://localhost:1337/parse'
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse'  // Don't forget to change to https if needed
 });
 
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server

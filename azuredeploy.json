@@ -44,6 +44,11 @@
       "minLength": 1,
       "defaultValue": "myMasterKey"
     },
+    "parseServerUrl": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "http://yourappname.azure.com/parse"
+    },
     "repoURL": {
       "type": "string",
       "defaultValue": "https://github.com/parseplatform/parse-server-example.git",
@@ -108,6 +113,10 @@
             {
             "name": "MASTER_KEY",
             "value": "[parameters('parseMasterKey')]"
+            },
+            {
+            "name": "SERVER_URL",
+            "value": "[parameters('parseServerUrl')]"
             },
             {
                 "name": "WEBSITE_NODE_DEFAULT_VERSION",
