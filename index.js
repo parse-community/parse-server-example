@@ -4,6 +4,7 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var S3Adapter = require('parse-server').S3Adapter;
+var corser = require("corser");
 
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URL
@@ -31,6 +32,8 @@ var api = new ParseServer({
 
 var app = express();
 
+// Handles CORS requests and allows preflight requests.
+app.use(corser.create());
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
