@@ -4,7 +4,7 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var S3Adapter = require('parse-server').S3Adapter;
-var corser = require("corser");
+var cors = require('cors')
 
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URL
@@ -34,26 +34,23 @@ var api = new ParseServer({
 var app = express();
 
 // Handles CORS requests and allows preflight requests.
-app.use(corser.create({
-    methods: corser.simpleMethods.concat(["PUT"]),
-    requestHeaders: corser.simpleRequestHeaders.concat(["X-Requested-With"])
-}));
-app.all('*', function(request, response, next) {
-    response.header('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With,Authorization,Access-Control-Allow-Origin');
-    response.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE');
-    response.header('Access-Control-Allow-Origin', '*');
-    next();
-});
+app.use(cors());
 
 
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
+
+
+
+
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
   res.status(200).send('I dream of being a web site.');
 });
+
+
 
 var port = process.env.PORT || 1337;
 app.listen(port, function() {
