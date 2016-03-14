@@ -7,17 +7,18 @@ var S3Adapter = require('parse-server').S3Adapter;
 var corser = require("corser");
 
 
-var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URL
+var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URL || 'mongodb://localhost:27017/dev'
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || process.env.MONGODB_URL,
+  databaseURI: databaseUri || process.env.MONGODB_URL || 'mongodb://localhost:27017/dev' ,
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID,
-  masterKey: process.env.MASTER_KEY,
+  appId: process.env.APP_ID || '1234',
+  masterKey: process.env.MASTER_KEY || '1234',
+  serverURL: process.env.SERVER_URL || 'http://localhost:49152',
 
   filesAdapter: new S3Adapter(
     process.env.AWS_ACCESS_KEY_ID,
@@ -33,7 +34,16 @@ var api = new ParseServer({
 var app = express();
 
 // Handles CORS requests and allows preflight requests.
-app.use(corser.create());
+app.use(corser.create({
+    methods: corser.simpleMethods.concat(["PUT"]),
+    requestHeaders: corser.simpleRequestHeaders.concat(["X-Requested-With"])
+}));
+app.all('*', function(request, response, next) {
+    response.header('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With,Authorization,Access-Control-Allow-Origin');
+    response.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE');
+    response.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
@@ -43,7 +53,7 @@ app.get('/', function(req, res) {
   res.status(200).send('I dream of being a web site.');
 });
 
-var port = process.env.PORT || 1337;
+var port = process.env.PORT || 49152;
 app.listen(port, function() {
     console.log('parse-server-example running on port ' + port + '.');
 });
