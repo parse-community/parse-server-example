@@ -91,7 +91,7 @@ You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
 Example request to a server running locally:
 
-```
+```curl
 curl -X POST \
   -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
@@ -107,9 +107,10 @@ curl -X POST \
 
 Example using it via JavaScript:
 
-```
+```javascript
 Parse.initialize('myAppId','unused');
 Parse.serverURL = 'https://whatever.herokuapp.com';
+
 var obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 obj.save().then(function(obj) {
@@ -122,19 +123,27 @@ obj.save().then(function(obj) {
 ```
 
 Example using it on Android:
-```
+```java
 //in your application class
 
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-        .applicationId("myAppId")
-        .clientKey("myClientKey")
-        .server("http://myServerUrl/parse/")   // '/' important after 'parse'
-        .build());
-        
-  ParseObject testObject = new ParseObject("TestObject");
-  testObject.put("foo", "bar");
-  testObject.saveInBackground();
+  .applicationId("myAppId")
+  .clientKey("myClientKey")
+  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .build());
 
+ParseObject testObject = new ParseObject("TestObject");
+testObject.put("foo", "bar");
+testObject.saveInBackground();
 ```
+Example using it on iOS (Swift):
+```swift
+//in your AppDelegate
 
+Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
+  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
+  configuration.applicationId = "<# Your APP_ID #>"
+  configuration.clientKey = "<# Your CLIENT_KEY #>"
+}))
+```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
