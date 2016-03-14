@@ -17,7 +17,7 @@ var api = new ParseServer({
   databaseURI: databaseUri || process.env.MONGODB_URL,
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID,
-  masterKey: process.env.MASTER_KEY
+  masterKey: process.env.MASTER_KEY,
 
   filesAdapter: new S3Adapter(
     process.env.AWS_ACCESS_KEY_ID,
