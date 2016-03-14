@@ -11,11 +11,11 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://heroku_d2w4vmdj:485rslr4fp3onb3s9jdlt32837@ds011379.mlab.com:11379/heroku_d2w4vmdj',
+  databaseURI: 'mongodb://heroku_d2w4vmdj:485rslr4fp3onb3s9jdlt32837@ds011379.mlab.com:11379/heroku_d2w4vmdj',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'ParseServerPureLabAppId',
-  masterKey: process.env.MASTER_KEY || 'ParseServerPureLabMasterKey', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337'  // Don't forget to change to https if needed
+  appId: process.env.APP_ID,
+  masterKey: process.env.MASTER_KEY, //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL  // Don't forget to change to https if needed
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
