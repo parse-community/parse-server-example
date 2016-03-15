@@ -33,7 +33,11 @@ app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/index.html'));
+  res.status(200).send('I dream of being a web site.');
+});
+
+app.get('/test', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/test.html'));
 });
 
 var port = process.env.PORT || 1337;
