@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "~4.2.x",
     "kerberos": "~0.0.x",
+    "nodemailer": "^2.3.0",
     "parse": "~1.7.1",
     "parse-server": "~2.1.5"
   },
