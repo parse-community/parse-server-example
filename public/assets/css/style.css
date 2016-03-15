@@ -165,6 +165,7 @@ a:visited {
   -o-border-radius: 4px 4px;
   padding: 10px 20px;
   word-wrap: break-word;
+  white-space: inherit;
   font-size: 13px;
 }
 
