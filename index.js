@@ -19,7 +19,7 @@ var api = new ParseServer({
   appId: process.env.APP_ID || '1234',
   masterKey: process.env.MASTER_KEY || '1234',
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
-
+  allowClientClassCreation: true,
   filesAdapter: new S3Adapter(
     process.env.AWS_ACCESS_KEY_ID,
     process.env.AWS_SECRET_ACCESS_KEY,
@@ -34,14 +34,23 @@ var api = new ParseServer({
 var app = express();
 
 // Handles CORS requests and allows preflight requests.
-app.use(cors());
+var corsOptions = {
+  origin: true,
+  methods: 'GET,PUT,POST,DELETE,OPTIONS',
+  maxAge: 1728000,
+  credentials: true,
+  preflightContinue: true
+};
+
+app.use(cors(corsOptions));
+
+
+// app.options('*', cors(corsOptions));
 
 
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
-
-
 
 
 
