@@ -3,6 +3,7 @@
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
+var path = require('path');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
 
@@ -23,6 +24,9 @@ var api = new ParseServer({
 
 var app = express();
 
+// Config static middleware for assets
+app.use('/static', express.static(path.join(__dirname, '/public')));
+
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
@@ -30,6 +34,10 @@ app.use(mountPath, api);
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
   res.status(200).send('I dream of being a web site.');
+});
+
+app.get('/test', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/test.html'));
 });
 
 var port = process.env.PORT || 1337;
