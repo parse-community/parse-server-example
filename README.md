@@ -87,7 +87,8 @@ A detailed tutorial is available here:
 
 # Using it
 
-You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
+Before using it, you can access a test page to verify if the basic setup is working fine [http://localhost:1337/test](http://localhost:1337/test).
+Then you can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
 Example request to a server running locally:
 
