@@ -28,3 +28,10 @@ node_modules
 
 # Emacs
 *~
+
+# Deploy Scripts
+app.json
+app.yaml
+azuredeploy.json
+Dockerfile
+scalingo.json

@@ -2,8 +2,9 @@
 // compatible API routes.
 
 var express = require('express');
+var azurePushAdapter = require('parse-server-azure-push');
+var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
 var ParseServer = require('parse-server').ParseServer;
-
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
 
 if (!databaseUri) {
@@ -15,7 +16,15 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337'  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
+  push: azurePushAdapter,
+  filesAdapter: _ => {
+    var storageOptions = {
+      accessKey: process.env.STORAGE_KEY,
+      directAccess: false
+    };
+    return new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', storageOptions);
+  }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
