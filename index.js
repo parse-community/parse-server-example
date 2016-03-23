@@ -20,6 +20,11 @@ var api = new ParseServer({
   clientKey:'VVdS1v1JvLDOAS7QAQCEd0lIajs1C9d45p7fbMC9',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  },
+  oauth: {
+    facebook: {
+      appIds: "539139566241716"
+    }
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
