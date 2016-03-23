@@ -21,10 +21,10 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
   allowClientClassCreation: true,
   filesAdapter: new S3Adapter(
-    process.env.AWS_ACCESS_KEY_ID,
-    process.env.AWS_SECRET_ACCESS_KEY,
-    process.env.BUCKET_NAME,
-    {directAccess: true}
+    process.env.AWS_ACCESS_KEY_ID || "S3_ACCESS_KEY",
+    process.env.AWS_SECRET_ACCESS_KEY || "S3_SECRET_KEY",
+    process.env.BUCKET_NAME || "S3_BUCKET",
+    {directAccess: true, region: 'eu-west-1'}
   ),
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
