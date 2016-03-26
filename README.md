@@ -1,24 +1,12 @@
 # parse-server-example
 
-Example project using the parse-server module on Express.
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express.
 
-Read the full server guide here: https://parse.com/docs/server/guide
+Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-server/wiki/Parse-Server-Guide
 
 ### For Local Development
 
-#### With `Run Project` Button
-
-Click the button bellow to quickly and safely install this project on your local machine.
-
-[![Run project](https://s3-sa-east-1.amazonaws.com/assets.azk.io/run-project.png)](http://run.azk.io/start/?repo=run-project/parse-server-example)
-
-The `Run Project` button employs `azk`, a lightweight open source orchestration tool that will automatically isolate and configure the application's environment for you.
-
-Learn more about `azk` [here](https://github.com/azukiapp/azk).
-
-#### Without It
-
-* Make sure you have at least Node 4.1. `node --version`
+* Make sure you have at least Node 4.3. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`
 * Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
@@ -27,29 +15,6 @@ Learn more about `azk` [here](https://github.com/azukiapp/azk).
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `export PARSE_MOUNT=/1` before launching the server.
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
-
-### Getting Started With DigitalOcean
-
-After you run this project locally using [`Run Project` button](#with-run-project-button), deploying to [DigitalOcean](http://digitalocean.com/) is very simple.
-
-First, be sure you have SSH keys configured in your machine. If you don't have it yet (or if you aren't sure about it), just follow steps 1 and 2 of [this tutorial](https://help.github.com/articles/generating-ssh-keys/).
-
-Next, put your [personal access token](https://cloud.digitalocean.com/settings/applications) into a `.env` file:
-
-```bash
-$ cd path/to/the/project
-$ echo "DEPLOY_API_TOKEN=<YOUR-PERSONAL-ACCESS-TOKEN>" >> .env
-```
-
-Then, just run the following:
-
-```bash
-$ azk deploy
-```
-
-The `Run Project` button employs `azk`, a lightweight open source orchestration tool that will automatically isolate and configure the application's environment for you.
-
-Find instructions for further resources (mostly customizations) to deploy to DigitalOcean using `azk` [here](http://docs.azk.io/en/deploy).
 
 ### Getting Started With Heroku + Mongolab Development
 
@@ -88,6 +53,23 @@ Find instructions for further resources (mostly customizations) to deploy to Dig
 A detailed tutorial is available here:
 [Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
 
+
+### Getting Started With Google App Engine
+
+1. Clone the repo and change directory to it 
+1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
+1. [Enable billing](https://console.cloud.google.com/project/_/settings) for your project.
+1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
+1. Setup a MongoDB server.  You have a few options:
+  1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
+  1. Use [MongoLab](https://mongolab.com/google/) to create a free MongoDB deployment on Google Cloud Platform.
+1. Modify `app.yaml` to update your environment variables.
+1. Delete `Dockerfile`
+1. Deploy it with `gcloud preview app deploy`
+
+A detailed tutorial is available here:
+[Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
+
 ### Getting Started With Scalingo
 
 #### With the Scalingo button
@@ -103,13 +85,14 @@ A detailed tutorial is available here:
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
 * Deploy it with: `git push scalingo master`
 
-### Using it
+# Using it
 
-You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
+Before using it, you can access a test page to verify if the basic setup is working fine [http://localhost:1337/test](http://localhost:1337/test).
+Then you can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
 Example request to a server running locally:
 
-```
+```curl
 curl -X POST \
   -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
@@ -123,13 +106,12 @@ curl -X POST \
   http://localhost:1337/parse/functions/hello
 ```
 
-Note: change `http://localhost:1337/` to `http://parse-server.dev.azk.io` if you are using `azk`.
-
 Example using it via JavaScript:
 
-```
+```javascript
 Parse.initialize('myAppId','unused');
 Parse.serverURL = 'https://whatever.herokuapp.com';
+
 var obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 obj.save().then(function(obj) {
@@ -141,4 +123,28 @@ obj.save().then(function(obj) {
 }, function(err) { console.log(err); });
 ```
 
+Example using it on Android:
+```java
+//in your application class
+
+Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+  .applicationId("myAppId")
+  .clientKey("myClientKey")
+  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .build());
+
+ParseObject testObject = new ParseObject("TestObject");
+testObject.put("foo", "bar");
+testObject.saveInBackground();
+```
+Example using it on iOS (Swift):
+```swift
+//in your AppDelegate
+
+Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
+  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
+  configuration.applicationId = "<# Your APP_ID #>"
+  configuration.clientKey = "<# Your CLIENT_KEY #>"
+}))
+```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
