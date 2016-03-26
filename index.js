@@ -24,7 +24,7 @@ var api = new ParseServer({
   },
   oauth: {
     facebook: {
-      appIds: "539139566241716"
+      appIds: ["539139566241716"]
     }
   }
 });
