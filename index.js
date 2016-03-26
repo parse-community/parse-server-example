@@ -11,21 +11,35 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
-var api = new ParseServer({
+var config = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
-  push: azurePushAdapter,
-  filesAdapter: _ => {
-    var storageOptions = {
-      accessKey: process.env.STORAGE_KEY,
-      directAccess: false
-    };
-    return new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', storageOptions);
-  }
-});
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337'  // Don't forget to change to https if needed
+}
+
+var pushConnectionString = process.env['CUSTOMCONNSTR_MS_NotificationHubConnectionString'];
+if (!pushConnectionString) {
+  console.log('Push connection string unspecified, disabling push');
+} else {
+  config.push = _ => azurePushAdapter({
+    ConnectionString: pushConnectionString,
+    HubName: process.env['MS_NotificationHubName']
+  });
+}
+
+var storageName = process.env.STORAGE_NAME;
+if (!storageName) {
+  console.log('Storage account unspecified, disabling storage');
+} else {
+  config.filesAdapter = new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', {
+    accessKey: process.env.STORAGE_KEY,
+    directAccess: false
+  });
+}
+
+var api = new ParseServer(config);
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
