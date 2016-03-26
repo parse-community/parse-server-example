@@ -100,8 +100,8 @@ call :SelectNodeVersion
 :: 3. Install npm packages
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
-  echo "%SystemDrive%\7zip\7za.exe" x -y node_modules.zip
-  call "%SystemDrive%\7zip\7za.exe" x -y node_modules.zip >z7ip.log
+  echo "%SystemDrive%\7zip\7za.exe" x -y -onode_modules node_modules.zip
+  call "%SystemDrive%\7zip\7za.exe" x -y -onode_modules node_modules.zip >"%DEPLOYMENT_SOURCES%\z7ip.log"
   call :ExecuteCmd !NPM_CMD! install --production
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
