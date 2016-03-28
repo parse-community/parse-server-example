@@ -2,7 +2,7 @@
 // compatible API routes.
 
 var express = require('express');
-var azurePushAdapter = require('parse-server-azure-push');
+var AzurePushAdapter = require('parse-server-azure-push');
 var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
 var ParseServer = require('parse-server').ParseServer;
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
@@ -15,28 +15,13 @@ var config = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337'  // Don't forget to change to https if needed
-}
-
-var pushConnectionString = process.env['CUSTOMCONNSTR_MS_NotificationHubConnectionString'];
-if (!pushConnectionString) {
-  console.log('Push connection string unspecified, disabling push');
-} else {
-  config.push = _ => azurePushAdapter({
-    ConnectionString: pushConnectionString,
-    HubName: process.env['MS_NotificationHubName']
-  });
-}
-
-var storageName = process.env.STORAGE_NAME;
-if (!storageName) {
-  console.log('Storage account unspecified, disabling storage');
-} else {
-  config.filesAdapter = new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', {
+  masterKey: process.env.MASTER_KEY || 'myKey', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
+  filesAdapter: new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', {
     accessKey: process.env.STORAGE_KEY,
     directAccess: false
-  });
+  }),
+  push: new AzurePushAdapter()
 }
 
 var api = new ParseServer(config);
