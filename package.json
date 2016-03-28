@@ -13,7 +13,7 @@
     "kerberos": "~0.0.x",
     "parse": "~1.6.12",
     "parse-server": "2.1.4",
-    "parse-server-azure-push": "0.0.2",
+    "parse-server-azure-push": "0.0.3",
     "parse-server-azure-storage": "0.3.0"
   },
   "scripts": {
