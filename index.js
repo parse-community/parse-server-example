@@ -16,7 +16,7 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'u5KgqEQtOM8UpAs22Xtb',
   masterKey: process.env.MASTER_KEY || 'ZdSuEdaGhtPKlM1ggQWq', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'https://goaimer.herokuapp.com/parse/',  // Don't forget to change to https if needed
   clientKey:'REjTg0g9cKxCi4peznhj',
   javascriptKey:'8uKhBJLfaSTrMRrgIXZm',
   liveQuery: {
