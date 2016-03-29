@@ -62,7 +62,7 @@ var api = new ParseServer({
   },
   publicServerURL: process.env.SERVER_URL,
   liveQuery: {
-    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+    classNames: [] // List of classes to support for query subscriptions
   }
 });
 
@@ -95,4 +95,4 @@ httpServer.listen(port, function() {
 });
 
 // This will enable the Live Query real-time server
-ParseServer.createLiveQueryServer(httpServer);
+//ParseServer.createLiveQueryServer(httpServer);
