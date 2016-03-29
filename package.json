@@ -13,7 +13,7 @@
     "kerberos": "~0.0.x",
     "nodemailer": "^2.3.0",
     "parse": "~1.8.0",
-    "parse-server": "~2.2.2"
+    "parse-server": "~2.2.4"
   },
   "scripts": {
     "start": "node index.js"
