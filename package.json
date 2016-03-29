@@ -1,6 +1,6 @@
 {
   "name": "parse-server-example",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "description": "An example Parse API server using the parse-server module",
   "main": "index.js",
   "repository": {
@@ -9,11 +9,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "~4.2.x",
+    "express": "~4.11.x",
     "kerberos": "~0.0.x",
+<<<<<<< HEAD
     "nodemailer": "^2.3.0",
     "parse": "~1.7.1",
     "parse-server": "~2.1.5"
+=======
+    "parse": "~1.8.0",
+    "parse-server": "~2.2.2"
+>>>>>>> upstream/master
   },
   "scripts": {
     "start": "node index.js"
