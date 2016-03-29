@@ -28,3 +28,7 @@ node_modules
 
 # Emacs
 *~
+
+# Local script
+startDev.sh
+
