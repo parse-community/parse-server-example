@@ -19,4 +19,6 @@ EXPOSE 1337
 
 # VOLUME /parse/cloud
 
+ADD $CERTIFICATE_URI
+
 CMD [ "npm", "start" ]

@@ -19,6 +19,19 @@ var api = new ParseServer({
   appId: process.env.APP_ID || '1234',
   masterKey: process.env.MASTER_KEY || '1234',
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
+  push: {
+      android: {
+        senderId: '', // The Sender ID of GCM
+      apiKey: '' // The Server API Key of GCM
+      },
+      ios: {
+        pfx: '', // The filename of private key and certificate in PFX or PKCS12 format from disk
+        cert: '', // If not using the .p12 format, the path to the certificate PEM to load from disk
+        key: '', // If not using the .p12 format, the path to the private key PEM to load from disk
+        bundleId: '', // The bundle identifier associate with your app
+        production: false // Specifies which environment to connect to: Production (if true) or Sandbox
+      }
+    },
   allowClientClassCreation: true,
   filesAdapter: new S3Adapter(
     process.env.AWS_ACCESS_KEY_ID || "S3_ACCESS_KEY",
