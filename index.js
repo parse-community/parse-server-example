@@ -21,9 +21,9 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
   push: {
       ios: {
-        pfx: '/' + process.env.BUCKET_NAME + '/' + process.env.CERTIFICATE_NAME, // The filename of private key and certificate in PFX or PKCS12 format from disk
-        bundleId: '', // The bundle identifier associate with your app
-        production: true // Specifies which environment to connect to: Production (if true) or Sandbox
+        pfx: '/' + process.env.BUCKET_NAME + '/' + process.env.CERTIFICATE_NAME || '', // The filename of private key and certificate in PFX or PKCS12 format from disk
+        bundleId: process.env.BUNDLE_ID || '', // The bundle identifier associate with your app
+        production: process.env.NOTIFICATION_PRODUCTION || false // Specifies which environment to connect to: Production (if true) or Sandbox
       }
     },
   allowClientClassCreation: true,
