@@ -19,6 +19,13 @@ var api = new ParseServer({
   appId: process.env.APP_ID || '1234',
   masterKey: process.env.MASTER_KEY || '1234',
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
+  push: {
+      ios: {
+        pfx: '/' + process.env.BUCKET_NAME + '/' + process.env.CERTIFICATE_NAME || '', // The filename of private key and certificate in PFX or PKCS12 format from disk
+        bundleId: process.env.BUNDLE_ID || '', // The bundle identifier associate with your app
+        production: process.env.NOTIFICATION_PRODUCTION || false // Specifies which environment to connect to: Production (if true) or Sandbox
+      }
+    },
   allowClientClassCreation: true,
   filesAdapter: new S3Adapter(
     process.env.AWS_ACCESS_KEY_ID || "S3_ACCESS_KEY",
