@@ -6,6 +6,7 @@ var AzurePushAdapter = require('parse-server-azure-push');
 var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
 var ParseServer = require('parse-server').ParseServer;
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
+var mountPath = process.env.PARSE_MOUNT || '/parse';
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
@@ -16,7 +17,7 @@ var config = {
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337',  // Don't forget to change to https if needed
+  serverURL: (process.env.SERVER_URL || 'http://localhost:1337') + mountPath,  // Don't forget to change to https if needed
   filesAdapter: _ => {
       return new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', {
       accessKey: process.env.STORAGE_KEY,
@@ -34,7 +35,6 @@ var api = new ParseServer(config);
 var app = express();
 
 // Serve the Parse API on the /parse URL prefix
-var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
