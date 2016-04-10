@@ -117,7 +117,55 @@ Parse.Cloud.define("onLike", function(request, response){
 							},
 							error: function() {}
 						});*/
-						
+
+							var user1 = new Parse.User();
+							var user2 = new Parse.User();
+							var isError = true;
+
+							var query1 = new Parse.Query(Parse.User);
+							query1.get(request.params.userId, {
+  								success: function(results) {
+    								user1 = results;
+    								isError = false;
+  								},
+						  			error: function() {
+						  				isError = true;
+  								}
+							});
+
+							if (!isError){
+								var query2 = new Parse.Query(Parse.User);
+								query2.get(request.params.targetUserId, {
+  									success: function(results) {
+    									user2 = results;
+    									isError = false;
+  									},
+						  			error: function() {
+						  				isError = true;   
+  									}
+								});
+							}
+
+							if (!isError){
+								var queryPush = new Parse.Query(Parse.Installation);
+								queryPush.containedIn("user", [user1, user2]);
+
+								Parse.Push.send({
+  										where: queryPush, 
+  										data: {
+    										alert: "Willie Hayes injured by own pop fly."
+  										}
+									}, {
+					  				success: function() {
+    									title: "New Aimer match",
+										alert: "Congratulations. You have a new match."
+  									},
+  									error: function() {
+    									response.success("Match");
+  									}
+								});
+							}
+
 					} else {
 						if(request.params.like_type == "like")
 						{
