@@ -1,48 +1,38 @@
-// Example express application adding the parse-server module to expose Parse
-// compatible API routes.
+var azureParseServer = require('parse-server-azure-app');
+var http = require('http');
 
-var express = require('express');
-var AzurePushAdapter = require('parse-server-azure-push');
-var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
-var ParseServer = require('parse-server').ParseServer;
-var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI;
-var mountPath = process.env.PARSE_MOUNT || '/parse';
-
-if (!databaseUri) {
-  console.log('DATABASE_URI not specified, falling back to localhost.');
-}
-
+// Add any custom parse server settings here
 var config = {
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: (process.env.SERVER_URL || 'http://localhost:1337') + mountPath,  // Don't forget to change to https if needed
-  filesAdapter: _ => {
-      return new AzureStorageAdapter(process.env.STORAGE_NAME, 'parse', {
-      accessKey: process.env.STORAGE_KEY,
-      directAccess: true
-    });
-  },
-  push: AzurePushAdapter
+  cloud: __dirname + '/cloud/main.js',
+  logsFolder: __dirname + '/logs/',
+  /*
+  False by default to protect against malicious client attacks.
+  Enable for development and testing if desired
+   */
+  // allowClientClassCreation: false,
+  // enableAnonymousUsers:     false,
+
+  /*
+  Useful settings for developing locally.  These are populated via
+  app settings (environment variables) when hosted in the Azure Web
+  App deployed by the Parse Server on Managed Azure Services template.
+   */
+  // appId:              'my app id',
+  // masterKey::         'my master key',
+  // databaseURI:        'database connection string',
+  // storage: {  
+  //   name:             'storage account name',
+  //   container:        'container to use for files',
+  //   accessKey:        'storage account access key',
+  //   // allow public access to blob storage files
+  //   directAccess:     true 
+  // },
+  // push: {
+  //   ConnectionString: 'notification hub connection string',
+  //   HubName:          'notification hub name'
+  // }
 }
 
-var api = new ParseServer(config);
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
-
-var app = express();
-
-// Serve the Parse API on the /parse URL prefix
-app.use(mountPath, api);
-
-// Parse Server plays nicely with the rest of your web routes
-app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a web site.');
-});
-
-var port = process.env.PORT || 1337;
-app.listen(port, function() {
-    console.log('parse-server-example running on port ' + port + '.');
-});
+var app = azureParseServer(config);
+var httpServer = http.createServer(app);
+httpServer.listen(process.env.PORT || 1337);

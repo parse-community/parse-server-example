@@ -1,20 +1,15 @@
 {
-  "name": "parse-server-example",
-  "version": "1.2.0",
-  "description": "An example Parse API server using the parse-server module",
+  "name": "parse-server-azure-managed",
+  "version": "1.0.0",
+  "description": "Parse Server on Azure Managed Services",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
+    "url": "https://github.com/mamaso/parse-server-example"
   },
   "license": "MIT",
   "dependencies": {
-    "express": "~4.2.x",
-    "kerberos": "~0.0.x",
-    "parse": "~1.6.12",
-    "parse-server": "2.1.4",
-    "parse-server-azure-push": "0.0.3",
-    "parse-server-azure-storage": "0.3.0"
+    "parse-server-azure-app": "0.0.0"
   },
   "scripts": {
     "start": "node index.js"
