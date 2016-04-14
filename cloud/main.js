@@ -117,7 +117,7 @@ Parse.Cloud.define("onLike", function(request, response){
 							},
 							error: function() {}
 						});*/
-
+/* Renish code
 							var user1 = new Parse.User();
 							var user2 = new Parse.User();
 							var isError = true;
@@ -165,7 +165,7 @@ Parse.Cloud.define("onLike", function(request, response){
   									}
 								});
 							}
-
+*/
 					} else {
 						if(request.params.like_type == "like")
 						{
