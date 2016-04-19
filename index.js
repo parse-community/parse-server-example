@@ -22,7 +22,7 @@ var api = new ParseServer({
   push: {
     android: {
       senderId: process.env.GCM_SENDER_ID || 'not_specified', // The Sender ID of GCM
-      apiKey: process.enc.GCM_API_KEY'not_specified' // The Server API Key of GCM
+      apiKey: process.enc.GCM_API_KEY || 'not_specified' // The Server API Key of GCM
     },
     ios: {
       pfx: __dirname + '/certificate/' + process.env.CERTIFICATE_NAME || 'not_specified', // The filename of private key and certificate in PFX or PKCS12 format from disk
