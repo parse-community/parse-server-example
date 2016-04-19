@@ -1,3 +1,5 @@
+var PubNub = require('cloud/pubnub');
+
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 Parse.Cloud.define("hello", function(request, response) {
@@ -101,6 +103,34 @@ Parse.Cloud.define("onLike", function(request, response){
 				|| currentUser.get("sObject").get("user_super_like_me").indexOf(request.params.targetUserId) != -1) {
 						currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
 						targetUser.get("sObject").addUnique("user_matches", request.params.userId);
+						
+						var pubnub = PubNub({
+    						publish_key: 'pub-c-cfa5a241-8cb8-4263-a498-394e2d385909',
+    						subscribe_key: 'sub-c-e3913a52-0462-11e6-8c3e-0619f8945a4f'
+  						});
+
+  						pubnub.publish({
+    						channel: request.params.userId,
+    						message: "Congratulations. You have a new match.",
+    						callback: function (result) {
+      							console.log("Match");
+    						},
+    						error: function (error) {
+      							console.log("Error Match");
+    						}
+						 });
+
+  						pubnub.publish({
+    						channel: request.params.targetUserId,
+    						message: "Congratulations. You have a new match.",
+    						callback: function (result) {
+      							console.log("Match");
+    						},
+    						error: function (error) {
+      							console.log("Error Match");
+    						}
+						 });
+						
 						response.success("Match");
 
 						/*var pushQuery = new Parse.Query(Parse.Installation);
