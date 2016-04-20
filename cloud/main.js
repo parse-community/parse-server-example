@@ -1,4 +1,6 @@
 /*var PubNub = require('cloud/pubnub.js');*/
+
+var clientz = require('cloud/test.js');
  
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
