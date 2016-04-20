@@ -1,4 +1,4 @@
-var PubNub = require(''./pubnub'');
+var PubNub = require('./pubnub');
 
 /*var clientz = require('cloud/test.js');*/
  
