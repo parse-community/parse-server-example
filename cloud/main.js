@@ -1,4 +1,8 @@
-/*var PubNub = require('cloud/pubnub.js');*/
+var PubNub = require('pubnub')({
+ssl:true,
+publish_key : 'pub-c-cfa5a241-8cb8-4263-a498-394e2d385909',
+subscribe_key : 'sub-c-e3913a52-0462-11e6-8c3e-0619f8945a4f'
+});
 
 /*var clientz = require('cloud/test.js');*/
  
