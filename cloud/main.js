@@ -112,28 +112,32 @@ Parse.Cloud.define("onLike", function(request, response){
   						});
 
   						
-  						pubnub.publish({
-    						channel: request.params.userId,
-    						message: "Congratulations. You have a new match.",
-    						callback: function (result) {
-      							console.log("Match");
-    						},
-    						error: function (error) {
-      							console.log("Error Match");
-    						}
-						 });
+  						if (currentUser.get("isNotifyMatches")){
+  							pubnub.publish({
+    							channel: request.params.userId,
+    							message: "Congratulations. You have a new match.",
+    							callback: function (result) {
+      								console.log("Match");
+    							},
+	    						error: function (error) {
+      								console.log("Error Match");
+    							}
+						 	});
+  						}
+  						
+  						if (targetUser.get("isNotifyMatches")){
+	  						pubnub.publish({
+    							channel: request.params.targetUserId,
+    							message: "Congratulations. You have a new match.",
+    							callback: function (result) {
+      								console.log("Match");
+    							},
+    							error: function (error) {
+      								console.log("Error Match");
+    							}
+						 	});						
+  						}
 
-  						pubnub.publish({
-    						channel: request.params.targetUserId,
-    						message: "Congratulations. You have a new match.",
-    						callback: function (result) {
-      							console.log("Match");
-    						},
-    						error: function (error) {
-      							console.log("Error Match");
-    						}
-						 });
-						
 						response.success("Match");
 
 						/*var pushQuery = new Parse.Query(Parse.Installation);
