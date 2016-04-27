@@ -29,7 +29,7 @@ var api = new ParseServer({
       // Your API key from mailgun.com
       apiKey: 'key-70070639455f0b8bbbdc0a6386d449ee',
     }
-  }
+  },
   filesAdapter: new S3Adapter(
     process.env.S3_ACCESS_KEY,
     process.env.S3_SECRET_KEY,
