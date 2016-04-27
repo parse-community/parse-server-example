@@ -129,7 +129,6 @@ Example using it on Android:
 
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
   .applicationId("myAppId")
-  .clientKey("myClientKey")
   .server("http://myServerUrl/parse/")   // '/' important after 'parse'
   .build());
 
@@ -144,7 +143,6 @@ Example using it on iOS (Swift):
 Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
   configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
   configuration.applicationId = "<# Your APP_ID #>"
-  configuration.clientKey = "<# Your CLIENT_KEY #>"
 }))
 ```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
