@@ -19,6 +19,17 @@ var api = new ParseServer({
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   restAPIKey: process.env.REST_API_KEY || '',
+  emailAdapter: {
+  module: 'parse-server-simple-mailgun-adapter',
+  options: {
+      // The address that your emails come from
+      fromAddress: 'parkaryapp@gmail.com',
+      // Your domain from mailgun.com
+      domain: 'mg.parkary.com',
+      // Your API key from mailgun.com
+      apiKey: 'key-70070639455f0b8bbbdc0a6386d449ee',
+    }
+  }
   filesAdapter: new S3Adapter(
     process.env.S3_ACCESS_KEY,
     process.env.S3_SECRET_KEY,
