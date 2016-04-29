@@ -18,10 +18,6 @@ Parse.Cloud.define("hello", function(request, response) {
 Parse.Cloud.define("getPossibleMatches", function(request, response){
 
 	Parse.Cloud.useMasterKey();
-
-  							Pushbots.pushOne(request.params.userId, function(response) {
-  								console.log(response);
-  							});
   						
 	var queryLike = new Parse.Query("_User");
 	queryLike.include("sObject");
@@ -106,19 +102,38 @@ Parse.Cloud.define("onLike", function(request, response){
 				currentUser = currentUsers[1];
 				targetUser  = currentUsers[0];
 			}
-						currentUser.get("sObject").addUnique(user_like, request.params.targetUserId);
+			//ss
+						var sendTo = [];
+  						if (currentUser.get("isNotifyMatches")){
+  							sendTo.push(request.params.userId);
+  						}
+  						
+  						if (targetUser.get("isNotifyMatches")){
+  							sendTo.push(request.params.targetUserId);					
+  						}
+
+  						Pushbots.sendByTags(sendTo);
+						Pushbots.push(function(response){
+						    console.log(response);
+						});
+
+						response.success("Match");
+
+
+			//ss
+						/*currentUser.get("sObject").addUnique(user_like, request.params.targetUserId);
 						currentUser.get("sObject").addUnique("user_seen", request.params.targetUserId);
 						//currentUser.get("sObject").save();
 						
 						targetUser.get("sObject").addUnique(user_like_me, request.params.userId);
-						//targetUser.get("sObject").save();
+						//targetUser.get("sObject").save();*/
 
 
 			if (request.params.like_type != "dislike") {
 			if (currentUser.get("sObject").get("user_like_me").indexOf(request.params.targetUserId) != -1
 				|| currentUser.get("sObject").get("user_super_like_me").indexOf(request.params.targetUserId) != -1) {
-						currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
-						targetUser.get("sObject").addUnique("user_matches", request.params.userId);
+						/*currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
+						targetUser.get("sObject").addUnique("user_matches", request.params.userId);*/
 						
 						var sendTo = [];
   						if (currentUser.get("isNotifyMatches")){
