@@ -1,11 +1,11 @@
-var pushbots = require('./pushbots');
+/*var pushbots = require('./pushbots');
 
 var Pushbots = new pushbots.api({
     id:'5722bbd74a9efade888b4567',
     secret:'34a9fa240e5efa660616f5b2104abcc9'
 });
 
-Pushbots.setMessage("Congratulations! You have a new Match");
+Pushbots.setMessage("Congratulations! You have a new Match");*/
 
 /*var clientz = require('cloud/test.js');*/
  
@@ -113,7 +113,7 @@ Parse.Cloud.define("onLike", function(request, response){
 						currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
 						targetUser.get("sObject").addUnique("user_matches", request.params.userId);
 						
-  						if (currentUser.get("isNotifyMatches")){
+  						/*if (currentUser.get("isNotifyMatches")){
   							Pushbots.pushOne(request.params.userId, function(response) {
   								console.log(response);
   							});
@@ -123,7 +123,7 @@ Parse.Cloud.define("onLike", function(request, response){
   							Pushbots.pushOne(request.params.targetUserId, function(response) {
   								console.log(response);
   							});						
-  						}
+  						}*/
 
 						response.success("Match");
 
