@@ -7,10 +7,7 @@ var Pushbots = new pushbots.api({
 
 Pushbots.setMessage("Congratulations! You have a new Match");
 Pushbots.customNotificationTitle("Aimer - New Match");
-Pushbots.sendByTags(["tB6PZLYhXe"]);
-Pushbots.push(function(response){
-    console.log(response);
-});
+
 /*var clientz = require('cloud/test.js');*/
  
 // Use Parse.Cloud.define to define as many cloud functions as you want.
@@ -122,17 +119,19 @@ Parse.Cloud.define("onLike", function(request, response){
 						currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
 						targetUser.get("sObject").addUnique("user_matches", request.params.userId);
 						
+						var sendTo = [];
   						if (currentUser.get("isNotifyMatches")){
-  							Pushbots.pushOne(request.params.userId, function(response) {
-  								console.log(response);
-  							});
+  							sendTo.push(request.params.userId);
   						}
   						
   						if (targetUser.get("isNotifyMatches")){
-  							Pushbots.pushOne(request.params.targetUserId, function(response) {
-  								console.log(response);
-  							});						
+  							sendTo.push(request.params.targetUserId);					
   						}
+
+  						Pushbots.sendByTags(sendTo);
+						Pushbots.push(function(response){
+						    console.log(response);
+						});
 
 						response.success("Match");
 
