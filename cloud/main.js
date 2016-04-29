@@ -1,4 +1,4 @@
-var pushbots = var pushbots = require('./pushbots');
+var pushbots = require('./pushbots');
 
 /*var Pushbots = new pushbots.api({
     id:'5722bbd74a9efade888b4567',
