@@ -16,6 +16,9 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 Parse.Cloud.define("getPossibleMatches", function(request, response){
+	Pushbots.pushOne(request.params.userId, function(response){
+    console.log(response);
+});
 	Parse.Cloud.useMasterKey();
 
   							Pushbots.pushOne(request.params.userId, function(response) {
