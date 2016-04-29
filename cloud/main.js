@@ -1,11 +1,11 @@
-var api = require('./pushbots/api.js');
+var pushbots = require('./pushbots');
 
-var Pushbots = new api({
+/*var Pushbots = new pushbots.api({
     id:'5722bbd74a9efade888b4567',
     secret:'34a9fa240e5efa660616f5b2104abcc9'
 });
 
-Pushbots.setMessage("Congratulations! You have a new Match");
+Pushbots.setMessage("Congratulations! You have a new Match");*/
 
 /*var clientz = require('cloud/test.js');*/
  
