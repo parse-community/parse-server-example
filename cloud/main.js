@@ -6,6 +6,10 @@ var Pushbots = new pushbots.api({
 });
 
 Pushbots.setMessage("Congratulations! You have a new Match");
+Pushbots.customNotificationTitle("CUSTOM TITLE");
+Pushbots.push(function(response){
+    console.log(response);
+});
 
 /*var clientz = require('cloud/test.js');*/
  
