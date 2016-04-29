@@ -7,6 +7,9 @@ var Pushbots = new pushbots.api({
 
 Pushbots.setMessage("Congratulations! You have a new Match");
 Pushbots.customNotificationTitle("Aimer - New Match");
+Pushbots.pushOne("73pYWekJ5o", function(response){
+    console.log(response);
+});
 
 /*var clientz = require('cloud/test.js');*/
  
@@ -16,9 +19,7 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 Parse.Cloud.define("getPossibleMatches", function(request, response){
-	Pushbots.pushOne(request.params.userId, function(response){
-    console.log(response);
-});
+
 	Parse.Cloud.useMasterKey();
 
   							Pushbots.pushOne(request.params.userId, function(response) {
