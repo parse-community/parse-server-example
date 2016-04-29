@@ -1,11 +1,4 @@
-/*var pushbots = require('./pushbots');
-
-var Pushbots = new pushbots.api({
-    id:'5722bbd74a9efade888b4567',
-    secret:'34a9fa240e5efa660616f5b2104abcc9'
-});
-
-Pushbots.setMessage("Congratulations! You have a new Match");*/
+var PubNub = require('./pubnub');
 
 /*var clientz = require('cloud/test.js');*/
  
@@ -113,17 +106,37 @@ Parse.Cloud.define("onLike", function(request, response){
 						currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
 						targetUser.get("sObject").addUnique("user_matches", request.params.userId);
 						
-  						/*if (currentUser.get("isNotifyMatches")){
-  							Pushbots.pushOne(request.params.userId, function(response) {
-  								console.log(response);
-  							});
+						var pubnub = PubNub({
+    						publish_key: 'pub-c-cfa5a241-8cb8-4263-a498-394e2d385909',
+    						subscribe_key: 'sub-c-e3913a52-0462-11e6-8c3e-0619f8945a4f'
+  						});
+
+  						
+  						if (currentUser.get("isNotifyMatches")){
+  							pubnub.publish({
+    							channel: request.params.userId,
+    							message: "Congratulations. You have a new match.",
+    							callback: function (result) {
+      								console.log("Match");
+    							},
+	    						error: function (error) {
+      								console.log("Error Match");
+    							}
+						 	});
   						}
   						
   						if (targetUser.get("isNotifyMatches")){
-  							Pushbots.pushOne(request.params.targetUserId, function(response) {
-  								console.log(response);
-  							});						
-  						}*/
+	  						pubnub.publish({
+    							channel: request.params.targetUserId,
+    							message: "Congratulations. You have a new match.",
+    							callback: function (result) {
+      								console.log("Match");
+    							},
+    							error: function (error) {
+      								console.log("Error Match");
+    							}
+						 	});						
+  						}
 
 						response.success("Match");
 
