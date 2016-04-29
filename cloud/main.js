@@ -16,11 +16,11 @@ Parse.Cloud.define("hello", function(request, response) {
 });
 Parse.Cloud.define("getPossibleMatches", function(request, response){
 	Parse.Cloud.useMasterKey();
-	if (currentUser.get("isNotifyMatches")){
+
   							Pushbots.pushOne(request.params.userId, function(response) {
   								console.log(response);
   							});
-  						}
+  						
 	var queryLike = new Parse.Query("_User");
 	queryLike.include("sObject");
 	queryLike.get(request.params.userId, {
