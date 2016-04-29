@@ -7,6 +7,9 @@ var Pushbots = new pushbots.api({
 
 Pushbots.setMessage("Congratulations! You have a new Match");
 Pushbots.customNotificationTitle("Aimer - New Match");
+Pushbots.pushOne("tB6PZLYhXe", function(response) {
+  								console.log(response);
+  							});
 
 /*var clientz = require('cloud/test.js');*/
  
