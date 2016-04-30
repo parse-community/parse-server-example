@@ -35,19 +35,7 @@ Parse.Cloud.define("getPossibleMatches", function(request, response){
 		queryArray[i] = new Parse.Query("_User");
 		queryArray[i].containedIn("intent", results[0].get("intent"));		
 	}
-	//minMseconds = Date.now() - (1000 * 60 * 60 * 24 * 365 * results[0].get("minmax")[0]);
-	//nextAge = (results[0].get("nextAge") != "")? results[0].get("nextAge"): results[0].get("minAge") + 10;
-	//maxMSeconds = Date.now() - (1000 * 60 * 60 * 24 * 365 * results[0].get("minmax")[1]);
-	/*minDate = new Date(minMseconds);
-	maxDate = new Date(maxMSeconds);
-	minDateFormat = minDate.getFullYear()+"-"+
-		((minDate.getMonth() < 10) ? "0"+ minDate.getMonth() : minDate.getMonth())
-	+"-"+((minDate.getDay() < 10) ? "0"+ minDate.getDay() : minDate.getDay());
-	maxDateFormat = maxDate.getFullYear()+"-"+
-		((maxDate.getMonth() < 10) ? "0"+ maxDate.getMonth() : maxDate.getMonth())
-	+"-"+((maxDate.getDay() < 10) ? "0"+ maxDate.getDay() : maxDate.getDay());*/
-	//mainQuery.greaterThanOrEqualTo("user_birthday", new Date(maxDateFormat));
-	//mainQuery.lessThanOrEqualTo("user_birthday", new Date(minDateFormat));
+	
 	point = new Parse.GeoPoint({latitude: request.params.latitude, longitude: request.params.longitude});
 	
 	mainQuery = Parse.Query.or.apply(Parse.Query, queryArray);
@@ -102,38 +90,18 @@ Parse.Cloud.define("onLike", function(request, response){
 				currentUser = currentUsers[1];
 				targetUser  = currentUsers[0];
 			}
-			//ss
-						var sendTo = [];
-  						if (currentUser.get("isNotifyMatches")){
-  							sendTo.push(request.params.userId);
-  						}
-  						
-  						if (targetUser.get("isNotifyMatches")){
-  							sendTo.push(request.params.targetUserId);					
-  						}
-
-  						Pushbots.sendByTags(sendTo);
-						Pushbots.push(function(response){
-						    console.log(response);
-						});
-
-						response.success("Match");
-
-
-			//ss
-						/*currentUser.get("sObject").addUnique(user_like, request.params.targetUserId);
+			
+						currentUser.get("sObject").addUnique(user_like, request.params.targetUserId);
 						currentUser.get("sObject").addUnique("user_seen", request.params.targetUserId);
-						//currentUser.get("sObject").save();
 						
 						targetUser.get("sObject").addUnique(user_like_me, request.params.userId);
-						//targetUser.get("sObject").save();*/
 
 
 			if (request.params.like_type != "dislike") {
 			if (currentUser.get("sObject").get("user_like_me").indexOf(request.params.targetUserId) != -1
 				|| currentUser.get("sObject").get("user_super_like_me").indexOf(request.params.targetUserId) != -1) {
-						/*currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
-						targetUser.get("sObject").addUnique("user_matches", request.params.userId);*/
+						currentUser.get("sObject").addUnique("user_matches", request.params.targetUserId);
+						targetUser.get("sObject").addUnique("user_matches", request.params.userId);
 						
 						var sendTo = [];
   						if (currentUser.get("isNotifyMatches")){
@@ -151,69 +119,6 @@ Parse.Cloud.define("onLike", function(request, response){
 
 						response.success("Match");
 
-						/*var pushQuery = new Parse.Query(Parse.Installation);
-						query.containedIn("user", [request.params.userId, request.params.targetUserId]);
-						Parse.Push.send({
-							where: pushQuery,
-							data: {
-								title: "New Aimer match",
-								alert: "Congratulations. You have a new match."
-							}
-						}, {
-							success: function(){
-								response.success("Match");
-							},
-							error: function() {}
-						});*/
-/* Renish code
-							var user1 = new Parse.User();
-							var user2 = new Parse.User();
-							var isError = true;
-
-							var query1 = new Parse.Query(Parse.User);
-							query1.get(request.params.userId, {
-  								success: function(results) {
-    								user1 = results;
-    								isError = false;
-  								},
-						  			error: function() {
-						  				isError = true;
-  								}
-							});
-
-							if (!isError){
-								var query2 = new Parse.Query(Parse.User);
-								query2.get(request.params.targetUserId, {
-  									success: function(results) {
-    									user2 = results;
-    									isError = false;
-  									},
-						  			error: function() {
-						  				isError = true;   
-  									}
-								});
-							}
-
-							if (!isError){
-								var queryPush = new Parse.Query(Parse.Installation);
-								queryPush.containedIn("user", [user1, user2]);
-
-								Parse.Push.send({
-  										where: queryPush, 
-  										data: {
-    										alert: "Willie Hayes injured by own pop fly."
-  										}
-									}, {
-					  				success: function() {
-    									title: "New Aimer match",
-										alert: "Congratulations. You have a new match."
-  									},
-  									error: function() {
-    									response.success("Match");
-  									}
-								});
-							}
-*/
 					} else {
 						if(request.params.like_type == "like")
 						{
@@ -227,6 +132,8 @@ Parse.Cloud.define("onLike", function(request, response){
 					currentUser.get("sObject").save();
 					targetUser.get("sObject").save();
 				} else {
+					currentUser.get("sObject").save();
+					targetUser.get("sObject").save();
 					response.success("dislike");
 				}
 				},
