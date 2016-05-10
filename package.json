@@ -9,8 +9,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "parse-server-azure-app": "0.0.0",
-    "parse-server": "^2.2.7"
+    "express": "^4.13.4",
+    "parse-server": "^2.2.8",
+    "parse-dashboard": "^1.0.11",
+    "parse-server-azure-config": "^0.0.1"
   },
   "scripts": {
     "start": "node index.js"

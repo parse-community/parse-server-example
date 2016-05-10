@@ -1,38 +1,23 @@
-var azureParseServer = require('parse-server-azure-app');
+var express = require('express');
+var ParseServer = require('parse-server').ParseServer;
+var ParseDashboard = require('parse-dashboard');
+var parseServerConfig = require('parse-server-azure-config');
 var http = require('http');
+var url = require('url');
 
-// Add any custom parse server settings here
-var config = {
-  cloud: __dirname + '/cloud/main.js',
-  logsFolder: __dirname + '/logs/',
-  /*
-  False by default to protect against malicious client attacks.
-  Enable for development and testing if desired
-   */
-  // allowClientClassCreation: false,
-  // enableAnonymousUsers:     false,
+var config = parseServerConfig(__dirname, {
+  defaults: 'config.js',
+  secrets: 'secrets.js'
+});
 
-  /*
-  Useful settings for developing locally.  These are populated via
-  app settings (environment variables) when hosted in the Azure Web
-  App deployed by the Parse Server on Managed Azure Services template.
-   */
-  // appId:              'my app id',
-  // masterKey::         'my master key',
-  // databaseURI:        'database connection string',
-  // storage: {  
-  //   name:             'storage account name',
-  //   container:        'container to use for files',
-  //   accessKey:        'storage account access key',
-  //   // allow public access to blob storage files
-  //   directAccess:     true 
-  // },
-  // push: {
-  //   ConnectionString: 'notification hub connection string',
-  //   HubName:          'notification hub name'
-  // }
-}
+// Modify config as necessary before initializing parse server & dashboard
 
-var app = azureParseServer(config);
+var app = express();
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/parse', new ParseServer(config.server));
+app.use('/parse-dashboard', ParseDashboard(config.dashboard));
+
 var httpServer = http.createServer(app);
-httpServer.listen(process.env.PORT || 1337);
+httpServer.listen(process.env.PORT || url.parse(config.server.serverURL).port, function () {
+  console.log(`Parse Server running at ${config.server.serverURL}`);
+});

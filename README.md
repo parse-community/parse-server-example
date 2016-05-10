@@ -3,7 +3,7 @@
 This is the app that is deployed by the 'Parse Server on managed Azure services' package in the Azure marketplace.
 
 In order to speed deployment (and deal with kerberos native module), it uses prepackaged node_modules.  Steps are as follows:
-  1. install node@4.3.0, npm@3.7.3
+  1. install node@4.3.0, npm@^3.8.3
   2. run package.ps1
     * installs production modules
     * cleans the modules of unnecessary files / folders
