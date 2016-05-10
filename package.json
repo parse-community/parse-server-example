@@ -12,6 +12,7 @@
     "cors": "*",
     "express": "~4.2.x",
     "kerberos": "~0.0.x",
+    "kue": "^0.10.5",
     "parse": "^1.8.1",
     "parse-server": "^2.2.1"
   },
