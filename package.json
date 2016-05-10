@@ -15,7 +15,8 @@
     "parse-server-azure-config": "^0.0.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "postinstall": "git update-index --skip-worktree secrets.js"
   },
   "engines": {
     "node": ">=4.3"
