@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "postinstall": "git update-index --skip-worktree secrets.js & exit 0"
+    "postinstall": "git update-index --skip-worktree local.js & exit 0"
   },
   "engines": {
     "node": "4.3"

@@ -15,7 +15,7 @@ var config = parseServerConfig(__dirname, {
 var app = express();
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/parse', new ParseServer(config.server));
-app.use('/parse-dashboard', ParseDashboard(config.dashboard));
+app.use('/parse-dashboard', ParseDashboard(config.dashboard, true));
 
 var httpServer = http.createServer(app);
 httpServer.listen(process.env.PORT || url.parse(config.server.serverURL).port, function () {
