@@ -5,10 +5,7 @@ var parseServerConfig = require('parse-server-azure-config');
 var http = require('http');
 var url = require('url');
 
-var config = parseServerConfig(__dirname, {
-  defaults: 'config.js',
-  secrets: 'secrets.js'
-});
+var config = parseServerConfig(__dirname);
 
 // Modify config as necessary before initializing parse server & dashboard
 
