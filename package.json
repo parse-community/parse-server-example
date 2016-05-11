@@ -12,7 +12,7 @@
     "express": "^4.13.4",
     "parse-server": "^2.2.8",
     "parse-dashboard": "^1.0.11",
-    "parse-server-azure-config": "^0.0.1"
+    "parse-server-azure-config": "^0.0.3"
   },
   "scripts": {
     "start": "node index.js",
