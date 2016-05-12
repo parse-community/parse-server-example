@@ -16,7 +16,7 @@ You can easily interact with the deployed parse server code via git.  Clone the 
 
 If you want to setup specific configuration for your app, add it to `config.js` or `local.js`.  `local.js` changes will be ignored from git, so it's a good placed to add secrets while developing locally.
 
-### Upgrading Dependencies
+### Updating Dependencies
 
 If you want to upgrade to a newer version of parse-server, parse-dashboard, or other modules, you can run `npm install <package>@<version>`.  We recommend testing these upgrades on a development instance or locally before modifying your production site.  If you want to move to the next major version of parse-server or parse-dashboard you'll need to modify your site package.json, as `^major.minor.patch` versioning only allows installing a package of the same major version.
 
