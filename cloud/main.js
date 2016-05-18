@@ -229,7 +229,7 @@ Parse.Cloud.define("GetUserData", function (request, response) {
 	};
 
 	var query = new Parse.Query("UserData");
-	query.equalTo("Player", Parse.User.current());
+	query.equalTo("Player", request.user);
 	query.limit(1);
 
 	query.find({
