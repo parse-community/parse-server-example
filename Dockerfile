@@ -9,7 +9,6 @@ RUN npm install
 EXPOSE 1337
 
 ADD $CERTIFICATE_URI '/certificate/'
-ADD $CLOUD_CODE_FILE '/cloud/main.js'
 
 # Uncomment if you want to access cloud code outside of your container
 # A main.js file must be present, if not Parse will not start
