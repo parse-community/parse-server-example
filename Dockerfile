@@ -6,12 +6,6 @@ ADD . /parse
 WORKDIR /parse
 RUN npm install
 
-# Optional (default : 'parse/cloud/main.js')
-# ENV CLOUD_CODE_MAIN cloudCodePath
-
-# Optional (default : '/parse')
-# ENV PARSE_MOUNT mountPath
-
 EXPOSE 1337
 
 ADD $CERTIFICATE_URI '/certificate/'
