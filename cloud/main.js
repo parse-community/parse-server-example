@@ -1,4 +1,4 @@
-// -- CONTENTS --
+// CONTENTS --
 //
 //  --- Triggers:
 // beforeSave (user)
@@ -65,10 +65,10 @@
 var LegueNewTimeToStartSeconds = 10 * 60;
 
 var LeagueDayLengthSeconds = 10 * 60;
-var LeagueTimeForServerPlaySeconds = 5 * 60;
+var LeagueTimeForServerPlaySeconds = 9 * 60;
 
 var LeagueTimePreseasonSeconds = 10 * 60;
-var LeagueStartBeforeFirstDaySeconds = 4 * 60;
+var LeagueStartBeforeFirstDaySeconds = 6 * 60;
 
 var LeaguePromotePlayersNum = 0;
 
@@ -321,7 +321,7 @@ Parse.Cloud.define("GetCustomUserData", function (request, response) {
 Parse.Cloud.define("SetUserData", function (request, response) {
 
 	var query = new Parse.Query("UserData");
-	query.equalTo("Player", Parse.User.current());
+	query.equalTo("Player", request.user);
 	query.limit(1);
 	query.find({
 		useMasterKey : true,
@@ -358,7 +358,7 @@ Parse.Cloud.define("SetUserData", function (request, response) {
 Parse.Cloud.define("AugmentSkills", function (request, response) {
 
 	var query = new Parse.Query("UserData");
-	query.equalTo("Player", Parse.User.current());
+	query.equalTo("Player", request.user);
 	query.limit(1);
 
 	var promise = query.find({
@@ -451,7 +451,7 @@ Parse.Cloud.define("AugmentSkills", function (request, response) {
 Parse.Cloud.define("SetUserDataFiles", function (request, response) {
 
 	var query = new Parse.Query("UserData");
-	query.equalTo("Player", Parse.User.current());
+	query.equalTo("Player", request.user);
 	query.limit(1);
 	query.find({
 		useMasterKey : true,
@@ -478,10 +478,10 @@ Parse.Cloud.define("SetUserDataFiles", function (request, response) {
 	});
 });
 
-function GetMyLeague() {
+function GetMyLeague(user) {
 
 	var query = new Parse.Query("UserData");
-	query.equalTo("Player", Parse.User.current()).include("League");
+	query.equalTo("Player", user).include("League");
 
 	return query.first({
 		useMasterKey : true
@@ -495,7 +495,7 @@ function GetMyLeague() {
 
 Parse.Cloud.define("GetLeagueInfo", function (request, response) {
 
-	GetMyLeague().then(function (League) {
+	GetMyLeague(request.user).then(function (League) {
 
 		if (League == undefined)
 			response.success("{\"code\":400001, \"msg\":\"User not in league\"}");
@@ -664,7 +664,7 @@ Parse.Cloud.define("GetServerPlayFixtures", function (request, response) {
 	queryFixtures.equalTo("SentToPlayAt", undefined);
 	queryFixtures.select("objectId", "GameDate", "Player0", "Player1", "GameDay", "Status", "Score0", "Score1", "MatchDurationSeconds", "GameFileID", "PlayedType", "SentToPlayAt");
 	queryFixtures.include("GameFileID");
-	queryFixtures.limit(1);
+	queryFixtures.limit(10);
 
 	var queryUsers0 = new Parse.Query("UserData");
 	queryUsers0.matchesKeyInQuery("Player", "Player0", queryFixtures);
@@ -797,7 +797,7 @@ Parse.Cloud.define("SavePlayedFixture", function (request, response) {
 			League = resultsFixtures[0].get("League");
 
 			var PType = 1; // played in client (normal)
-			if ((Parse.User.current().id != resultsFixtures[0].get("Player0").id)) // if a Server Play
+			if ((request.user.id != resultsFixtures[0].get("Player0").id)) // if a Server Play
 				PType = 3; // "played on server"
 
 			resultsFixtures[0].set("Status", 1);
@@ -867,7 +867,7 @@ Parse.Cloud.define("SavePlayedFixture", function (request, response) {
 
 Parse.Cloud.define("DeleteCurrentPlayer", function (request, response) {
 
-	var PlayerID = Parse.User.current().id;
+	var PlayerID = request.user.id;
 
 	var User = new Parse.User();
 	User.id = PlayerID;
@@ -1034,7 +1034,7 @@ Parse.Cloud.define("test_save_file", function (request, response) {
 
 Parse.Cloud.define("FB_LinkToCurrentUser", function (request, response) {
 
-	var User = Parse.User.current();
+	var User = request.user;
 
 	var str = "{\"facebook\":{\"access_token\":\"" + request.params.access_token + "\",\"expiration_date\":\"" + request.params.expiration_date + "\",\"id\":\"" + request.params.id + "\"}}";
 
@@ -1043,7 +1043,7 @@ Parse.Cloud.define("FB_LinkToCurrentUser", function (request, response) {
 	User.save().then(function () {
 
 		var query = new Parse.Query("UserData");
-		query.equalTo("Player", Parse.User.current());
+		query.equalTo("Player", request.user);
 		query.limit(1);
 		return query.find({
 			useMasterKey : true
@@ -1072,7 +1072,7 @@ Parse.Cloud.define("FB_SetUserInfo", function (request, response) {
 
 	var UD;
 	var query = new Parse.Query("UserData");
-	query.equalTo("Player", Parse.User.current());
+	query.equalTo("Player", request.user);
 	query.limit(1);
 	query.find({
 		useMasterKey : true
@@ -1618,6 +1618,9 @@ function LeagueAutoPlay(League) {
 				var Score0_random = Math.floor((Math.random() * 10) + 1);
 				var Score1_random = (13 - Score0_random);
 				var MatchTime_random = Math.floor((Math.random() * 200) + 40);
+				
+				Score0_random = 7;
+				Score1_random = 5;
 
 				resultsFixtures[i].set("Status", 1);
 				resultsFixtures[i].set("PlayedType", 2);
@@ -1905,4 +1908,3 @@ Parse.Cloud.define("test_del_users", function (request, response) {
 	});
 
 })
-
