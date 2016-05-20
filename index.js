@@ -15,7 +15,7 @@ if (!databaseUri) {
 
 var api = new ParseServer({
   databaseURI: databaseUri || process.env.MONGODB_URL || 'mongodb://localhost:27017/dev',
-  cloud: __dirname + '/cloud/main.js' || 'not_specified',
+  cloud: '/cloud/main.js',
   appId: process.env.APP_ID || '1234',
   masterKey: process.env.MASTER_KEY || '1234',
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
@@ -25,7 +25,7 @@ var api = new ParseServer({
       apiKey: process.env.GCM_API_KEY || 'not_specified' // The Server API Key of GCM
     },
     ios: {
-      pfx: __dirname + '/certificate/' + process.env.CERTIFICATE_NAME || 'not_specified', // The filename of private key and certificate in PFX or PKCS12 format from disk
+      pfx: '/certificate/' + process.env.CERTIFICATE_NAME, // The filename of private key and certificate in PFX or PKCS12 format from disk
       bundleId: process.env.BUNDLE_ID || 'com.my_app.my_awesome_app', // The bundle identifier associate with your app
       production: process.env.NOTIFICATION_PRODUCTION || false // Specifies which environment to connect to: Production (if true) or Sandbox
     }
