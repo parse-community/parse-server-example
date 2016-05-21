@@ -260,9 +260,9 @@ function AssembleUserDataObject(UD) {
 		"RefData" : UD.get("RefData"),
 		"__type" : "Object",
 		"className" : "UserData",
-		"createdAt" : UD.get("createdAt"),
-		"objectId" : UD.id,
-		"updatedAt" : UD.get("updatedAt")
+		//"createdAt" : UD.get("createdAt"),
+		"objectId" : UD.id
+		//"updatedAt" : UD.get("updatedAt")
 	};
 
 	return obj;
