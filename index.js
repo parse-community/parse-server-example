@@ -65,7 +65,7 @@ app.use(cors(corsOptions));
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 .use(kue.app); // wire up Kue (see /active for queue interface)
-
+kue.app.listen(3000);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
