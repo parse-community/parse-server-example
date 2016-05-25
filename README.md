@@ -16,7 +16,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Getting Started With Heroku + Mongolab Development
+### Getting Started With Heroku + mLab Development
 
 #### With the Heroku Button
 
@@ -26,7 +26,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [MongoLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
+* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
