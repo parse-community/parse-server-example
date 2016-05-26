@@ -180,7 +180,7 @@ Parse.Cloud.afterSave(Parse.User, function (request, response) {
 
 		var Group = 0;
 
-		userData.set("Player", request.user);
+		userData.set("Player", request.object);
 		userData.set("Group", Group);
 		userData.set("Level", 1);
 		userData.set("PlayerType", 1);
