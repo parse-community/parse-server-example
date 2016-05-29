@@ -53,3 +53,13 @@ obj.save().then(function(obj) {
 ```
 
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
+
+
+
+```
+/jobs — Kue API
+/kue — Kue UI
+/job_generator — open to run some demo jobs
+```
+
+Don't forget to launch Redis server.

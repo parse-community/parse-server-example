@@ -1,15 +1,15 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
-var express = require('express');
+var express     = require('express');
 var ParseServer = require('parse-server').ParseServer;
-var S3Adapter = require('parse-server').S3Adapter;
-var cors = require('cors');
-var kue = require('kue');
-var redis = require('redis');
-
+var S3Adapter   = require('parse-server').S3Adapter;
+var cors        = require('cors');
+var kue         = require('kue');
+var ui          = require('kue-ui');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URL
+var redisUri    = process.env.REDIS_URI  || 'redis://localhost:6379'
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
@@ -17,7 +17,7 @@ if (!databaseUri) {
 
 var api = new ParseServer({
   databaseURI: databaseUri || process.env.MONGODB_URL || 'mongodb://localhost:27017/dev',
-  cloud: '/cloud/main.js',
+  cloud: './cloud/main.js',
   appId: process.env.APP_ID || '1234',
   masterKey: process.env.MASTER_KEY || '1234',
   serverURL: process.env.SERVER_URL || 'http://localhost:1337',
@@ -58,18 +58,34 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 
-// app.options('*', cors(corsOptions));
+kue.createQueue({
+  redis: redisUri
+});
+
+ui.setup({
+  apiURL: '/jobs',
+  baseURL: '/kue',
+  updateInterval: 5000
+});
 
 
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
-.use(kue.app); // wire up Kue (see /active for queue interface)
-kue.app.listen(3000);
+
+app.use('/jobs', kue.app);
+app.use('/kue', ui.app);
+
+app.listen(3000);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
   res.status(200).send('I dream of being a web site.');
+});
+
+app.get('/job_generator', function(req, res) {
+  require('./job_generator')
+  res.status(200).send("<a href='jobs'>You can check created jobs here</a>");
 });
 
 

@@ -13,6 +13,7 @@
     "express": "~4.2.x",
     "kerberos": "~0.0.x",
     "kue": "^0.10.5",
+    "kue-ui": "^0.1.0",
     "parse": "^1.8.1",
     "parse-server": "^2.2.1"
   },
