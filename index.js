@@ -12,11 +12,11 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://andre_fez:Fern868855@ds013991.mlab.com:13991/heroku_3khmpg4k',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  appId: process.env.APP_ID || 'kaSLgJNgdriiBxehmqUpJMjDEqLLb3gHmU7h5VpK',
+  masterKey: process.env.MASTER_KEY || 'EV4eMGMsP53z0mgenRexFMnJVdynM4VbgkKybnj3', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'http://guiap.herokuapp.com/',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -31,7 +31,7 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-var mountPath = process.env.PARSE_MOUNT || '/parse';
+var mountPath = process.env.PARSE_MOUNT || '/';
 app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
