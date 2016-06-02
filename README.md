@@ -37,6 +37,17 @@ Useful tools:
 * Postman / Fiddler (execute rest calls against parse server / intercept traffic)
 * node-inspector (debug your app locally or [remotely](https://blogs.msdn.microsoft.com/waws/2016/04/07/debug-node-js-azure-mobile-apps-with-node-inspector/))
 
+######Parse Dashboard Issues
+The parse dashboard used to be located in a site extension with route `https://<yoursite>.scm.azurewebsites.net/parse-dashboard`.
+It is now an express app running on the main web site at route `https://<yoursite>.azurewebsites.net/parse-dashboard`.  A username (appId) and password (masterKey) are required.
+The dashboard can take a long time to load due to cold starts.
+
+######Push Issues
+The notification hub needs to be at least basic tier in order to send push notifications.
+
+######DocDB
+There have been known issues with the DocumentDB dropping mongo connections. A server restart will typically fix the problem.  We are working to resolve the problem.
+
 ### Useful Links
 * App Links
   * Parse Server: `https://<yoursite>.azurewebsites.net/parse`
