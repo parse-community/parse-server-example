@@ -85,7 +85,7 @@ app.get('/', function(req, res) {
 
 app.get('/job_generator', function(req, res) {
   require('./job_generator')
-  res.status(200).send("<a href='jobs'>You can check created jobs here</a>");
+  res.status(200).send("<a href='kue'>You can check created jobs here</a>");
 });
 
 
