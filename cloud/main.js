@@ -1,4 +1,4 @@
-// CONTENTS --
+// -- CONTENTS --
 //
 //  --- Triggers:
 // beforeSave (user)
@@ -85,7 +85,7 @@ var UserDefault_DailyReward = {
 	lastLoginTime : "1/10/2000"
 };
 var UserDefault_Inventory = {
-	Items : [0, 1]
+	Items : [0]
 };
 var UserDefault_PlayerCharacterParams = {
 	Acceleration : 0,
@@ -261,7 +261,7 @@ function AssembleUserDataObject(UD) {
 		"__type" : "Object",
 		"className" : "UserData",
 		//"createdAt" : UD.get("createdAt"),
-		"objectId" : UD.id
+		"objectId" : UD.id,
 		//"updatedAt" : UD.get("updatedAt")
 	};
 
@@ -1033,7 +1033,7 @@ Parse.Cloud.define("test_save_file", function (request, response) {
 })
 
 Parse.Cloud.define("FB_LinkToCurrentUser", function (request, response) {
-
+	//alert("FB_LinkToCurrentUser");
 	var User = request.user;
 
 	var str = "{\"facebook\":{\"access_token\":\"" + request.params.access_token + "\",\"expiration_date\":\"" + request.params.expiration_date + "\",\"id\":\"" + request.params.id + "\"}}";
@@ -1058,7 +1058,7 @@ Parse.Cloud.define("FB_LinkToCurrentUser", function (request, response) {
 		} else
 			return Parse.Promise.error("SetFBFriends: NO USER DATA!");
 	}).then(function () {
-		esponse.success("UD saved!");
+		response.success("UD saved!");
 	}, function (err) {
 		response.error("Error: " + JSON.stringify(err));
 	});
@@ -1110,6 +1110,65 @@ Parse.Cloud.define("FB_SetUserInfo", function (request, response) {
 	}, function (err) {
 		response.error("Error: " + JSON.stringify(err));
 	});
+})
+
+Parse.Cloud.define("FB_GetLinkedUser_to_delete", function (request, response) {
+
+	var query = new Parse.Query("UserData");
+	query.equalTo("FBID", request.params.FBID);
+	query.limit(1).include("Player");
+	query.find({
+		useMasterKey : true
+	}).then(function (ud_results) {
+
+		if (ud_results.length > 0)
+			response.success(ud_results[0].get("Player"));
+		else
+			response.error("No linked user found!");
+	}, function (err) {
+		response.error("Error: " + JSON.stringify(err));
+	});
+})
+
+Parse.Cloud.define("FB_UnlinkOldUser", function (request, response) {
+
+	var Player = undefined;
+	var query = new Parse.Query("UserData");
+	query.equalTo("FBID", request.params.FBID);
+	query.limit(1).include("Player"); ;
+	query.find({
+		useMasterKey : true
+	}).then(function (ud_results) {
+
+		if (ud_results.length > 0) {
+
+			Player = ud_results[0].get("Player");
+
+			ud_results[0].unset("FBID");
+			ud_results[0].unset("FBFriends");
+			return ud_results[0].save(null, {
+				useMasterKey : true
+			});
+		}
+
+		return Parse.Promise.as("No user found");
+	}).then(function () {
+
+		if (Player != undefined) {
+
+			Player.unset("authData");
+
+			//return Parse.Promise.as("Cannot unlink");
+			return Player.save(null, {				useMasterKey : true			});
+		}
+
+		return Parse.Promise.as("No user found");
+	}).then(function () {
+		response.success("OK");
+	}, function (err) {
+		response.error("Error: " + JSON.stringify(err));
+	});
+
 })
 
 ////////////////////////////////////////////////////////
@@ -1618,7 +1677,7 @@ function LeagueAutoPlay(League) {
 				var Score0_random = Math.floor((Math.random() * 10) + 1);
 				var Score1_random = (13 - Score0_random);
 				var MatchTime_random = Math.floor((Math.random() * 200) + 40);
-				
+
 				Score0_random = 7;
 				Score1_random = 5;
 
@@ -1738,7 +1797,7 @@ function LeagueEnd(League) {
 Parse.Cloud.define("extLeagueSaveSnapshot", function (request, response) {
 	var LeagueType = Parse.Object.extend("Leagues");
 	var League = new LeagueType();
-	League.id = "4gGJ5WWWxq";
+	League.id = "9RNw8ZFRZr";
 
 	League.fetch().then(function () {
 
@@ -1755,7 +1814,17 @@ function LeagueSaveSnapshot(League) {
 	return GetLeagueSnapshot(League).then(function (str) {
 
 		League.set("LastSnapshot", str);
-		return League.save();
+		return League.save().then(function () {
+
+			var LastLeagueResultsType = Parse.Object.extend("LastLeagueResults");
+			var LastLeagueResult = new LastLeagueResultsType();
+
+			LastLeagueResult.set("League", League);
+			LastLeagueResult.set("LastSnapshot", str);
+			LastLeagueResult.set("FirstDayDateTime", League.get("FirstDayDateTime"));
+
+			return LastLeagueResult.save();
+		});
 	});
 }
 
@@ -1908,3 +1977,41 @@ Parse.Cloud.define("test_del_users", function (request, response) {
 	});
 
 })
+
+////////////////////////////////////////////////////////
+/////////////    JOB FUNCTIONS    //////////////////////
+////////////////////////////////////////////////////////
+
+
+Parse.Cloud.define("JobFun_LeaguesStart", function (request, response) {
+
+	LeaguesStart().then(function () {
+		response.success("Ok!");
+	},
+		function (err) {
+		response.error("Error: " + JSON.stringify(err));
+	});
+
+});
+
+Parse.Cloud.define("JobFun_LeaguesNextDay", function (request, response) {
+
+	LeaguesNextDay().then(function () {
+		response.success("Ok!");
+	},
+		function (err) {
+		response.error("Error: " + JSON.stringify(err));
+	});
+
+});
+
+Parse.Cloud.define("JobFun_LeaguesPrepareNextDay", function (request, response) {
+
+	LeaguesPrepareNextDay().then(function () {
+		response.success("Ok!");
+	},
+		function (err) {
+		response.error("Error: " + JSON.stringify(err));
+	});
+
+});
