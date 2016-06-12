@@ -1591,7 +1591,7 @@ function LeaguesNextDay() {
 	var today = new Date();
 
 	var queryL = new Parse.Query("Leagues");
-	queryL.limit(3);
+	queryL.limit(10);
 	queryL.greaterThan("NumPlayers", 0).greaterThan("CurrentDay", 0).containedIn("CurrentState", [1, 2]).lessThanOrEqualTo("NextDayDateTime", today).ascending("NextDayDateTime");
 
 	return queryL.find().then(function (resultsL) {
