@@ -1482,7 +1482,7 @@ function LeagueDeleteFixtures(League) {
 function LeagueGenerateFixtures(League) {
 
 	//// BUILD USER ARRAY ////
-
+alert("In LeagueGenerateFixtures!");
 	var Players = League.get("Players");
 
 	var NumLeagueUsers = 0;
