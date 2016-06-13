@@ -1370,7 +1370,7 @@ function LeaguesStart() {
 	today = new Date(today.getTime() + LeagueStartBeforeFirstDaySeconds * 1000);
 
 	var queryL = new Parse.Query("Leagues");
-	queryL.limit(process.env.WOT_LEAGUE_LEAGUESSTART_N);
+	queryL.limit(3);
 	queryL.greaterThan("NumPlayers", 0).equalTo("CurrentDay", 0).lessThanOrEqualTo("FirstDayDateTime", today).ascending("FirstDayDateTime");
 
 	return queryL.find().then(function (resultsL) {
