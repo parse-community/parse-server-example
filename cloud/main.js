@@ -2015,3 +2015,19 @@ Parse.Cloud.define("JobFun_LeaguesPrepareNextDay", function (request, response) 
 	});
 
 });
+
+Parse.Cloud.define("JobFun_LeaguesAssignUsers", function (request, response) {
+
+	LeaguesAssignUsers().then(function () {
+		return LeaguesAssignUsers();
+	}).then(function () {
+		return LeaguesAssignUsers();
+	}).then(function () {
+		return LeaguesAssignUsers();
+	}).then(function () {
+		response.success("Ok!");
+	},
+		function (err) {
+		response.error("Error: " + JSON.stringify(err));
+	});
+});
