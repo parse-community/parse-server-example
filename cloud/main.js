@@ -1518,7 +1518,7 @@ function LeagueGenerateFixtures(League) {
 			fixture.set("GameDate", tomorrow);
 			fixture.set("Status", 0);
 
-			arr = [arr, fixture];
+			arr.push(fixture);
 		}
 	}
 
