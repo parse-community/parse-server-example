@@ -1586,7 +1586,7 @@ function LeaguePrepareNextDay(League) {
 	});
 }
 
-function LeaguesNextDay() {console.log('-----in LeaguesNextDay');
+function LeaguesNextDay() {
 
 	var today = new Date();
 
