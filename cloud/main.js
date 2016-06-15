@@ -161,13 +161,13 @@ var Prices_PlayerCharacterParams = {
 	UnderSpin : 0.01
 };
 
-Parse.Cloud.beforeSave(Parse.User, function (request, response) {
-
-	if (request.object.isNew()) {}
-	else {}
-
-	response.success();
-});
+//Parse.Cloud.beforeSave(Parse.User, function (request, response) {
+//
+//	if (request.object.isNew()) {}
+//	else {}
+//
+//	response.success();
+//});
 
 Parse.Cloud.afterSave(Parse.User, function (request, response) {
 
@@ -199,8 +199,8 @@ Parse.Cloud.afterSave(Parse.User, function (request, response) {
 				var ArchiveUser = Parse.Object.extend("ArchiveUser");
 				var aUser = new ArchiveUser();
 
-				aUser.set("username", request.user.get("username"));
-				aUser.set("userID", request.user.id);
+				aUser.set("username", request.object.get("username"));
+				aUser.set("userID", request.object.id);
 
 				aUser.save(null, {
 					success : function (aUserRes) {},
@@ -211,7 +211,7 @@ Parse.Cloud.afterSave(Parse.User, function (request, response) {
 				// Execute any logic that should take place if the save fails.
 				// error is a Parse.Error with an error code and message.
 
-				alert('Failed to save UserData, with error code: ' + error.message);
+				//alert('Failed to save UserData, with error code: ' + error.message);
 
 			}
 		});
