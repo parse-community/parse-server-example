@@ -11,9 +11,9 @@
   "dependencies": {
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
-    "nodemailer": "^2.3.0",
-    "parse": "~1.8.0",
-    "parse-server": "~2.2.4"
+    "nodemailer": "^2.4.2",
+    "parse": "^1.8.5",
+    "parse-server": "^2.2.13"
   },
   "scripts": {
     "start": "node index.js"
