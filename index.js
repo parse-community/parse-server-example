@@ -2,10 +2,8 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 
-if (!process.env){
-  //Using Config File for localhost environment variables
-  process.env = require('./config');
-}
+//Using Config File for localhost environment variables
+//process.env = require('./config');
 
 // Declares Database URI
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI || process.env.MONGODB_URI;
@@ -41,13 +39,10 @@ if (process.env.FILE_KEY){
 }
 if (process.env.VERIFY_EMAILS){
   //Sets Email Verification for user account authentication
-  apiConfig.verifyUserEmails = false;
-  if (process.env.VERIFY_EMAILS == "true"){
-    apiConfig.verifyUserEmails = true;
-  }
+  apiConfig.verifyUserEmails = ((process.env.VERIFY_EMAILS == "true") ? true : false);
 }
 if (process.env.MAIL_EMAIL) {
-  // Uses a nodemailer custom adapter for mail sending
+  //Uses a nodemailer custom adapter for mail sending
   var nodeMailerAdapter = require('./nodeMailerAdapter');
   apiConfig.emailAdapter = nodeMailerAdapter({
     email: process.env.MAIL_EMAIL || 'email@provider.com',
@@ -65,11 +60,8 @@ if (process.env.INVALID_LINK_URL) {
   };
 }
 if (process.env.PROD_PUSH_CERT_PATH){
+  //Using Parse Push Default Adapter
   apiConfig.push = {
-    android: {
-      senderId: '', // The Sender ID of GCM
-      apiKey: '' // The Server API Key of GCM
-    },
     ios: [
       {
         pfx: process.env.DEV_PUSH_CERT_PATH, // Dev PFX or P12
@@ -82,7 +74,29 @@ if (process.env.PROD_PUSH_CERT_PATH){
         production: true // Prod
       }
     ]
+  }
+}
+if (process.env.SNS_ACCESS_KEY){
+  //Using Amazon SNS Push Service Adapter
+  var pushConfig =  { 
+    pushTypes : { 
+      android: {
+        ARN: process.env.SNS_PUSH_ANDROID_ARN
+      },
+      ios: {
+        ARN: process.env.SNS_PUSH_IOS_ARN, 
+        production: ((process.env.SNS_PROD_ENV == "true") ? true : false), 
+        bundleId: process.env.SNS_PUSH_CERT_BUNDLE
+      }
+    },
+    accessKey: process.env.SNS_ACCESS_KEY,
+    secretKey: process.env.SNS_SECRET_ACCESS_KEY,
+    region: process.env.SNS_PUSH_REGION
   };
+  var SNSPushAdapter = require('parse-server-sns-adapter');
+  var snsPushAdapter = new SNSPushAdapter(pushConfig);
+  pushConfig['adapter'] = snsPushAdapter;
+  apiConfig.push = pushConfig;
 }
 
 //Custom Parse Server Options
