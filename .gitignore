@@ -28,3 +28,9 @@ node_modules
 
 # Emacs
 *~
+
+#Config Local Variables
+config.js
+
+#P12 iOS Certificates
+certs
