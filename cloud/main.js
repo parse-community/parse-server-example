@@ -1,4 +1,4 @@
-require("cloud/app.js");
+require("./app.js");
 
 var twilioAccountSid = 'AC41f33775dcd6bf3cefdc566ad94b3224';
 var twilioAuthToken = '24fed833ada4e89a8dbfc2bc869a3504';
