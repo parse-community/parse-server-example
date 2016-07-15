@@ -16,7 +16,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Getting Started With Heroku + Mongolab Development
+### Getting Started With Heroku + mLab Development
 
 #### With the Heroku Button
 
@@ -26,7 +26,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [MongoLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox`
+* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
@@ -87,11 +87,12 @@ A detailed tutorial is available here:
 
 # Using it
 
-You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
+Before using it, you can access a test page to verify if the basic setup is working fine [http://localhost:1337/test](http://localhost:1337/test).
+Then you can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
 Example request to a server running locally:
 
-```
+```curl
 curl -X POST \
   -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
@@ -107,9 +108,10 @@ curl -X POST \
 
 Example using it via JavaScript:
 
-```
+```javascript
 Parse.initialize('myAppId','unused');
 Parse.serverURL = 'https://whatever.herokuapp.com';
+
 var obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 obj.save().then(function(obj) {
@@ -122,19 +124,25 @@ obj.save().then(function(obj) {
 ```
 
 Example using it on Android:
-```
+```java
 //in your application class
 
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-        .applicationId("myAppId")
-        .clientKey("myClientKey")
-        .server("http://myServerUrl/parse/")   // '/' important after 'parse'
-        .build());
-        
-  ParseObject testObject = new ParseObject("TestObject");
-  testObject.put("foo", "bar");
-  testObject.saveInBackground();
+  .applicationId("myAppId")
+  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .build());
 
+ParseObject testObject = new ParseObject("TestObject");
+testObject.put("foo", "bar");
+testObject.saveInBackground();
 ```
+Example using it on iOS (Swift):
+```swift
+//in your AppDelegate
 
+Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
+  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
+  configuration.applicationId = "<# Your APP_ID #>"
+}))
+```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.

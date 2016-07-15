@@ -18,8 +18,8 @@
       "value": "myMasterKey"
     },
     "SERVER_URL": {
-      "description": "URL of your Heroku instance",
-      "value": "http://myapp.herokuapp.com/parse"
+      "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
+      "value": "http://yourappname.herokuapp.com/parse"
     }
   },
   "image": "heroku/nodejs",
