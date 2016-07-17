@@ -1,0 +1,41 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+
+  // Push Notification
+  //https://github.com/taivo/parse-push-plugin
+  "apps": [
+    {
+      "name": "parse-server",
+      "script": "index.js",
+      "watch": true,
+      "merge_logs": true,
+      "env": {
+        // Mount path for the server. Defaults to /parse.
+        "PARSE_MOUNT": "/parse",
+        // (required) - The connection string for your database, i.e. mongodb://user:pass@host.com/dbname.
+        // Be sure to URL encode your password if your password has special characters.
+        "DATABASE_URI": "mongodb://localhost:27017/myapp",
+        // URL to your Parse Server (don't forget to specify http:// or https://).
+        // This URL will be used when making requests to Parse Server from Cloud Code.
+        "SERVER_URL": "http://localhost:1337/parse",
+        // Your apps name. This will appear in the subject and body of the emails that are sent.
+        "APP_NAME": "MyApp",
+        // (required) - The application id to host with this server instance.
+        // You can use any arbitrary string. For migrated
+        "APP_ID": "myAppId",
+        // (required) - The master key to use for overriding ACL security.
+        // You can use any arbitrary string. Keep it secret! For migrated apps, this should match your hosted Parse app.
+        "MASTER_KEY": "myMasterKey",
+        "MASTER_REST_KEY": "MyRestMasterKey",
+        // Parse Dashboard
+        "DASHBOARD_URL": "/dashboard",
+        "DASHBOARD_USER": "admin",
+        "DASHBOARD_PASSWORD": "admin123"
+      }
+    }
+  ]
+}
+
