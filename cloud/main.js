@@ -215,7 +215,7 @@ Parse.Cloud.define("sendPushToUser", function(request, response) {
   where: pushQuery,
   data: {
     alert: message,
-    badge: 1,
+    badge: Increment,
     sound: 'default',
     title: "FoodChain",
     uri: androidURI
