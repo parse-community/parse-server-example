@@ -210,23 +210,28 @@ Parse.Cloud.define("sendPushToUser", function(request, response) {
   // Find devices associated with the recipient user
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.equalTo("username", recipientUsername);
-   
   // Send the push notification to results of the query
   Parse.Push.send({
-    where: pushQuery,
-    data: {
-      alert: message,
-      title: "FoodChain",
-      uri: androidURI
-        
-    }
-  }).then(function() {
-      response.success("Push was sent successfully.");
-  }, function(error) {
-      response.error("Push failed to send with error: " + error.message);
+  where: pushQuery,
+  data: {
+    alert: message,
+    badge: 1,
+    sound: 'default',
+    title: "FoodChain",
+    uri: androidURI
+  }
+}, {
+  success: function() {
+    console.log('##### PUSH OK');
+  },
+  error: function(error) {
+    console.log('##### PUSH ERROR');
   },
   useMasterKey: true
-  });
+});
+   
+
+
 });
   
 //ignore below this line for now -Chris
