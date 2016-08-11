@@ -266,22 +266,6 @@ response.success
 });
   
   
-var mailgun = require("mailgun");
-mailgun.initialize("mg.foodchain.co", "key-f3166411e098f05d4f0fcd6ab83473fe");
-  
-Parse.Cloud.define("signup", function(request, response) {
-  mailgun.sendEmail({
-    to: "chrismeier@foodchain.co",
-    from: "mailgun@parse.com",
-    subject: "Hello from Cloud Code!",
-    text: "Using Parse and Mailgun is great!"
-  }, {
-    success: function(httpResponse) { response.success("Email sent!"); },
-    error: function(httpResponse) { response.error("Uh oh, something went wrong"); }
-  });
-});
-
-
 Parse.Cloud.define('testing', function(req, res) {
   res.success('Hi from the foodchain Inc. cloud testing function!!');
 });
