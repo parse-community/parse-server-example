@@ -20,6 +20,17 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  },
+  push: {
+    android: {
+      senderId: '951041088211', // The Sender ID of GCM
+      apiKey: 'AIzaSyBPTPtoGoC8znp6cqzJJChewdqlmyLWvTY' // The Server API Key of GCM
+    },
+    ios: {
+      pfx: 'production.p12', // The filename of private key and certificate in PFX or PKCS12 format from disk  
+      bundleId: 'FoodChain', // The bundle identifier associate with your app
+      production: true // Specifies which environment to connect to: Production (if true) or Sandbox
+    }
   }
   
 });
