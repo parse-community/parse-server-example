@@ -27,9 +27,9 @@ var api = new ParseServer({
       apiKey: 'AIzaSyBPTPtoGoC8znp6cqzJJChewdqlmyLWvTY' // The Server API Key of GCM
     },
     ios: {
-      pfx: 'production.p12', // The filename of private key and certificate in PFX or PKCS12 format from disk  
+      pfx: 'development.p12', // The filename of private key and certificate in PFX or PKCS12 format from disk  
       bundleId: 'FoodChain', // The bundle identifier associate with your app
-      production: true // Specifies which environment to connect to: Production (if true) or Sandbox
+      production: false // Specifies which environment to connect to: Production (if true) or Sandbox
     }
   }
   
