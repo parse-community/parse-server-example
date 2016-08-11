@@ -21,17 +21,7 @@ var api = new ParseServer({
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
-  push: {
-  android: {
-  senderId: '951041088211', // The Sender ID of GCM
-  apiKey: 'AIzaSyBPTPtoGoC8znp6cqzJJChewdqlmyLWvTY' // The Server API Key of GCM
-  },
-  ios: {
-  pdx: 'production.p12', // the path and filename to the .p12 file you exported earlier. 
-  bundleId: 'FoodChain', // The bundle identifier associated with your app
-  production: true
-  }
-  }
+  
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
