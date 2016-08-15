@@ -1,6 +1,6 @@
 exports.createSupportCodeForInstallationId = function(installationId) {
-	//var numbers = require('cloud/numbers.js');
-	
+	//var numbers = require('./cloud/numbers.js');
+
 	var isUsed = true;
 	//String supportCode = String();
 	supportCode = "";
@@ -8,7 +8,7 @@ exports.createSupportCodeForInstallationId = function(installationId) {
 		supportCode = stringOfRandomNumbers(5);
 		isUsed = supportCodeExists(supportCode);
 	}
-	
+
 	var isSaved = saveSupportCodeForInstallationId(supportCode, installationId);
 	if (isSaved) {
 		return supportCode;
@@ -61,19 +61,18 @@ function supportCodeExists(supportCode) {
 }
 function stringOfRandomNumbers(numDigits) {
 	var allDigits = "";
-	
+
 	for (var idx = 1; idx <= numDigits; ++idx) {
 		var randomFloat = Math.random() * (9 - 0) + 0; // random 0 - 9
 		var randomDigit = Math.floor(randomFloat);
 		var digit = String.valueOf(randomDigit);
 		allDigits.concat(digit);
 	}
-	
+
 	return allDigits
 }
 
 
-	
-	
 
-	
+
+
