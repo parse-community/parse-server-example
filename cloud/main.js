@@ -4,7 +4,6 @@ Parse.Cloud.define('hello', function(req, res) {
 
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 Parse.Cloud.define("updateReportedBook", function(request, response) {
-	Parse.Cloud.useMasterKey();
 	var publishedBookQuery =new Parse.Query("PublishedBook");
 	var bookId =request.params.bookGuId;
 	var isActive=request.params.isActive;
@@ -12,11 +11,12 @@ Parse.Cloud.define("updateReportedBook", function(request, response) {
 	publishedBookQuery.equalTo("guid",bookId);
 	publishedBookQuery.limit(1);
 	publishedBookQuery.find({
+			useMasterKey:true,
 			success: function(results) {
     		  	var book = results[0];
     			book.set("checked",true);
     			book.set("active",isActive )
-    			book.save();
+    			book.save(null, { useMasterKey: true });
 				response.success("book updated to "+ book.get("active"));
     		},
     		error: function() {A
@@ -26,7 +26,6 @@ Parse.Cloud.define("updateReportedBook", function(request, response) {
 });
 
 Parse.Cloud.define("markFeedbackAsRead", function(request, response) {
-	Parse.Cloud.useMasterKey();
 	var feedbackQuery =new Parse.Query("UserFeedback");
 
 	var feedbackId =request.params.feedbackRemoteId;
@@ -34,10 +33,11 @@ Parse.Cloud.define("markFeedbackAsRead", function(request, response) {
 	feedbackQuery.equalTo("objectId",feedbackId);
 	feedbackQuery.limit(1);
 	feedbackQuery.find({
+			useMasterKey:true,
 			success: function(results) {
     		  	var feedback = results[0];
     			feedback.set("read_date", new Date())
-    			feedback.save();
+    			feedback.save(null, { useMasterKey: true });
 				response.success("UserFeedback updated read_date to "+ feedback.get("read_date"));
     		},
     		error: function() {
@@ -47,7 +47,6 @@ Parse.Cloud.define("markFeedbackAsRead", function(request, response) {
 });
 
 Parse.Cloud.define("incrementFeaturedBookPlay", function(request, response) {
-	Parse.Cloud.useMasterKey();
 	var bookQuery =new Parse.Query("PublishedBook");
 
 	var bookId =request.params.bookRemoteId;
@@ -55,32 +54,12 @@ Parse.Cloud.define("incrementFeaturedBookPlay", function(request, response) {
 	bookQuery.equalTo("objectId",bookId);
 	bookQuery.limit(1);
 	bookQuery.find({
+			useMasterKey:true,
 			success: function(results) {
     		  	var book = results[0];
     			book.increment("playedTimes");
-    			book.save();
-                var featuredBookQuery =new Parse.Query("FeaturedBook");
-
-				featuredBookQuery.limit(1);
-				featuredBookQuery.equalTo("book",book);
-				featuredBookQuery.find({
-					success: function(featuredBookResults) {
-						var featuredBook = featuredBookResults[0];
-						if(featuredBook){
-							featuredBook.increment("playedTimes");
-							featuredBook.save();
-							response.success("incrementBookPlay with Book & FeaturedBook");
-						}else{
-							response.success("incrementBookPlay with Book only");
-						}
-
-
-					},
-					error: function() {
-                        			response.success("incrementBookPlay with Book only");
-                        		}
-				});
-
+    			book.save(null, { useMasterKey: true });
+    			response.success("incrementBookPlay with Book only");
     		},
     		error: function() {
     			response.error("bookId doesn't exist!"+request.params.bookRemoteId);
@@ -90,37 +69,18 @@ Parse.Cloud.define("incrementFeaturedBookPlay", function(request, response) {
 
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 Parse.Cloud.define("incrementFeaturedBookLike", function(request, response) {
-	Parse.Cloud.useMasterKey();
 	var bookQuery =new Parse.Query("PublishedBook");
 
 	var bookId =request.params.bookRemoteId;
 	bookQuery.equalTo("objectId",bookId);
 	bookQuery.limit(1);
 	bookQuery.find({
+			useMasterKey:true,
 			success: function(results) {
     		  	var book = results[0];
     			book.increment("likedTimes");
-    			book.save();
-                var featuredBookQuery =new Parse.Query("FeaturedBook");
-
-				featuredBookQuery.limit(1);
-				featuredBookQuery.equalTo("book",book);
-				featuredBookQuery.find({
-					success: function(featuredBookResults) {
-						var featuredBook = featuredBookResults[0];
-						if(featuredBook){
-							featuredBook.increment("likedTimes");
-							featuredBook.save();
-							response.success("incrementBookLikes with Book & FeaturedBook");
-						}else{
-							response.success("incrementBookLikes with Book only");
-						}
-					},
-					error: function() {
-                        			response.success("incrementBookLikes with Book only");
-                        		}
-				});
-
+    			book.save(null, { useMasterKey: true });
+    			response.success("incrementBookLikes with Book only");
     		},
     		error: function() {
     			response.error("bookId doesn't exist!"+request.params.bookRemoteId);
@@ -129,7 +89,6 @@ Parse.Cloud.define("incrementFeaturedBookLike", function(request, response) {
 });
 
 Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
-	Parse.Cloud.useMasterKey();
 	var bookQuery =new Parse.Query("PublishedBook");
 
 	var bookGuId =request.params.bookGuId;
@@ -137,13 +96,14 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 	bookQuery.equalTo("guid",bookGuId);
 	bookQuery.limit(1);
 	bookQuery.find({
+			useMasterKey:true,
 			success: function(results) {
     		  	var book = results[0];
     		  	book.set("featuredAccepted", accept);
     		  	if(accept){
     		  		book.set("featuredActive", true);
     		  	}
-    			book.save();
+    			book.save(null, { useMasterKey: true });
 				response.success("accept FeaturedBook: "+ accept+ " - " + book.get("title"));
     		},
     		error: function() {
@@ -153,12 +113,12 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 });
 
 Parse.Cloud.define("transferFeatureBookStats", function(request, response) {
-    Parse.Cloud.useMasterKey();
 	var query = new Parse.Query("FeaturedBook");
 	query.include("book");
 	query.descending("createdAt");
     query.limit(1000);
 	query.find({
+		useMasterKey:true,
 		success: function(results) {
 		  	console.log("Found "+results.length+" FeaturedBook");
 			  for (var i = 0; i < results.length; i++) {
@@ -180,6 +140,7 @@ Parse.Cloud.define("transferFeatureBookStats", function(request, response) {
                 }
 
             Parse.Object.saveAll(results,{
+            				 useMasterKey:true,
                               success: function(objects) {
                                 response.success("done!");
                               },
@@ -196,12 +157,12 @@ Parse.Cloud.define("transferFeatureBookStats", function(request, response) {
 });
 
 Parse.Cloud.define("transferPublishedBookCountryCode", function(request, response) {
-Parse.Cloud.useMasterKey();
 	var query = new Parse.Query("PublishedBook");
 	query.include("owner");
 	query.descending("createdAt");
 	query.limit(1000);
 	query.find({
+		useMasterKey:true,
 		success: function(results) {
 		  	console.log("Found "+results.length+" PublishedBook");
 			  for (var i = 0; i < results.length; i++) {
@@ -221,6 +182,7 @@ Parse.Cloud.useMasterKey();
 					  }
                   }
                 Parse.Object.saveAll(results,{
+                  useMasterKey:true,
                   success: function(objects) {
                    	response.success("done!");
                   },
