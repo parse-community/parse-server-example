@@ -397,3 +397,36 @@ Parse.Cloud.define('incrementNewAppointmentTallyTwo', function(request, response
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// incrementNewAppointmentTally DEFINE
+//
+///////////////////////////////////////
+Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
+{
+	var globalSettings = Parse.Object.extend('GlobalSettings');
+	var query = new Parse.Query(globalSettings);
+	query.equalTo('settingName', 'newAppointmentTally');
+
+	query.find(
+	{
+		success: function(results)
+		{
+			var resultObject = results[0];
+			var tally = parseInt(resultObject.get('settingValue'));
+			tally++;
+
+			var tallyString = String.valueOf(tally);
+			//resultObject.set('settingValue', tallyString);
+			resultObject.save({'settingValue':tallyString});
+
+			response.success(tally);
+		},
+		error: function(error)
+		{
+			response.error(error);
+		}
+	});
+});
