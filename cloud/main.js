@@ -400,27 +400,3 @@ Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
     }),
 });
 
-
-///////////////////////////////////////
-//
-// getUnreadMessageCount
-//
-///////////////////////////////////////
-Parse.Cloud.define('getUnreadMessageCount', function(request, response)
-{
-	// Unread Messages
-	var query = new Parse.Query('Messages');
-	query.equalTo('recipientID', request.params.installId);
-	query.doesNotExist('readAt');
-	query.get(
-	{
-		success: function(result)
-		{
-			response.success(result.count);
-		},
-		error: function()
-		{
-			response.error('unable to get unread messages');
-		}
-	});
-});
