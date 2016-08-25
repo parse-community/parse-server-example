@@ -136,3 +136,41 @@ Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 	});
 });
 
+
+///////////////////////////////////////
+//
+// canReplyToUserWithId_B
+//
+///////////////////////////////////////
+Parse.Cloud.define('canReplyToUserWithId_B', function(request, response)
+{
+	var query = new Parse.Query('_User');
+	query.equalTo('objectId', request.params.userId);
+	query.find(
+	{
+		success: function(results)
+		{
+			if ( results.length == 1 )
+			{
+				var canReply = results[0].get('allowsMessages');
+				if ( canReply == null )
+				{
+					canReply = false;
+				}
+				response.success(canReply);
+			}
+			else if ( results.length > 1 )
+			{
+				response.error('more than one user found');
+			}
+			else
+			{
+				response.error('no user found with that objectId');
+			}
+		},
+		error: function()
+		{
+			response.error('user lookup failed');
+		}
+	});
+});
