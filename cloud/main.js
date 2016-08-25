@@ -298,3 +298,35 @@ Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, res
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// serviceIdForServiceIdReplacement
+//
+///////////////////////////////////////
+Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, response)
+{
+	var query = new Parse.Query('Services');
+	query.equalTo('objectId', request.params.serviceId);
+	query.equalTo('isActive', false);
+	query.find(
+	{
+		success: function(results)
+		{
+			if ( results.length == 0 )
+			{
+				response.success(request.params.serviceId);
+			}
+			else
+			{
+				var replacement = results[0].get('replacement');
+				response.success(replacement.id);
+			}
+		},
+		error: function()
+		{
+			response.error('service id replacement lookup failed');
+		}
+	});
+});
