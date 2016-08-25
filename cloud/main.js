@@ -71,3 +71,38 @@ Parse.Cloud.define('status', function(request, response)
 {
 	response.success('Up, Live, Valid');
 });
+
+///////////////////////////////////////
+//
+// barberIdForBarberName
+//
+///////////////////////////////////////
+Parse.Cloud.define('barberIdForBarberName', function(request, response)
+{
+	var query = new Parse.Query('Barbers');
+	query.equalTo('barberName', request.params.barberName);
+	query.equalTo('isActive', true);
+	query.find(
+	{
+		success: function(results)
+		{
+			if ( results.length == 1 )
+			{
+				var barberId = results[0].id;
+				response.success(barberId);
+			}
+			else if ( results.length > 1 )
+			{
+				response.error('more than one barber found');
+			}
+			else
+			{
+				response.error('no barbers found with that name');
+			}
+		},
+		error: function()
+		{
+			response.error('barber name lookup failed');
+		}
+	});
+});
