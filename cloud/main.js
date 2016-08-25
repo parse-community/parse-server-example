@@ -366,3 +366,34 @@ Parse.Cloud.define('servicesForBarberId', function(request, response)
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// incrementNewAppointmentTally TWO
+//
+///////////////////////////////////////
+Parse.Cloud.define('incrementNewAppointmentTallyTwo', function(request, response)
+{
+	var globalSettings = Parse.Object.extend('GlobalSettings');
+	var query = new Parse.Query(globalSettings);
+	query.equalTo('settingName', 'newAppointmentTally');
+
+	query.find(
+	{
+		success: function(results)
+		{
+			var resultObject = results[0];
+			resultObject.increment('settingValue');
+
+			var tally = resultObject.get('settingValue');
+			resultObject.save();
+
+			response.success(tally);
+		},
+		error: function()
+		{
+			response.error('unable to increment');
+		}
+	});
+});
