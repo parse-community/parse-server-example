@@ -455,3 +455,68 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// convertMessagesFromDeviceToUser
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response)
+{
+	// All Messages
+	var installId = request.params.installId;
+	var userId = request.params.userId;
+
+	var query = new Parse.Query('Messages');
+	query.equalTo('recipientID', installId);
+	query.doesNotExist('userID');
+	query.find(
+	{
+		success: function(results)
+		{
+			conditionalLog('Testing Converting');
+			conditionalLog('found: ' + results.length);
+			if ( results.length == 0 )
+			{
+				response.success('no messages to convert');
+				//console.log('none to convert');
+			}
+			else
+			{
+				for ( m = 0; m < results.length; m++ )
+				{
+					//console.log(results[m].objectId);
+					if ( m == 0 )
+					{
+						results[m].set('userID', userId);
+						results[m].save();
+					}
+				}
+				var count = results.length;
+				var countStr  = count.toString();
+				var reply = 'converted ' + countStr + ' messages';
+				response.success(reply);
+			}
+		},
+		error: function()
+		{
+			response.error('unable to convert messages');
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
+// conditionalLog - not public
+//
+///////////////////////////////////////
+function conditionalLog(logText)
+{
+	var doLog = env.process.DEBUG_LOG
+	if ( doLog == "True" )
+	{
+		console.log(logText);
+	}
+}
