@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
+    "newrelic": "^1.30.0",
     "parse": "~1.8.0",
     "parse-server": "~2.2.12"
   },
