@@ -520,3 +520,315 @@ function conditionalLog(logText)
 		console.log(logText);
 	}
 }
+
+/*
+ *
+ *	Twilio Functions
+ *
+ */
+
+ // Account SID
+ //
+ // Auth Token
+ //
+ // App SID
+ //
+ // App Password
+
+ require("./cloud/twil.js");
+
+var twilioAccountSid    = 'AC31fd04d3ce8f6369308dc42d2cb16559';
+var twilioAuthToken     = 'f20e0042726b0d9cca9e017e68d1f579';
+var twilioPhoneNumber   = '+16172199117';
+var secretPasswordToken = '4B9CAEC3-E9BF-42D0-B57B-6109D90A4E07';
+var twilioMessagingSID  = 'MGb685587f2b87ff3e94536ef258cfced9';
+var language            = "en";
+var languages           = ["en","en-GB"];
+
+var twilio = require('twilio')(twilioAccountSid, twilioAuthToken);
+
+var debugging 			= true;
+
+
+///////////////////////////////////////
+//
+// indigoSMSService
+//
+///////////////////////////////////////
+
+Parse.Cloud.define("processIncomingSMSM", function(request, response)
+{
+    Parse.Cloud.useMasterKey();
+
+	var userAgent       = 'Indigo SMS Service 0.0.0 (beta)'
+
+    var messageBody     = request.params.Body;
+    var messageFrom     = request.params.From;
+
+    var dateObject      = new Date();
+    var timeStamp       = dateObject.getUTCDate();
+
+	var rycardo = {
+					baseURL: "http://tdot.coubur.com",
+					port: '8176',
+					username: 'indigo',
+					password: '1nd190Server',
+					from: 'twilioFrom',
+					time: 'twilioTimeStamp',
+					message: 'twilioMessage'
+					};
+
+	var account = {
+					name: '16172165525',
+					info: rycardo
+					}
+
+	var accounts = [account];
+
+	var messageAccount = null;
+
+	for ( a = 0; a < accounts.count; a++ )
+	{
+		var thisAccount = accounts[a];
+		if ( thisAccount["name"] == messageFrom )
+		{
+			messageAccount = thisAccount["info"];
+			break;
+		}
+	}
+
+	if ( messageAccount == null )
+	{
+		response.error("not authorised");
+	}
+
+	var baseURL		= messageAccount["baseURL"];
+	var port		= messageAccount["port"];
+	var username	= messageAccount["username"];
+	var password	= messageAccount["password"];
+	var fromVar		= messageAccount["from"];
+	var timeVar		= messageAccount["time"];
+	var messageVar	= messageAccount["message"];
+
+
+	var extURL 	= username + ":" + password + "@" + baseURL + ":" + port + "/variables/";
+
+	var fromURL = extURL + fromVar;
+	var timestampURL = extURL + timeVar;
+	var bodyURL = extURL + messageVar;
+
+	Parse.Cloud.httpRequest(
+	{
+		method: 'POST',
+		url: fromURL,
+		followRedirects: true,
+		headers:
+		{
+			'UserAgent': userAgent
+		},
+		params:
+		{
+			_method : 'put',
+			value : messageFrom
+		}
+	}).then(function(httpResponse)
+	{
+		// Success
+		response.success(httpResponse.text);
+
+	}, function(httpResponse)
+	{
+		// error
+		response.error(httpResponse.status);
+	});
+
+
+    //response.success("Success");
+});
+
+function processCurl(extURL, username, password, varName, varValue)
+{
+
+
+}
+///////////////////////////////////////
+//
+// getTwilioPhoneNumber
+//
+///////////////////////////////////////
+Parse.Cloud.define("getTwilioPhoneNumber", function(request, response)
+{
+	Parse.Cloud.useMasterKey();
+
+	response.success(twilioPhoneNumber);
+});
+
+///////////////////////////////////////
+//
+// sendCodeEmail
+//
+///////////////////////////////////////
+Parse.Cloud.define("sendCodeEmail", function(req, res) {
+	var emailAddress	= req.params.emailAddress;
+	var lang			= req.params.language;
+	var phoneNumber		= req.params.phoneNumber;
+	phoneNumber			= phoneNumber.replace(/\D/g, '');
+
+	if ( lang !== undefined && languages.indexOf(lang) != -1 )
+	{
+		language = lang;
+	}
+
+	if ( !emailAddress )
+	{
+		return res.error('Missing Email Address');
+	}
+
+	if ( !phoneNumber )
+	{
+		return res.error('Missing Phone Number');
+	}
+
+	Parse.Cloud.useMasterKey();
+
+	var query = new Parse.Query(Parse.User);
+
+	query.equalTo('email', emailAddress + "");
+	query.first().then(function(result)
+	{
+		var num = randomNumberWithNumberOfDigits(5);
+
+		//for(d = 0; d < 4; d++)
+		//{
+		//	var min = 0;
+		//	var max = 1;
+		//	var digit = Math.floor(Math.random() * (max - min + 1)) + min;
+		//
+		//	num = num + digit.toString();
+		//}
+
+		if ( result )
+		{
+			result.setUsername(phoneNumber);
+			result.setPassword(secretPasswordToken + '-' + num);
+			result.set("language", language);
+			result.save().then(function()
+			{
+				return sendCodeSms(phoneNumber, num, language);
+			}).then(function()
+			{
+				res.success("verification code sent");
+			}, function(err) {
+				res.error(err);
+			});
+		}
+		else
+		{
+			var user = new Parse.User();
+			user.setUsername(phoneNumber);
+			user.setPassword(secretPasswordToken + '-' + num);
+			user.set("language", language);
+			user.setACL({});
+			user.save().then(function(a)
+			{
+				return sendCodeSms(phoneNumber, num, language);
+			}).then(function()
+			{
+				res.success("verification code sent");
+			}, function(err)
+			{
+				res.error(err);
+			});
+		}
+	},
+	function (err)
+	{
+		res.error(err);
+	});
+});
+
+///////////////////////////////////////
+//
+// sendCode
+//
+///////////////////////////////////////
+Parse.Cloud.define("sendCode", function(req, res) {
+
+	conditionalLog(debugging, "sendCode function called")
+
+	var phoneNumber = req.params.phoneNumber;
+	phoneNumber 	= phoneNumber.replace(/\D/g, '');
+
+	conditionalLog(debugging, "phoneNumber: [" + phoneNumber + "]")
+
+	var resend		= req.params.resend;
+
+	conditionalLog(debugging, "resend: [" + resend + "]")
+
+	var lang 		= req.params.language;
+
+	conditionalLog(debugging, "lang: [" + language + "]")
+
+	if ( lang !== undefined && languages.indexOf(lang) != -1 )
+	{
+		language = lang;
+		conditionalLog(debugging,"language set to default");
+	}
+
+	if ( !phoneNumber || phoneNumber.length != 10 )
+	{
+		conditionalLog(debugging,"invalid phone number [" + phoneNumber + "]");
+		return res.error('Invalid Phone number');
+	}
+
+	Parse.Cloud.useMasterKey();
+
+	var query = new Parse.Query(Parse.User);
+
+	query.equalTo('username', phoneNumber + "");
+	query.first().then(function(result)
+	{
+		var num = randomNumberWithNumberOfDigits(5);
+		conditionalLog(debugging,"will send 5 digit verification number");
+		if ( result )
+		{
+			var expiry = result.get("alternateDeviceExpiry");
+			var isLinking = isWithinFiveMinutes(expiry);
+
+			if ( resend != null)
+			{
+				conditionalLog(debugging,"resend request");
+				isLinking = false;
+			}
+
+			if ( isLinking )
+			{
+				conditionalLog(debugging,"linking, will obtain from other device");
+				res.success("obtain verification code from existing device");
+			}
+			else
+			{
+				result.setPassword(secretPasswordToken + '-' + num);
+				result.set("language", language);
+				result.save().then(function()
+				{
+					conditionalLog(debugging,"ready to send code to phone");
+					return sendCodeSms(phoneNumber, num, language);
+				}).then(function()
+				{
+					conditionalLog(debugging,"sent code");
+					res.success("verification code sent");
+				}, function(err)
+				{
+					res.error(err);
+				})
+			};
+		} else
+		{
+			return res.error('No user found with phone number');
+		}
+	}, function (err)
+	{
+		res.error(err);
+	});
+});
