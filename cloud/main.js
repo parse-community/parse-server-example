@@ -58,7 +58,7 @@
 //////////////////////////////////////
 Parse.Cloud.define('hello', function(req, res)
 {
-  res.success('Hello my main man!');
+  res.success('I am not really dreaming of being a website, instead I am dreaming of being the back end to an app... SUCCESS!');
 });
 
 
@@ -69,7 +69,7 @@ Parse.Cloud.define('hello', function(req, res)
 ///////////////////////////////////////
 Parse.Cloud.define('status', function(request, response)
 {
-	response.success('Up, Live, Valid');
+	response.success('Up, Plateau, Valid');
 });
 
 ///////////////////////////////////////
