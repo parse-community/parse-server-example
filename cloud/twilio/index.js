@@ -1,9 +1,12 @@
 // Include Cloud Code module dependencies
-var express = require('express'),
-    twilio = require('twilio');
+var express = require('express');
+var twilio  = require('twilio');
 
 // Create an Express web app (more info: http://expressjs.com/)
 var app = express();
+
+// Serve static assets from the /public folder
+app.use('/cloud/twilio', express.static(path.join(__dirname, '/cloud/twilio')));
 
 // Create a route that will respond to am HTTP GET request with some
 // simple TwiML instructions
@@ -14,7 +17,7 @@ app.get('/hello', function(request, response) {
     // add some instructions
     twiml.say('Hello, you have called the outgoing messaging number for 4 X Q, we do not accept voice calls. If you need assistance, please use Help and Support from the menu of the app you are using. Thank you. This call is now disconnecting.', 
     {
-        voice:'woman'
+        voice:'man'
     });
 
     // Render the TwiML XML document
