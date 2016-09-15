@@ -27,8 +27,8 @@ var api = new ParseServer({
 
 var app = express();
 
-var twilio = require('twilio');
-twilio.initialize("AC31fd04d3ce8f6369308dc42d2cb16559","f20e0042726b0d9cca9e017e68d1f579");
+// var twilio = require('twilio');
+// twilio.initialize("AC31fd04d3ce8f6369308dc42d2cb16559","f20e0042726b0d9cca9e017e68d1f579");
 
 
 // Serve static assets from the /public folder
