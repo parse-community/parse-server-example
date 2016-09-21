@@ -88,6 +88,31 @@ Parse.Cloud.define("incrementFeaturedBookLike", function(request, response) {
 	});
 });
 
+Parse.Cloud.define("acceptFeaturedBooks", function(request, response) {
+	var bookQuery =new Parse.Query("PublishedBook");
+
+	var bookGuIds =request.params.bookGuIds;
+	var accept = request.params.accept;
+	bookQuery.containedIn("guid",bookGuIds);
+	bookQuery.find({
+			useMasterKey:true,
+			success: function(results) {
+				for (i=0; i < results.length; i++) {
+					var book = results[i];
+					book.set("featuredAccepted", accept);
+					if(accept){
+						book.set("featuredActive", true);
+					}
+					book.save(null, { useMasterKey: true });
+				}
+				response.success("accept FeaturedBooks: "+ results.length);
+    		},
+    		error: function() {
+    			response.error("bookGuId doesn't exist!"+request.params.bookGuId);
+    		}
+	});
+});
+
 Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 	var bookQuery =new Parse.Query("PublishedBook");
 
