@@ -93,7 +93,7 @@ Parse.Cloud.define("acceptFeaturedBooks", function(request, response) {
 
 	var bookGuIds =request.params.bookGuIds;
 	var accept = request.params.accept;
-	bookQuery.containedIn("guid",bookGuIds);
+	bookQuery.containedIn("guids",bookGuIds);
 	bookQuery.find({
 			useMasterKey:true,
 			success: function(results) {
