@@ -266,7 +266,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 	var userQuery = new Parse.Query(Parse.User);
     userQuery.equalTo("objectId", userId);
 
-    userQuery.setLimit(1)
+    userQuery.limit(1)
     userQuery.find({
     		useMasterKey:true,
     		success: function(results) {
