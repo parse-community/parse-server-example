@@ -259,3 +259,43 @@ Parse.Cloud.define("addedFriend", function(request, response) {
 		}
 	});
 });
+
+Parse.Cloud.define("updateUserStats", function(request, response) {
+
+	var userId =request.params.userId;
+	var userQuery = new Parse.Query(Parse.User);
+    userQuery.equalTo("objectId", userId);
+
+    userQuery.limit(1)
+    userQuery.find({
+    		useMasterKey:true,
+    		success: function(results) {
+    			var user = results[0];
+				var bookQuery =new Parse.Query("PublishedBook");
+				bookQuery.equalTo("owner",user);
+				bookQuery.find({
+						useMasterKey:true,
+						success: function(results) {
+							var totalReads = 0;
+							var totalLikes = 0;
+							for (i=0; i < results.length; i++) {
+								var book = results[i];
+								totalReads += book.get("playedTimes");
+								totalLikes += book.get("likedTimes");
+							}
+							user.set("totalReadsByOthers", totalReads);
+							user.set("totalLikesByOthers", totalLikes);
+							user.set("totalScore", totalReads+totalLikes)
+							user.save(null, { useMasterKey: true });
+							response.success("user stats updated: reads="+ totalReads +", likes=" +totalLikes);
+						},
+						error: function() {
+							response.error("No book found for user " + userId);
+						}
+				});
+    		},
+    		error: function() {
+    			response.error("User doesn't exist! "+ userId);
+    		}
+    	});
+});
