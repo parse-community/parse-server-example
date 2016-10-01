@@ -33,6 +33,11 @@ Steps.fillStepOutput  = function(id, data) {
   $(id).html('Output: ' + data).slideDown();
 }
 
+Steps.fillStepError  = function(id, errorMsg) {
+  $(id).html(errorMsg).slideDown();
+}
+
+
 Steps.fillBtn  = function(id, message) {
   $(id).addClass('success').html('✓  ' + message);
 }
@@ -62,9 +67,12 @@ ParseRequest.postData = function() {
       ParseRequest.getData();
       e.preventDefault();
     });
-  });
+  },
+  function(error) {
+       Steps.fillStepError('#step-1-error', 'There was a failure: ' + error);
+   });
   XHR.POST('/parse/classes/GameScore');
-}
+};
 
 ParseRequest.getData = function() {
   XHR.setCallback(function(data){
@@ -77,10 +85,13 @@ ParseRequest.getData = function() {
     Steps.bindBtn('#step-3-btn', function(e){
       ParseRequest.postCloudCodeData();
       e.preventDefault();
-    })
-  });
+      });
+    },
+    function(error) {
+    	Steps.fillStepError('#step-2-error', 'There was a failure: ' + error);
+  });  
   XHR.GET('/parse/classes/GameScore');
-}
+};
 
 ParseRequest.postCloudCodeData = function() {
   XHR.setCallback(function(data){
@@ -90,7 +101,10 @@ ParseRequest.postCloudCodeData = function() {
     Steps.fillBtn('#step-3-btn', 'Tested');
     // open third step
     Steps.showWorkingMessage();
-  });
+    },
+    function(error) {
+    	Steps.fillStepError('#step-3-error', 'There was a failure: ' + error);
+    });  
   XHR.POST('/parse/functions/hello');
 }
 
@@ -120,12 +134,16 @@ Config.getUrl = function() {
 
 var XHR = {}
 
-XHR.setCallback = function(callback) {
+XHR.setCallback = function(callback, failureCallback) {
   this.xhttp = new XMLHttpRequest();
   var _self = this;
   this.xhttp.onreadystatechange = function() {
-    if (_self.xhttp.readyState == 4 && _self.xhttp.status >= 200 && _self.xhttp.status <= 299) {
-      callback(_self.xhttp.responseText);
+    if (_self.xhttp.readyState == 4) {
+      if (_self.xhttp.status >= 200 && _self.xhttp.status <= 299) {
+        callback(_self.xhttp.responseText);
+      } else {
+        failureCallback(_self.xhttp.responseText);
+      }
     }
   };
 }
