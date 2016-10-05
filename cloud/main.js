@@ -280,12 +280,12 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 							var totalLikes = 0;
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
-								totalReads += book.get("playedTimes");
-								totalLikes += book.get("likedTimes");
+								totalReads += book.get("playedTimes") || 0;
+								totalLikes += book.get("likedTimes") || 0;
 							}
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
-							user.set("totalScore", totalReads+totalLikes)
+							user.set("totalScore", totalReads + totalLikes * 5)
 							user.save(null, { useMasterKey: true });
 							response.success("user stats updated: reads="+ totalReads +", likes=" +totalLikes);
 						},
