@@ -40,8 +40,8 @@ const dashboard = new ParseDashboard({
   ],
   "users": [
      {
-       "user": username,
-       "pass": password
+       "user": "username",
+       "pass": "password"
      }
    ]
 }, true);
