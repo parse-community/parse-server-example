@@ -39,7 +39,7 @@ const dashboard = new ParseDashboard({
       "masterKey": process.env.MASTER_KEY || '',
       "appName": process.env.APP_NAME,
       "user": "username",
-      "pass": process.env.PARSE_DASHBOARD_ADMIN_PASSWORD || "password"
+      "pass": process.env.PARSE_DASHBOARD_ADMIN_PASSWORD || "password",
       "production": true
     }
   ],
