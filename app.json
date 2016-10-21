@@ -11,15 +11,15 @@
     },
     "APP_ID": {
       "description": "A unique identifier for your app.",
-      "value": "myAppId"
+      "value": "032815f9-ebd2-49c5-9639-5a8722277339"
     },
     "MASTER_KEY": {
       "description": "A key that overrides all permissions. Keep this secret.",
-      "value": "myMasterKey"
+      "value": "aecca40f-732c-4aef-a2e2-25bca2c80c43"
     },
     "SERVER_URL": {
       "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
-      "value": "http://yourappname.herokuapp.com/parse"
+      "value": "http://goobzy-migrate.herokuapp.com/parse"
     }
   },
   "image": "heroku/nodejs",
