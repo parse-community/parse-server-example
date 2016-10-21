@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Goobzy Test</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-git2.min.js"></script>
+    <script type="text/javascript" src="https://parse.com/downloads/javascript/parse-1.2.18.js"></script>
+    <script type="text/javascript">
+      Parse.initialize("WsUm1i8wVx37JEQKYFtK8YGEKCcP87gxMmf23G9b", "RSNsfPT06k29Fqd9ow20HIo0nieCCY55jKIyunLi");
+    </script>
+  </head>
+  <body>
+  <div>
+      <h1>Log In (parse)</h1>
+      <div>
+          <form method="post" action="login">
+              user: <input id="loginUsername" name="username" type="text"> <br />
+              pass: <input id="loginPassword" name="password" type="password">
+              <input type="submit" />
+
+          </form>
+      </div>
+  </div>
+  <div>
+      <h1>Register (parse)</h1>
+      <div>
+          <form method="post" action="register">
+              user: <input id="registerUsername" name="username" type="text"> <br />
+              pass: <input id="registerPassword" name="password" type="password">
+              <input type="submit" />
+
+          </form>
+      </div>
+  </div>
+  </body>
+</html>
