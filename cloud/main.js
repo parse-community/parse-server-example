@@ -18,9 +18,9 @@ Parse.Cloud.define("testPush", function(request, response) {
 });
   
 // Prevent adding user to a game they've already joined
-var User_Game = Parse.Object.extend("User_Game");
+// var User_Game = Parse.Object.extend("User_Game");
 Parse.Cloud.beforeSave("User_Game", function(request, response) {
-   var query = new Parse.Query(User_Game);
+   var query = new Parse.Query("User_Game");
    query.equalTo("gameId", request.object.get("gameId"));
    query.equalTo("profileId", request.object.get("profileId"));
   
@@ -44,7 +44,7 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
   
   // Make sure the joined players attribute on Game object matches number of
   // players joined in User_Game
-  var query = new Parse.Query(User_Game);
+  var query = new Parse.Query("User_Game");
   query.equalTo("gameId", gameId);
   query.count({
     success: function(count) {
