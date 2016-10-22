@@ -137,6 +137,26 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 	});
 });
 
+Parse.Cloud.define("addBookVideoLink", function(request, response) {
+	var bookQuery =new Parse.Query("PublishedBook");
+	var bookRemoteId =request.params.bookRemoteId;
+	var videoLink = request.params.videoLink;
+	bookQuery.equalTo("objectId",bookRemoteId);
+	bookQuery.limit(1);
+	bookQuery.find({
+			useMasterKey:true,
+			success: function(results) {
+    		  	var book = results[0];
+    		  	book.set("videoLink", bookQuery);
+    		  	book.save(null, { useMasterKey: true });
+				response.success("update book: "+  book.get("title")+ " -  videoLink = " + book.get("videoLink");
+    		},
+    		error: function() {
+    			response.error("bookGuId doesn't exist!"+request.params.bookGuId);
+    		}
+	});
+});
+
 Parse.Cloud.define("transferFeatureBookStats", function(request, response) {
 	var query = new Parse.Query("FeaturedBook");
 	query.include("book");
