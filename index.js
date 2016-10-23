@@ -17,7 +17,7 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'HamrD3OpwqZ7rpqNYCVCvWiFkhy8LpQGrrdcxTvE',
   fileKey: process.env.FILE_KEY || '4a9cb07d-450b-4323-aaee-3d60319a5695',
   masterKey: process.env.MASTER_KEY || 'bVH8zxxRM7EMNALMKqIdBTf5XUd7S6txfWy6ogPE', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  serverURL: process.env.SERVER_URL || 'https://www.parseserverreccheck.herokuapp.com/',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
