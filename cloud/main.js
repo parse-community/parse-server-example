@@ -33,7 +33,7 @@ Parse.Cloud.beforeSave("User_Game", function(request, response) {
        }
      },
      error: function(error) {
-        response.error("Could not validate uniqueness for this User_Game object: " + error);
+        response.error("Could not validate uniqueness for this User_Game object: " + error.message);
      }
   });
 });
