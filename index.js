@@ -5,6 +5,11 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var ParseDashboard = require('parse-dashboard');
 var path = require('path');
+var OneSignalPushAdapter = require('parse-server-onesignal-push-adapter');
+var oneSignalPushAdapter = new OneSignalPushAdapter({
+  oneSignalAppId: process.env.ONE_SIGNAL_APP_ID || "your-one-signal-app-id",
+  oneSignalApiKey: process.env.ONE_SIGNAL_API_KEY || "your-one-signal-api-key"
+});
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
@@ -22,6 +27,9 @@ var api = new ParseServer({
   fileKey: process.env.FILE_KEY || '',
   javascriptKey: process.env.JAVASCRIPT_API_KEY || '',
   restKey: process.env.REST_API_KEY || '',
+  push: {
+    adapter: oneSignalPushAdapter
+  },
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   },
