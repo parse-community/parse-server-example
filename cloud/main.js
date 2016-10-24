@@ -139,9 +139,9 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 
 Parse.Cloud.define("addBookVideoLink", function(request, response) {
 	var bookQuery =new Parse.Query("PublishedBook");
-	var bookRemoteId =request.params.bookRemoteId;
+	var bookGuId =request.params.bookGuId;
 	var videoLink = request.params.videoLink;
-	bookQuery.equalTo("objectId",bookRemoteId);
+	bookQuery.equalTo("guid",bookGuId);
 	bookQuery.limit(1);
 	bookQuery.find({
 			useMasterKey:true,
