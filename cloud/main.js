@@ -147,7 +147,7 @@ Parse.Cloud.define("addBookVideoLink", function(request, response) {
 			useMasterKey:true,
 			success: function(results) {
     		  	var book = results[0];
-    		  	book.set("videoLink", bookQuery);
+    		  	book.set("videoLink", videoLink);
     		  	book.save(null, { useMasterKey: true });
 				response.success("update book: "+  book.get("title")+ " -  videoLink = " + book.get("videoLink"));
     		},
