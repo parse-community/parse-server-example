@@ -149,7 +149,7 @@ Parse.Cloud.define("addBookVideoLink", function(request, response) {
     		  	var book = results[0];
     		  	book.set("videoLink", bookQuery);
     		  	book.save(null, { useMasterKey: true });
-				response.success("update book: "+  book.get("title")+ " -  videoLink = " + book.get("videoLink");
+				response.success("update book: "+  book.get("title")+ " -  videoLink = " + book.get("videoLink"));
     		},
     		error: function() {
     			response.error("bookGuId doesn't exist!"+request.params.bookGuId);
