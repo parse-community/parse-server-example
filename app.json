@@ -5,6 +5,10 @@
   "logo": "https://avatars0.githubusercontent.com/u/1294580?v=3&s=200",
   "keywords": ["node", "express", "parse"],
   "env": {
+    "APP_NAME": {
+      "description": "Configure Parse APP Name.",
+      "value": "My App"
+    },
     "PARSE_MOUNT": {
       "description": "Configure Parse API route.",
       "value": "/parse"
@@ -20,6 +24,38 @@
     "SERVER_URL": {
       "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
       "value": "http://yourappname.herokuapp.com/parse"
+    },
+    "CLIENT_KEY": {
+      "description": "Optional from parse installation",
+      "value": "myClientKey"
+    },
+    "GCM_API_KEY": {
+      "description": "Optional, GCM API Key",
+      "value": ""
+    },
+    "GCM_SENDER_ID": {
+      "description": "Optional, GCM API Key project id installation",
+      "value": ""
+    },
+    "PARSE_DASHBOARD_ADMIN_USERNAME": {
+      "description": "Parse dashboard, username",
+      "value": "username"
+    },
+    "PARSE_DASHBOARD_ADMIN_PASSWORD": {
+      "description": "Parse dashboard, password",
+      "value": "password"
+    },
+    "REST_API_KEY": {
+      "description": "Optional from parse installation",
+      "value": "myRestApiKey"
+    },
+    "ONE_SIGNAL_APP_ID": {
+      "description": "Optional from parse installation",
+      "value": "myRestApiKey"
+    },
+    "ONE_SIGNAL_API_KEY": {
+      "description": "Optional from parse installation",
+      "value": "myRestApiKey"
     }
   },
   "image": "heroku/nodejs",
