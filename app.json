@@ -1,7 +1,7 @@
 {
-  "name": "Parse Server Example",
-  "description": "An example Parse API server using the parse-server module",
-  "repository": "https://github.com/ParsePlatform/parse-server-example",
+  "name": "Single Parse Server Deployment",
+  "description": "An example Parse API server using the parse-server,parse-dashboard modules",
+  "repository": "https://github.com/codenpk/parse-server-example",
   "logo": "https://avatars0.githubusercontent.com/u/1294580?v=3&s=200",
   "keywords": ["node", "express", "parse"],
   "env": {
@@ -51,11 +51,11 @@
     },
     "ONE_SIGNAL_APP_ID": {
       "description": "Optional from parse installation",
-      "value": "myRestApiKey"
+      "value": ""
     },
     "ONE_SIGNAL_API_KEY": {
       "description": "Optional from parse installation",
-      "value": "myRestApiKey"
+      "value": ""
     }
   },
   "image": "heroku/nodejs",
