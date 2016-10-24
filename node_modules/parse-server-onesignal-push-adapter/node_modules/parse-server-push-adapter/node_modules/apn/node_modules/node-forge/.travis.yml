@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "4"
+  - "6"
+  - "node"
+sudo: false
+install: (cd nodejs && npm install)
+script:
+  - (cd nodejs && npm test)
+notifications:
+  email:
+    on_success: change
+    on_failure: change

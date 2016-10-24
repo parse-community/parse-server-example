@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- '4.1'
+- '0.12'
+- '0.10'
+- '0.8'
+- iojs
+before_install:
+- npm install -g npm@2.7.3
+after_success:
+- npm install -g istanbul
+- npm install coveralls
+- istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R spec
+- ./node_modules/.bin/coveralls < ./coverage/lcov.info
+- rm -rf ./coverage
+deploy:
+  provider: npm
+  email: argon@mkbot.net
+  api_key:
+    secure: gs5H2MwW+AInpILDEmSsVWevzrMBapNHBJS/rvmHP9AtFnj0W5HE619F1duDZwhpwV/e6vdbo6xCWnxc+egR7gciW3OQrggsXSaKeWDFcJ9oNFvOsxKePOxk62fBjeSRD3LSPGyrv3XhmE4sm/6x4gCf4ZbzbYqvvOCvADCqJzA=
+  on:
+    tags: true
+    node: '4.1'
