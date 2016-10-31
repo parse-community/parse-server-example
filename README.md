@@ -25,7 +25,7 @@ To change the version of node or npm used on the web app, modify the `engines` p
 ### Troubleshooting
 
 Logging specific parse-server configuration:
-* Verbose parse-server logging: `verbose: 'true'`
+* Verbose parse-server logging: add an app setting to your web app 'VERBOSE' equal to 'true', or add to your server configuration `verbose: 'true'`
 * Database driver logging (very verbose!): add `require('mongodb-core/lib/connection/logger')('dummy', { loggerLevel: 'debug' });` before you initialize parse server
 
 To see your logs, check:
