@@ -291,9 +291,9 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
     		useMasterKey:true,
     		success: function(results) {
     			var user = results[0];
-    			var totalAppUseTime = user.get("timePlayedTotal") || 0;
-                if(totalAppUseTime > 6000) {
-                		totalAppUseTime = 6000 + (totalAppUseTime - 6000)/10;
+    			var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
+                if(totalAppUseTimeScore > 500) {
+                		totalAppUseTimeScore = 500 + (totalAppUseTimeScore - 500)/10;
                 }
 
 				var bookQuery =new Parse.Query("PublishedBook");
@@ -309,7 +309,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 								totalReads += book.get("playedTimes") || 0;
 								totalLikes += book.get("likedTimes") || 0;
 							}
-							var totalScore = totalReads * 10 + totalLikes * 50 + totalAppUseTime;
+							var totalScore = totalReads * 10 + totalLikes * 50 + totalAppUseTimeScore;
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
 							user.set("totalScore", totalScore )
@@ -317,9 +317,9 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 							response.success(totalScore);
 						},
 						error: function() {
-                            user.set("totalScore", totalAppUseTime )
+                            user.set("totalScore", totalAppUseTimeScore )
                             user.save(null, { useMasterKey: true });
-                            response.success(totalAppUseTime);
+                            response.success(totalAppUseTimeScore);
 						}
 				});
     		},
