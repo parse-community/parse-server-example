@@ -291,6 +291,11 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
     		useMasterKey:true,
     		success: function(results) {
     			var user = results[0];
+    			var totalAppUseTime = user.get("timePlayedTotal") || 0;
+                if(totalAppUseTime > 6000) {
+                		totalAppUseTime = 6000 + (totalAppUseTime - 6000)/10;
+                }
+
 				var bookQuery =new Parse.Query("PublishedBook");
 				bookQuery.equalTo("owner",user);
 				bookQuery.find({
@@ -298,19 +303,23 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 						success: function(results) {
 							var totalReads = 0;
 							var totalLikes = 0;
+
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
 								totalReads += book.get("playedTimes") || 0;
 								totalLikes += book.get("likedTimes") || 0;
 							}
+							var totalScore = totalReads * 10 + totalLikes * 50 + totalAppUseTime;
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
-							user.set("totalScore", totalReads + totalLikes * 5)
+							user.set("totalScore", totalScore )
 							user.save(null, { useMasterKey: true });
-							response.success("user stats updated: reads="+ totalReads +", likes=" +totalLikes);
+							response.success(totalScore);
 						},
 						error: function() {
-							response.error("No book found for user " + userId);
+                            user.set("totalScore", totalAppUseTime )
+                            user.save(null, { useMasterKey: true });
+                            response.success(totalAppUseTime);
 						}
 				});
     		},
