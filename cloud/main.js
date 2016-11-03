@@ -13,30 +13,6 @@ var social = require("./social.js");
 
 var message = require('./message.js');
 
-Parse.Cloud.define("get_message", function(request, response) {
-  message.getMessage(request, response);
-});
-
-//Parse.Cloud.job("userInfo", function(request, status) {
-//  Parse.Cloud.useMasterKey();
-//  var query = new Parse.Query(Parse.User);
-//  query.each(function(user) {
-//    Parse.Cloud.httpRequest({
-//        url: 'http://graph.facebook.com/' + user.get("authData").facebook.id,
-//        params: {
-//            'access_token': user.get("authData").facebook.auth_token
-//        },
-//        success: function(httpResponse) {
-//            console.log(httpResponse.text);
-//        },
-//        error: function(httpResponse) {
-//            console.error("Failed to call 'https://graph.facebook.com/" + user.get('authData').facebook.id + "' with status: " + httpResponse.status);
-//        }
-//    });
-//  });
-//
-//});
-
 Parse.Cloud.define("nearLocation", function(request, response) {
   var lat = request.params.latitude;
   var lng = request.params.longitude;
@@ -47,6 +23,8 @@ Parse.Cloud.define("nearLocation", function(request, response) {
     response.success(results);
   });
 
+}, function(req) {
+  return req.params.latitude != null && req.params.longitude != null;
 });
 
 var photoMixSort = function(o1, o2) {
@@ -55,7 +33,7 @@ var photoMixSort = function(o1, o2) {
   var o2Val = o2.get("lastPhotoMixResponse");
   if (o2Val == null) o2Val = 0;
   return o1Val - o2Val;
-}
+};
 
 var shuffle = function(array) {
   var currentIndex = array.length, temporaryValue, randomIndex ;
@@ -74,7 +52,7 @@ var shuffle = function(array) {
   }
 
   return array;
-}
+};
 
 var photoMix = function(request, response) {
 

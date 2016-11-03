@@ -12,7 +12,7 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "~2.2.12",
+    "parse-server": "~2.2.22",
     "fbgraph": "1.2.0",
     "moment": "~2.10.6",
     "moment-timezone": "~0.4.0",

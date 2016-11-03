@@ -63,7 +63,7 @@ Parse.Cloud.beforeSave(className, function(request, response) {
           response.success();
         } else {
           console.log("Found duplicate: " + ct.id);
-          response.error();
+          response.error("Duplicate: " + JSON.stringify(request.object));
         }
       },
       error: function(error) {
