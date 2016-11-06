@@ -459,7 +459,7 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 
 ///////////////////////////////////////
 //
-// getUnreadMessageCount
+// getMessageCount
 //
 ///////////////////////////////////////
 Parse.Cloud.define('getMessageCount', function(request, response)
@@ -530,6 +530,45 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 	});
 });
 
+
+///////////////////////////////////////
+//
+// logIn
+//
+///////////////////////////////////////
+Parse.Cloud.define('userLogin', function(req, res) 
+{
+	Parse.Cloud.useMasterKey();
+
+	// User Service Token
+	var userServiceToken	= process.env.USER_SERVICE_TOKEN;
+	
+	// Phone Number
+	var phoneNumber		= req.params.phoneNumber;
+	phoneNumber		= phoneNumber.replace(/\D/g, '');
+
+	// Verification Code
+	var verificationCode	= req.params.verificationCode;
+	verificationCode 	= verificationCode.replace(/\D/g, '');
+
+	if (!phoneNumber || phoneNumber.length != 10)
+	{
+		return res.error('Phone Number missing or invalid length');
+	}
+
+	if (!verificationCode || verificationCode.length < 4 || verificationCode.length > 6)
+	{
+		return res.error('Verification Code missing or invalid length');
+	}
+	Parse.User.logIn(phoneNumber, userServiceToken + '-' + verificationCode).then(function (user)
+	{
+		res.success(user.getSessionToken());
+	}
+	,function (err)
+	{
+		res.error(err);
+	});
+});
 
 ///////////////////////////////////////
 //
