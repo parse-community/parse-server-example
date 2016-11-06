@@ -107,3 +107,32 @@ Parse.Cloud.define('barberIdForBarberName', function(request, response)
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// canReplyToUserWithId
+//
+///////////////////////////////////////
+Parse.Cloud.define('canReplyToUserWithId', function(request, response)
+{
+	var User = Parse.Object.extend('_User');
+	var query = new Parse.Query(User);
+	query.equalTo('objectId', request.params.userId);
+	query.get(
+	{
+		success: function(result)
+		{
+			var canReply = result.get('allowsMessages');
+			if ( canReply == null )
+			{
+				canReply = false;
+			}
+			response.success(canReply);
+		},
+		error: function(error)
+		{
+			response.error('user lookup failed');
+		}
+	});
+});
