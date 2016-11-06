@@ -371,12 +371,12 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 	// Unread Messages
 	var query = new Parse.Query('Messages');
 	var recipientID = request.params.installId;
-
-	console.log('Getting Unread Messages Count for recipient [' . recipientID . ']');
-
 	query.equalTo('recipientID', recipientID);
 	query.doesNotExist('readAt');
-	query.get(
+	
+	console.log('Getting Unread Messages Count for recipient [' . recipientID . ']');
+
+	query.find(
 	{
 		success: function(results)
 		{
