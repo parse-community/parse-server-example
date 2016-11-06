@@ -418,3 +418,44 @@ Parse.Cloud.define('getMessageCount', function(request, response)
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// loginUser
+//
+///////////////////////////////////////
+Parse.Cloud.define('loginUser', function(req, res) 
+{
+	Parse.Cloud.useMasterKey();
+
+	// Phone Number
+	var phoneNumber		= req.params.phoneNumber;
+	phoneNumber		= phoneNumber.replace(/\D/g, '');
+
+	// Verification Code
+	var verificationCode 	= req.params.verificationCode;
+	verificationCode 	= verificationCode.replace(/\D/g, '');
+
+	// User Service Token
+	var userServiceToken	= process.env.USER_SERVICE_TOKEN;
+	
+	if (!phoneNumber || phoneNumber.length != 10)
+	{
+		return res.error('Phone Number missing or invalid length');
+	}
+
+	if (!verificationCode || verificationCode.length < 4 || verificationCode.length > 6)
+	{
+		return res.error('Verification Code missing or invalid length');
+	}
+
+	Parse.User.logIn(phoneNumber, userServiceToken + '-' + verificationCode).then(function (user)
+	{
+		res.success(user.getSessionToken());
+	}
+	,function (error)
+	{
+		res.error(error);
+	});
+});
