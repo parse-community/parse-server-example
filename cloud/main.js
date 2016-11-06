@@ -359,3 +359,34 @@ Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// getUnreadMessageCount
+//
+///////////////////////////////////////
+Parse.Cloud.define('getUnreadMessageCount', function(request, response)
+{
+	// Unread Messages
+	var query = new Parse.Query('Messages');
+	var recipientID = request.params.installId;
+
+	console.log('Getting Unread Messages Count for recipient [' . recipientID . ']');
+
+	query.equalTo('recipientID', recipientID);
+	query.doesNotExist('readAt');
+	query.get(
+	{
+		success: function(results)
+		{
+			console.log('SUCCESS: ' . results.count);
+			response.success(results.count);
+		},
+		error: function(error)
+		{
+			console.log('ERROR: ' . error);
+			response.error('unable to get unread messages: ' . error);
+		}
+	});
+});
