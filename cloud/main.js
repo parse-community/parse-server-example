@@ -170,3 +170,40 @@ Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, r
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// nameForUserWithObjectId
+//
+///////////////////////////////////////
+Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
+{
+	var User = Parse.Object.extend('_User')
+	var query = new Parse.Query(User);
+	query.get(request.params.objectId,
+	{
+		success: function(object)
+		{
+			// object is an instance of Parse.Object.
+			var firstName = object.get('firstName');
+			if ( firstName == null )
+			{
+				firstName = '';
+			}
+			var lastName = object.get('lastName');
+			if ( lastName == null )
+			{
+				lastName = '';
+			}
+			var fullName = firstName.trim() + ' ' + lastName.trim();
+
+			response.success(fullName.trim());
+		},
+		error: function(error)
+		{
+			// error is an instance of Parse.Error.
+			response.error('unable to get user with object id: ' . error);
+		}
+	});
+});
