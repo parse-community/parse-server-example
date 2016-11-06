@@ -101,9 +101,9 @@ Parse.Cloud.define('barberIdForBarberName', function(request, response)
 				response.error('no barbers found with that name');
 			}
 		},
-		error: function()
+		error: function(error)
 		{
-			response.error('barber name lookup failed');
+			response.error('barber name lookup failed: ' . error);
 		}
 	});
 });
