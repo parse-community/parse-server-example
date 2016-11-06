@@ -373,7 +373,7 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 	query.equalTo('recipientID', request.params.installId);
 	query.doesNotExist('readAt');
 	
-	console.log('Getting Unread Messages Count for recipient [' . request.params.installId . ']');
+	console.log('Getting Unread Messages Count for recipient [' + request.params.installId + ']');
 
 	query.find(
 	{
@@ -385,7 +385,7 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 		error: function(error)
 		{
 			console.log('ERROR: ');
-			response.error('unable to get unread messages: ' . error);
+			response.error('unable to get unread messages: ' + error);
 		}
 	});
 });
