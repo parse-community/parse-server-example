@@ -373,18 +373,18 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 	query.equalTo('recipientID', request.params.installId);
 	query.doesNotExist('readAt');
 	
-	console.log('Getting Unread Messages Count for recipient [' + request.params.installId + ']');
+	conditionalLog('Getting Unread Messages Count for recipient [' + request.params.installId + ']');
 
 	query.find(
 	{
 		success: function(results)
 		{
-			console.log('SUCCESS: ');
+			conditionalLog('SUCCESS: ');
 			response.success(results.count);
 		},
 		error: function(error)
 		{
-			console.log('ERROR: ');
+			conditionalLog('ERROR: ');
 			response.error('unable to get unread messages: ' + error);
 		}
 	});
@@ -402,18 +402,18 @@ Parse.Cloud.define('getMessageCount', function(request, response)
 	var query = new Parse.Query('Messages');
 	query.equalTo('recipientID', request.params.installId);
 	
-	console.log('Getting Messages Count for recipient [' + request.params.installId + ']');
+	conditionalLog('Getting Messages Count for recipient [' + request.params.installId + ']');
 
 	query.find(
 	{
 		success: function(results)
 		{
-			console.log('SUCCESS: ');
+			conditionalLog('SUCCESS: ');
 			response.success(results.count);
 		},
 		error: function(error)
 		{
-			console.log('ERROR: ');
+			conditionalLog('ERROR: ');
 			response.error('unable to get messages: ' + error);
 		}
 	});
@@ -479,18 +479,18 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 	{
 		success: function(results)
 		{
-			console.log('Testing Converting');
-			console.log('found: ' + results.length);
+			conditionalLog('Testing Converting');
+			conditionalLog('found: ' + results.length);
 			if ( results.length == 0 )
 			{
 				response.success('no messages to convert');
-				//console.log('none to convert');
+				//conditionalLog('none to convert');
 			}
 			else
 			{
 				for ( m = 0; m < results.length; m++ )
 				{
-					//console.log(results[m].objectId);
+					//conditionalLog(results[m].objectId);
 					if ( m == 0 )
 					{
 						results[m].set('userID', userId);
@@ -509,3 +509,18 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// conditionalLog - not public
+//
+///////////////////////////////////////
+function conditionalLog(logText)
+{
+	var doLog = env.process.DEBUG_LOG
+	if ( doLog == True || doLog == "True" )
+	{
+		console.log(logText);
+	}
+}
