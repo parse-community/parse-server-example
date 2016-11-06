@@ -292,3 +292,38 @@ Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, respons
 		}
 	});
 });
+
+///////////////////////////////////////
+//
+// servicesForBarberId
+//
+///////////////////////////////////////
+Parse.Cloud.define('servicesForBarberId', function(request, response)
+{
+	var query = new Parse.Query('Barbers');
+	query.equalTo('objectId', request.params.barber);
+	query.find( 
+	{
+		success: function(results)
+		{
+			var relation = results[0].get('services');
+			var relationQuery = relation.query;
+			relationQuery.equalTo('isActive', true);
+			relationQuery.find( 
+			{
+				success: function(results)
+				{
+					response.success(results);
+				},
+				error: function(error)
+				{
+					response.error('services lookup failed: ' . error);
+				}
+			});
+		},
+		error: function(error2)
+		{
+			response.error('barber lookup failed ' . error2);
+		}
+	});
+});
