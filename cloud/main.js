@@ -136,3 +136,37 @@ Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 		}
 	});
 });
+
+
+///////////////////////////////////////
+//
+// doesMessageToUserWithNoRepeatHashExist
+//
+///////////////////////////////////////
+Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, response)
+{
+	var userId = request.params.userId;
+	var nrHash = request.params.noRepeat;
+
+	var query = new Parse.Query('Messages');
+	query.equalTo('userID', request.params.userId);
+	query.equalTo('noRepeat', request.params.noRepeat);
+	query.find(
+	{
+		success: function(results)
+		{
+			if ( results.length == 0 )
+			{
+				response.success(false);
+			}
+			else
+			{
+				response.success(true);
+			}
+		},
+		error: function(error)
+		{
+			response.error('message lookup failed: ' . error);
+		}
+	});
+});
