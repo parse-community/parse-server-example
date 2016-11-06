@@ -459,3 +459,53 @@ Parse.Cloud.define('loginUser', function(req, res)
 		res.error(error);
 	});
 });
+
+
+///////////////////////////////////////
+//
+// convertMessagesFromDeviceToUser
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response)
+{
+	// All Messages
+	var installId = request.params.installId;
+	var userId = request.params.userId;
+
+	var query = new Parse.Query('Messages');
+	query.equalTo('recipientID', installId);
+	query.doesNotExist('userID');
+	query.find(
+	{
+		success: function(results)
+		{
+			console.log('Testing Converting');
+			console.log('found: ' + results.length);
+			if ( results.length == 0 )
+			{
+				response.success('no messages to convert');
+				//console.log('none to convert');
+			}
+			else
+			{
+				for ( m = 0; m < results.length; m++ )
+				{
+					//console.log(results[m].objectId);
+					if ( m == 0 )
+					{
+						results[m].set('userID', userId);
+						results[m].save();
+					}
+				}
+				var count = results.length;
+				var countStr  = count.toString();
+				var reply = 'converted ' + countStr + ' messages';
+				response.success(reply);
+			}
+		},
+		error: function(error)
+		{
+			response.error('unable to convert messages ' + error);
+		}
+	});
+});
