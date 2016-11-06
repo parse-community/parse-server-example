@@ -103,7 +103,7 @@ Parse.Cloud.define('barberIdForBarberName', function(request, response)
 		},
 		error: function(error)
 		{
-			response.error('barber name lookup failed: ' . error);
+			response.error('barber name lookup failed: ' + error);
 		}
 	});
 });
@@ -166,7 +166,7 @@ Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, r
 		},
 		error: function(error)
 		{
-			response.error('message lookup failed: ' . error);
+			response.error('message lookup failed: ' + error);
 		}
 	});
 });
@@ -203,7 +203,7 @@ Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
 		error: function(error)
 		{
 			// error is an instance of Parse.Error.
-			response.error('unable to get user with object id: ' . error);
+			response.error('unable to get user with object id: ' + error);
 		}
 	});
 });
@@ -256,7 +256,7 @@ Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, res
 		},
 		error: function(error)
 		{
-			response.error('service name lookup failed: ' . error);
+			response.error('service name lookup failed: ' + error);
 		}
 	});
 });
@@ -288,7 +288,7 @@ Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, respons
 		},
 		error: function(error)
 		{
-			response.error('service id replacement lookup failed: ' . error);
+			response.error('service id replacement lookup failed: ' + error);
 		}
 	});
 });
@@ -317,13 +317,13 @@ Parse.Cloud.define('servicesForBarberId', function(request, response)
 				},
 				error: function(error)
 				{
-					response.error('services lookup failed: ' . error);
+					response.error('services lookup failed: ' + error);
 				}
 			});
 		},
 		error: function(error2)
 		{
-			response.error('barber lookup failed ' . error2);
+			response.error('barber lookup failed ' + error2);
 		}
 	});
 });
@@ -386,6 +386,35 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 		{
 			console.log('ERROR: ');
 			response.error('unable to get unread messages: ' + error);
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
+// getMessageCount
+//
+///////////////////////////////////////
+Parse.Cloud.define('getMessageCount', function(request, response)
+{
+	// Unread Messages
+	var query = new Parse.Query('Messages');
+	query.equalTo('recipientID', request.params.installId);
+	
+	console.log('Getting Messages Count for recipient [' + request.params.installId + ']');
+
+	query.find(
+	{
+		success: function(results)
+		{
+			console.log('SUCCESS: ');
+			response.success(results.count);
+		},
+		error: function(error)
+		{
+			console.log('ERROR: ');
+			response.error('unable to get messages: ' + error);
 		}
 	});
 });
