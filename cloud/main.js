@@ -459,6 +459,30 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 
 ///////////////////////////////////////
 //
+// getUnreadMessageCount
+//
+///////////////////////////////////////
+Parse.Cloud.define('getMessageCount', function(request, response)
+{
+	// Messages
+	var query = new Parse.Query('Messages');
+	query.equalTo('recipientID', request.params.installId);
+	query.get(
+	{
+		success: function(result)
+		{
+			response.success(result.count);
+		},
+		error: function()
+		{
+			response.error('unable to get messages');
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
 // convertMessagesFromDeviceToUser
 //
 ///////////////////////////////////////
