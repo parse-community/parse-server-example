@@ -207,3 +207,56 @@ Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
 		}
 	});
 });
+
+///////////////////////////////////////
+//
+// serviceIdForBarberNameAndServiceName
+//
+///////////////////////////////////////
+Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, response)
+{
+	var query = new Parse.Query('Services');
+	query.equalTo('barberName', request.params.barberName);
+	query.equalTo('serviceName', request.params.serviceName);
+	query.find(
+	{
+		success: function(results)
+		{
+			if ( results.length == 1 )
+			{
+				var service = results[0];
+				var isActive = service.get('isActive');
+				var serviceId = '';
+				if ( isActive == true )
+				{
+					serviceId = service.id;
+				}
+				else
+				{
+					var replacement = service.get('replacement');
+					if ( replacement != null )
+					{
+						serviceId = replacement.id;
+					}
+					else
+					{
+						serviceId = null;
+					}
+				}
+				response.success(serviceId);
+			}
+			else if ( results.length > 1 )
+			{
+				response.error('more than one service found');
+			}
+			else
+			{
+				response.error('no services found for barber name and service name');
+			}
+		},
+		error: function(error)
+		{
+			response.error('service name lookup failed: ' . error);
+		}
+	});
+});
