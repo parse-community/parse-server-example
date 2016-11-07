@@ -552,10 +552,6 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	
 	console.log('2');
 	
-	var tLen = userServiceToken.length;
-	
-	console.log('Service Token Length: ' + tLen);
-	
 	var emailAddress = request.params.emailAddress;
 	var phoneNumber  = request.params.phoneNumber;
 	
@@ -570,6 +566,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	{
 		success: function(results)
 		{
+			console.log('query find was successful.');
 			if ( results.length == 0 )
 			{
 				console.log('No records to convert');
@@ -577,22 +574,33 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 			}
 			else
 			{
-				console.log('converting user');
+				console.log('converting user 1 of ' . results.length);
 				var theUser = results[0];
 				var random  = randomNumberWithNumberOfDigits(5);
+				console.log('code ' + random);
 				
-				theUser.setPassword(userServiceToken + '-' + random);
+				theUser.set("password", userServiceToken + '-' + random);
 				//theUser.set('username', phoneNumber);
 				//I had: theUser.save();
-				theUser.save({'username':phoneNumber}, {useMasterKey:true});
-				
-				response.success(random);
+				theUser.save(null, 
+				{
+					success: function(theUser) 
+					{
+						console.log('save was successful');
+						response.success(random);
+					},
+					error: function(saveError)
+					{
+						console.log('unable to save ' + saveError);
+						response.error('unable to save ' + random);
+					}
+				});
 			}
 		},
-		error: function(err)
+		error: function(queryError)
 		{
-			console.log('ERROR! ' + err);
-			response.error(err);
+			console.log('Query find not successful! ' + queryError);
+			response.error(queryError);
 		}
 	});
 });
