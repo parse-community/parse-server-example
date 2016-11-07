@@ -471,6 +471,9 @@ Parse.Cloud.define('loginUser', function(req, res)
 
 	Parse.User.logIn(phoneNumber, userServiceToken + '-' + verificationCode).then(function (user)
 	{
+		var dateTime = new Date();
+    		user.set('lastSeen',dateTime);
+		user.save();
 		res.success(user.getSessionToken());
 	}
 	,function (error)
@@ -543,23 +546,32 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	
 	var userServiceToken = process.env.USER_SERVICE_TOKEN;
 	
+	var tLen = userServiceToken.length();
+	
+	conditionalLog('Service Token Length: ' + tLen);
+	
 	var emailAddress = request.params.emailAddress;
 	var phoneNumber  = request.params.phoneNumber;
 	
+	conditionalLog('emailAddress [' + emailAddress + ']');
+	conditionalLog('phoneNumber [' + phoneNumber + ']');
+	
 	var User = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
-	query.equalTo('username',emailAddress);
 	
+	query.equalTo('username',emailAddress);
 	query.find(
 	{
 		success: function(results)
 		{
 			if ( results.length == 0 )
 			{
+				conditionalLog('No records to convert');
 				response.success('');
 			}
 			else
 			{
+				conditionalLog('converting user');
 				var theUser = results[0];
 				var random  = randomNumberWithNumberOfDigits(5);
 				
@@ -572,6 +584,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		},
 		error: function(err)
 		{
+			conditionalLog('ERROR! ' + err);
 			response.error(err);
 		}
 	});
