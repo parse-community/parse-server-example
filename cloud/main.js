@@ -546,13 +546,15 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	
 	console.log('1');
 	
+	console.log('1.5 [' + process.env.USER_SERVICE_TOKEN + ']');
+	
 	var userServiceToken = process.env.USER_SERVICE_TOKEN;
 	
 	console.log('2');
 	
 	var tLen = userServiceToken.length;
 	
-	conditionalLog('Service Token Length: ' + tLen);
+	console.log('Service Token Length: ' + tLen);
 	
 	var emailAddress = request.params.emailAddress;
 	var phoneNumber  = request.params.phoneNumber;
