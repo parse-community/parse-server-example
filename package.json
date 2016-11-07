@@ -22,5 +22,3 @@
     "node": ">=4.3"
   }
 }
-// Note, the mongodb line shoudln't be needed, but it may help with timeout and fragment errors.
-//
