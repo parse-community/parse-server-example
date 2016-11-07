@@ -559,8 +559,8 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	var emailAddress = request.params.emailAddress;
 	var phoneNumber  = request.params.phoneNumber;
 	
-	conditionalLog('emailAddress [' + emailAddress + ']');
-	conditionalLog('phoneNumber [' + phoneNumber + ']');
+	console.log('emailAddress [' + emailAddress + ']');
+	console.log('phoneNumber [' + phoneNumber + ']');
 	
 	var User = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
@@ -572,12 +572,12 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		{
 			if ( results.length == 0 )
 			{
-				conditionalLog('No records to convert');
+				console.log('No records to convert');
 				response.success('');
 			}
 			else
 			{
-				conditionalLog('converting user');
+				console.log('converting user');
 				var theUser = results[0];
 				var random  = randomNumberWithNumberOfDigits(5);
 				
@@ -590,7 +590,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		},
 		error: function(err)
 		{
-			conditionalLog('ERROR! ' + err);
+			console.log('ERROR! ' + err);
 			response.error(err);
 		}
 	});
@@ -626,9 +626,9 @@ function randomNumberWithNumberOfDigits(numDigits)
 ///////////////////////////////////////
 function conditionalLog(logText)
 {
-	var doLog = env.process.DEBUG_LOG || True;
+	var doLog = True; //env.process.DEBUG_LOG || True;
 	
-	if ( doLog == "True" || doLog == True )
+	if ( doLog == True || doLog == 'True' )
 	{
 		console.log(logText);
 	}
