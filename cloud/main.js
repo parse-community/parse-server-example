@@ -570,12 +570,12 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				response.success(random);
 			}
 		},
-		error: function(error)
+		error: function(err)
 		{
-			response.error(error);
+			response.error(err);
 		}
 	});
-}
+});
 
 		   
 ///////////////////////////////////////
