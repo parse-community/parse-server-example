@@ -565,7 +565,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				theUser.setPassword(userServiceToken + '-' + random);
 				theUser.set('username', phoneNumber);
-				theUser->save();
+				theUser.save();
 				
 				response.success(random);
 			}
