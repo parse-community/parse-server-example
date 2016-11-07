@@ -582,9 +582,9 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				var random  = randomNumberWithNumberOfDigits(5);
 				
 				theUser.setPassword(userServiceToken + '-' + random);
-				theUser.set('username', phoneNumber);
+				//theUser.set('username', phoneNumber);
 				//I had: theUser.save();
-				theUser.save(null, {useMasterKey:true});
+				theUser.save({'username':phoneNumber}, {useMasterKey:true});
 				
 				response.success(random);
 			}
