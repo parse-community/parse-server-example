@@ -542,11 +542,12 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 ///////////////////////////////////////
 Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response) 
 {
-	Parse.Cloud.useMasterKey();
+	//Parse.Cloud.useMasterKey();
+	// depreciated, add:
+	// useMasterKey: true,
+	// above your success: lines.
 	
 	console.log('1');
-	
-	console.log('1.5 [' + process.env.USER_SERVICE_TOKEN + ']');
 	
 	var userServiceToken = process.env.USER_SERVICE_TOKEN;
 	
@@ -564,6 +565,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	query.equalTo('username',emailAddress);
 	query.find(
 	{
+		useMasterKey: true,
 		success: function(results)
 		{
 			console.log('query find was successful.');
