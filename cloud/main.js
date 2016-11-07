@@ -579,13 +579,13 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				console.log('converting only first user, need to clean up others later');
 				
 				var theUser = results[0];
+				
 				var first = theUser.get('firstName');
 				var last = theUser.get('lastName');
-				var userId = theUser.objectId
+				var userId = theUser.objectId;
 				
 				console.log('User: ' + first + ' ' + last + ' (' + userId + ')');
 				
-				*****
 				var loginUser = Parse.User.logIn(emailAddress, currentPassword, 
 				{
 					success: function(user) 
@@ -616,6 +616,11 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 								response.error('unable to save ' + saveError);
 							}
 						});
+					},
+					error: function (loginError)
+					{
+						console.log('unable to login user ' + loginError);
+						response.error('unable to login user ' + loginError);
 					}
 				});
 			}
