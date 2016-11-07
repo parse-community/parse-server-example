@@ -580,14 +580,13 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				var firstUser = results[0];
 				
-				var first = firstUser.get('firstName');
-				var last = firstUser.get('lastName');
-				var userId = firstUser.objectId;
+				var first 	= firstUser.get('firstName');
+				var last 	= firstUser.get('lastName');
+				var userId 	= firstUser.get('objectId');
 				
-				console.log('User: ' + first + ' ' + last + ' (' + userId + ')');
+				console.log('Will update user:');
 				
-				
-				console.log('updating user...');
+				console.log('User: ' + first + ' ' + last + ' (ID: ' + userId + ')');
 				
 				var userServiceToken = process.env.USER_SERVICE_TOKEN;
 				
@@ -595,28 +594,55 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				var random  = randomNumberWithNumberOfDigits(5);
 				
-				console.log('middle 5: ' + random);
+				console.log('last 5: ' + random);
 				
 				var newPassword = userServiceToken + '-' + random;
 						
-    				user.set('username', phoneNumber);  // attempt to change username
+				console.log('new password length: ' + newPassword.length);
+				
+    				user.setUsername(phoneNumber);  // attempt to change username
 				
 				console.log('username set');
 				
-				user.set('password', newPassword);  // attempt to change password
+				user.set('phoneNumber', phoneNumber);
+				
+				console.log('phoneNumber set');
+				
+				user.setPassword(newPassword);  // attempt to change password
 	    		
 				console.log('new password set');
 				
-	    			user.save(null, 
+				var roleId = process.env.CLIENT_ROLE_ID;
+				
+				var roleQuery = new Parse.Query('Role');
+				roleQuery.get(roleId,
+				{
+					useMasterKey: true,
+					success: function(clientRole)
+					{
+						user.set('userRole', clientRole.toPointer());
+						console.log('set user role to CLIENT');
+					},
+					error: function(rollError)
+					{
+						console.log('unable to set user role');
+					}
+				});
+				
+				user.save(null, 
 				{
 					useMasterKey: true,
 					success: function(savedUser)
 					{
-						response.success('User converted, random: ' + random);
+						console.log('converted and saved user.');
+						response.success('User converted and saved, random: ' + random);
 					},
 					error: function(saveError)
 					{
-						console.log('unable to save ' + saveError);
+						console.log('*****');
+						console.log('unable to save user');
+						console.log(saveError);
+						console.log('*****');
 						response.error('unable to save ' + saveError);
 					}
 				});
