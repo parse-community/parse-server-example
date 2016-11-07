@@ -534,6 +534,74 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 
 ///////////////////////////////////////
 //
+// convertUsernameToPhoneNumber
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response) 
+{
+	Parse.Cloud.useMasterKey();
+	
+	var userServiceToken = process.env.USER_SERVICE_TOKEN;
+	
+	var emailAddress = request.params.emailAddress;
+	var phoneNumber  = request.params.phoneNumber;
+	
+	var User = Parse.Object.extend('_User');
+	var query = new Parse.Query(User);
+	query.equalTo('username',emailAddress);
+	
+	query.find(
+	{
+		success: function(results)
+		{
+			if ( results.length == 0 )
+			{
+				response.success('');
+			}
+			else
+			{
+				var theUser = results[0];
+				var random  = randomNumberWithNumberOfDigits(5);
+				
+				theUser.setPassword(userServiceToken + '-' + random);
+				theUser.set('username', phoneNumber);
+				theUser->save();
+				
+				response.success(random);
+			}
+		},
+		error: function(error)
+		{
+			response.error(error);
+		}
+	});
+}
+
+		   
+///////////////////////////////////////
+//
+// randomNumberWithNumberOfDigits - not public
+//
+///////////////////////////////////////
+function randomNumberWithNumberOfDigits(numDigits)
+{
+	var num = '';
+
+	for(d = 0; d < numDigits; d++)
+	{
+		var min = 0;
+		var max = 9;
+		var digit = Math.floor(Math.random() * (max - min + 1)) + min;
+
+		num = num + digit.toString();
+	}
+
+	return num;
+}
+
+
+///////////////////////////////////////
+//
 // conditionalLog - not public
 //
 ///////////////////////////////////////
