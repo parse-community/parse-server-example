@@ -535,6 +535,8 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 });
 
 
+function works, but no authentication
+
 ///////////////////////////////////////
 //
 // convertUsernameToPhoneNumber
@@ -578,53 +580,46 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 			{
 				console.log('converting only first user, need to clean up others later');
 				
-				var theUser = results[0];
+				var firstUser = results[0];
 				
-				var first = theUser.get('firstName');
-				var last = theUser.get('lastName');
-				var userId = theUser.objectId;
+				var first = firstUser.get('firstName');
+				var last = firstUser.get('lastName');
+				var userId = firstUser.objectId;
 				
 				console.log('User: ' + first + ' ' + last + ' (' + userId + ')');
 				
-				var pw = theUser.get('password');
-				console.log('[' + pw + ']');
 				
-				console.log('authenticating user...');
-				var loginUser = Parse.User.logIn(emailAddress, currentPassword, 
+				console.log('updating user...');
+				
+				var userServiceToken = process.env.USER_SERVICE_TOKEN;
+				
+				console.log('token length: ' + userServiceToken.length);
+				
+				var random  = randomNumberWithNumberOfDigits(5);
+				
+				console.log('middle 5: ' + random);
+				
+				var newPassword = userServiceToken + '-' + random;
+						
+    				user.set('username', phoneNumber);  // attempt to change username
+				
+				console.log('username set');
+				
+				user.set('password', newPassword);  // attempt to change password
+	    		
+				console.log('new password set');
+				
+	    			user.save(null, 
 				{
-					success: function(user) 
+					useMasterKey: true,
+					success: function(savedUser)
 					{
-						console.log('User authenticated with previous credentials');
-						
-						var userServiceToken = process.env.USER_SERVICE_TOKEN;
-	
-						console.log('token length: ' + userServiceToken.length);
-	
-						var random  = randomNumberWithNumberOfDigits(5);
-						
-						console.log('middle 5: ' + random);
-						
-						var newPassword = userServiceToken + '-' + random;
-						
-    						user.set("username", phoneNumber);  // attempt to change username
-						user.set("password", newPassword);  // attempt to change password
-	    					user.save(null, 
-						{
-							success: function(savedUser) 
-							{
-								response.success('User converted, random: ' + random);
-							},
-							error: function(saveError)
-							{
-								console.log('unable to save ' + saveError);
-								response.error('unable to save ' + saveError);
-							}
-						});
+						response.success('User converted, random: ' + random);
 					},
-					error: function (loginError)
+					error: function(saveError)
 					{
-						console.log('unable to login user ' + loginError);
-						response.error('unable to login user ' + loginError);
+						console.log('unable to save ' + saveError);
+						response.error('unable to save ' + saveError);
 					}
 				});
 			}
