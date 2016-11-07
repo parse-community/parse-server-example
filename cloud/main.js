@@ -586,7 +586,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				//I had: theUser.save();
 				theUser.save(null, 
 				{
-					success: function(theUser) 
+					success: function(savedUser) 
 					{
 						console.log('save was successful');
 						response.success(random);
