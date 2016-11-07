@@ -13,7 +13,7 @@
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
     "parse-server": "*",
-    "mongodb": "2.1.0"
+    "mongodb": "2.1.18"
   },
   "scripts": {
     "start": "node index.js"
