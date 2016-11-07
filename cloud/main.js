@@ -473,7 +473,7 @@ Parse.Cloud.define('loginUser', function(req, res)
 	{
 		var dateTime = new Date();
     		user.set('lastSeen',dateTime);
-		user.save();
+		user.save(null, {useMasterKey:true});;
 		res.success(user.getSessionToken());
 	}
 	,function (error)
@@ -583,7 +583,8 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				theUser.setPassword(userServiceToken + '-' + random);
 				theUser.set('username', phoneNumber);
-				theUser.save();
+				//I had: theUser.save();
+				theUser.save(null, {useMasterKey:true});
 				
 				response.success(random);
 			}
