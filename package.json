@@ -12,7 +12,8 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "*"
+    "parse-server": "*",
+    "mongodb": "2.1.0"
   },
   "scripts": {
     "start": "node index.js"
@@ -21,3 +22,5 @@
     "node": ">=4.3"
   }
 }
+// Note, the mongodb line shoudln't be needed, but it may help with timeout and fragment errors.
+//
