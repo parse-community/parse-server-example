@@ -626,7 +626,8 @@ function randomNumberWithNumberOfDigits(numDigits)
 ///////////////////////////////////////
 function conditionalLog(logText)
 {
-	var doLog = env.process.DEBUG_LOG
+	var doLog = env.process.DEBUG_LOG || True;
+	
 	if ( doLog == "True" || doLog == True )
 	{
 		console.log(logText);
