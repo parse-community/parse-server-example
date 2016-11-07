@@ -535,8 +535,6 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 });
 
 
-function works, but no authentication
-
 ///////////////////////////////////////
 //
 // convertUsernameToPhoneNumber
