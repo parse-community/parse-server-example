@@ -80,6 +80,7 @@ Parse.Cloud.define('status', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('barberIdForBarberName', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
 	var query = new Parse.Query('Barbers');
 	query.equalTo('barberName', request.params.barberName);
 	query.equalTo('isActive', true);
@@ -116,6 +117,8 @@ Parse.Cloud.define('barberIdForBarberName', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var User = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
 	query.equalTo('objectId', request.params.userId);
@@ -145,6 +148,8 @@ Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var userId = request.params.userId;
 	var nrHash = request.params.noRepeat;
 
@@ -179,6 +184,8 @@ Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, r
 ///////////////////////////////////////
 Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var User = Parse.Object.extend('_User')
 	var query = new Parse.Query(User);
 	query.get(request.params.objectId,
@@ -215,6 +222,8 @@ Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var query = new Parse.Query('Services');
 	query.equalTo('barberName', request.params.barberName);
 	query.equalTo('serviceName', request.params.serviceName);
@@ -269,6 +278,8 @@ Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, res
 ///////////////////////////////////////
 Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var query = new Parse.Query('Services');
 	query.equalTo('objectId', request.params.serviceId);
 	query.equalTo('isActive', false);
@@ -300,6 +311,8 @@ Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, respons
 ///////////////////////////////////////
 Parse.Cloud.define('servicesForBarberId', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var query = new Parse.Query('Barbers');
 	query.equalTo('objectId', request.params.barber);
 	query.find( 
@@ -336,6 +349,8 @@ Parse.Cloud.define('servicesForBarberId', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	var query = new Parse.Query('GlobalSettings');
 	query.equalTo('settingName', 'newAppointmentTally');
 
@@ -368,6 +383,8 @@ Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	// Unread Messages
 	var query = new Parse.Query('Messages');
 	query.equalTo('recipientID', request.params.installId);
@@ -398,6 +415,8 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('getMessageCount', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	// Unread Messages
 	var query = new Parse.Query('Messages');
 	query.equalTo('recipientID', request.params.installId);
@@ -468,6 +487,8 @@ Parse.Cloud.define('loginUser', function(req, res)
 ///////////////////////////////////////
 Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	
 	// All Messages
 	var installId = request.params.installId;
 	var userId = request.params.userId;
