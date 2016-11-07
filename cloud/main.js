@@ -544,9 +544,13 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
 	
+	console.log('1');
+	
 	var userServiceToken = process.env.USER_SERVICE_TOKEN;
 	
-	var tLen = userServiceToken.length();
+	console.log('2');
+	
+	var tLen = userServiceToken.length;
 	
 	conditionalLog('Service Token Length: ' + tLen);
 	
@@ -621,7 +625,7 @@ function randomNumberWithNumberOfDigits(numDigits)
 function conditionalLog(logText)
 {
 	var doLog = env.process.DEBUG_LOG
-	if ( doLog == True || doLog == "True" )
+	if ( doLog == "True" || doLog == True )
 	{
 		console.log(logText);
 	}
