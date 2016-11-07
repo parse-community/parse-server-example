@@ -586,6 +586,10 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				console.log('User: ' + first + ' ' + last + ' (' + userId + ')');
 				
+				var pw = theUser.get('password');
+				console.log('[' + pw + ']');
+				
+				console.log('authenticating user...');
 				var loginUser = Parse.User.logIn(emailAddress, currentPassword, 
 				{
 					success: function(user) 
