@@ -600,7 +600,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 						
 						console.log('middle 5: ' + random);
 						
-						var newPassword = userServiceToken + '-' + random);
+						var newPassword = userServiceToken + '-' + random;
 						
     						user.set("username", phoneNumber);  // attempt to change username
 						user.set("password", newPassword);  // attempt to change password
