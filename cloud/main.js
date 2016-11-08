@@ -611,7 +611,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				var random  = randomNumberWithNumberOfDigits(5);
 				
-				user.set('gbAssist',@"CONVERTED")
+				user.set('gbAssist','CONVERTED')
 				user.save(null, 
 				{
 					useMasterKey: true,
