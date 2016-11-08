@@ -658,34 +658,85 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	var emailAddress 	= request.params.email;
 	var sessionToken        = request.params.session;
 	
-	console.log('emailAddress [' + emailAddress + ']');
-	console.log('userId [' + userId + ']');
-	
+	console.log('passed email  [' + emailAddress + ']');
+	console.log('passed userId [' + userId + ']');
+						
 	Parse.User.become(sessionToken).then(
 	function (user) 
 	{
 		// The current user is now set
 		var currentUser = Parse.User.current();
 		
-		var username = currentUser.getUsername;
-		var objectId = currentUser.objectId;
-		
-		console.log('passed userId    [' + userId + ']');
-		console.log('passed email     [' + emailAddress + ']');
-		console.log('current username [' + username + ']');
-		console.log('current userId   [' + objectId + ']');
-			    
-		if ( username == emailAddress && userId == objectId )
+		if ( !currentUser )
 		{
-			var verification 	= randomNumberWithNumberOfDigits(5);
-			var token 		= process.env.USER_SERVICE_TOKEN;
-			var newPassword		= token + '-' + verification;
-
-			response.success(newPassword);
+			var query = new Parse.Query(Parse.User);
+        		query.get(userId, 
+			{
+				useMasterKey: true,
+				success: function(getUser)
+				{
+					if ( !getUser )
+					{
+						response.error('got user, but no getUser object');
+					}
+					else
+					{
+						var username = getUser.getUsername;
+						var objectId = getUser.objectId;
+			
+						console.log('get username [' + username + ']');
+						console.log('get userId   [' + objectId + ']');
+						console.log('double check email [' + emailAddress + ']');
+						
+						if ( username == emailAddress )
+						{
+							if ( userId == objectId )
+							{
+								var verification 	= randomNumberWithNumberOfDigits(5);
+								var token 		= process.env.USER_SERVICE_TOKEN;
+								var newPassword		= token + '-' + verification;
+								
+								response.success(newPassword);
+							}
+							else
+							{
+								response.error('userId and user objectId do not match');
+							}
+						}
+						else
+						{
+							response.error('username and emailAddress do not match');
+						}
+					}
+				},
+				error: function(getError)
+				{
+					response.error('could not get user: ' + getError);
+				}
+			});
 		}
 		else
 		{
-			response.error('user, user id, and email do not match');
+			var username = currentUser.getUsername;
+			var objectId = currentUser.objectId;
+
+			console.log('passed userId    [' + userId + ']');
+			console.log('passed email     [' + emailAddress + ']');
+			console.log('current username [' + username + ']');
+			console.log('current userId   [' + objectId + ']');
+
+			if ( username == emailAddress && userId == objectId )
+			{
+				var verification 	= randomNumberWithNumberOfDigits(5);
+				var token 		= process.env.USER_SERVICE_TOKEN;
+				var newPassword		= token + '-' + verification;
+
+				response.success(newPassword);
+			}
+			else
+			{
+				response.error('user, user id, and email do not match');
+			}
 		}
 	}, 
 	function (validateError) 
