@@ -653,7 +653,7 @@ Parse.Cloud.define('getVerificationCode', function(request, response)
 	var newPassword		= token + '-' + verification;
 								
 	response.success(newPassword);
-)};
+});
 		   
 		   
 ///////////////////////////////////////
