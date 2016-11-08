@@ -295,7 +295,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
                 if(totalAppUseTimeScore > 500) {
                 		totalAppUseTimeScore = 500 + (totalAppUseTimeScore - 500)/10;
                 }
-
+				console.log("userId = " + userId+", totalAppUseTimeScore="+totalAppUseTimeScore);
 				var bookQuery =new Parse.Query("PublishedBook");
 				bookQuery.equalTo("owner",user);
 				bookQuery.find({
