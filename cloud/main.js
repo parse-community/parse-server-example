@@ -624,11 +624,9 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 					},
 					error: function(saveError)
 					{
-						console.log('*****');
 						console.log('unable to save user');
 						console.log(saveError);
-						console.log('*****');
-						response.error('{ "description" : "unable to save", "transaction" : "' + saveError + '" }');
+						response.error('Save was not successful: ' + saveError);
 					}
 				});
 			}
@@ -636,7 +634,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		error: function(queryError)
 		{
 			console.log('Query find not successful! ' + queryError);
-			response.error('{ "description" : "query find not successful", "transaction" : "' + queryError + '" }');
+			response.error('Query find not successful: ' + queryError);
 		}
 	});
 });
