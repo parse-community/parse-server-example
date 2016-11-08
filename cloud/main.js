@@ -663,7 +663,7 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	console.log('passed userId [' + userId + ']');
 						
 	Parse.User.become(sessionToken).then(
-	function (user) 
+	function (becameUser) 
 	{
 		// The current user is now set
 		var currentUser = Parse.User.current();
@@ -722,26 +722,11 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 		}
 		else
 		{
-			var username = currentUser.getUsername;
-			var objectId = currentUser.id;
+			var verification 	= randomNumberWithNumberOfDigits(5);
+			var token 		= process.env.USER_SERVICE_TOKEN;
+			var newPassword		= token + '-' + verification;
 
-			console.log('passed userId    [' + userId + ']');
-			console.log('passed email     [' + emailAddress + ']');
-			console.log('current username [' + username + ']');
-			console.log('current userId   [' + objectId + ']');
-
-			if ( username == emailAddress && userId == objectId )
-			{
-				var verification 	= randomNumberWithNumberOfDigits(5);
-				var token 		= process.env.USER_SERVICE_TOKEN;
-				var newPassword		= token + '-' + verification;
-
-				response.success(newPassword);
-			}
-			else
-			{
-				response.error('user, user id, and email do not match');
-			}
+			response.success(newPassword);
 		}
 	}, 
 	function (validateError) 
