@@ -290,6 +290,10 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
     userQuery.find({
     		useMasterKey:true,
     		success: function(results) {
+				if(!results[0]){
+					response.error("User doesn't exist! "+ userId);
+					return;
+				}
 				console.log("user = " + results[0]);
     			var user = results[0];
     			var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
