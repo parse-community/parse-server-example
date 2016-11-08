@@ -640,7 +640,22 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	});
 });
 
-		  
+
+///////////////////////////////////////
+//
+// getVerificationCode
+//
+///////////////////////////////////////
+Parse.Cloud.define('getVerificationCode', function(request, response) 
+{
+	var verification 	= randomNumberWithNumberOfDigits(5);
+	var token 		= process.env.USER_SERVICE_TOKEN;
+	var newPassword		= token + '-' + verification;
+								
+	response.success(newPassword);
+)};
+		   
+		   
 ///////////////////////////////////////
 //
 // getVerificationCodeForUser
