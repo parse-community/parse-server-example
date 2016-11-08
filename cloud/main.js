@@ -655,7 +655,7 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	console.log('Starting getVerificationCodeForUser');
 	
 	var userId		= request.params.userId;
-	var emailAddress 	= request.params.emailAddress;
+	var emailAddress 	= request.params.email;
 	var sessionToken        = request.params.session;
 	
 	console.log('emailAddress [' + emailAddress + ']');
@@ -668,10 +668,10 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 		var username = currentUser.getUsername;
 		var objectId = currentUser.objectId;
 		
-		console.log('userId  [' + userId + ']');
-		console.log('email   [' + emailAddress + ']');
-		console.log('username [' + username + ']');
-		console.log('objectId [' + objectId + ']');
+		console.log('passed userId    [' + userId + ']');
+		console.log('passed email     [' + emailAddress + ']');
+		console.log('current username [' + username + ']');
+		console.log('current userId   [' + objectId + ']');
 			    
 		if ( username == emailAddress && userId == objectId )
 		{
