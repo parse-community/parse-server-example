@@ -19,7 +19,7 @@ Parse.Cloud.define("updateReportedBook", function(request, response) {
     			book.save(null, { useMasterKey: true });
 				response.success("book updated to "+ book.get("active"));
     		},
-    		error: function() {A
+    		error: function() {
     			response.error("book doesn't exist!"+request.params.bookGuId);
     		}
 	});
@@ -313,13 +313,34 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
 							user.set("totalScore", totalScore )
-							user.save(null, { useMasterKey: true });
-							response.success(totalScore);
+							var userRankQuery = new Parse.Query(Parse.User);
+							userRankQuery.greaterThan("totalScore", totalScore);
+							userRankQuery.count({
+								useMasterKey:true,
+								success: function(rank) {
+									console.log("Rank = "+rank+", userId = " + userId);
+									user.set("rank", rank);
+									user.save(null, { useMasterKey: true });
+									response.success({
+										totalScore : totalScore,
+										rank: rank
+									});
+								},
+								error: function() {
+									response.success({
+										totalScore : totalScore
+									});
+								}
+							});
+
+
 						},
 						error: function() {
                             user.set("totalScore", totalAppUseTimeScore )
                             user.save(null, { useMasterKey: true });
-                            response.success(totalAppUseTimeScore);
+							response.success({
+								totalScore : totalAppUseTimeScore
+							});
 						}
 				});
     		},
