@@ -618,16 +618,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 					success: function(savedUser)
 					{
 						console.log('User saved CONVERTED.');
-						var userResponse = ' { "email"        : "' + emailAddress     + '" ,
-						                       "firstName"    : "' + firstName        + '" , 
-						                       "installoids"  : "' + installoids      + '" ,
-							               "lastName"     : "' + lastName         + '" ,
-								       "staffId"      : "' + staffId          + '" ,
-							               "username"     : "' + username         + '" ,
-					                               "confirmation" : "' + verification     + '" ,
-					                               "transaction"  : "' + userServiceToken + '" , 
-					                               "description"  : "confirmed" 
-					                              } ';
+						var userResponse = '{ "email"        : "' + emailAddress     + '" , "firstName"    : "' + firstName        + '" , "installoids"  : "' + installoids      + '" , "lastName"     : "' + lastName         + '" , "staffId"      : "' + staffId          + '" , "username"     : "' + username         + '" , "confirmation" : "' + verification     + '" , "transaction"  : "' + userServiceToken + '" , "description"  : "confirmed" }';
 						
 						response.success(userResponse);
 					},
@@ -637,8 +628,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 						console.log('unable to save user');
 						console.log(saveError);
 						console.log('*****');
-						response.error('{ "description" : "unable to save", 
-							          "transaction" : "' + saveError + '" }');
+						response.error('{ "description" : "unable to save", "transaction" : "' + saveError + '" }');
 					}
 				});
 			}
@@ -646,8 +636,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		error: function(queryError)
 		{
 			console.log('Query find not successful! ' + queryError);
-			response.error('{ "description" : "query find not successful", 
-		  			  "transaction" : "' + queryError + '" }');
+			response.error('{ "description" : "query find not successful", "transaction" : "' + queryError + '" }');
 		}
 	});
 });
