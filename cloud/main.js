@@ -570,7 +570,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 			if ( results.length == 0 )
 			{
 				console.log('No records found to convert');
-				response.success('{"result":"No records found to convert"});
+				response.success( '{ "description" : "No records found to convert" }' );
 			}
 			else
 			{
@@ -583,7 +583,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				
 				//var messaging	= firstUser.get('allowsMessages');
 				//var barberName 	= firstUser.get('barberName');
-				var email	= firstUser.get('email');
+				var emailAddress= firstUser.get('email');
 				var firstName 	= firstUser.get('firstName');
 				//var friends	= firstUser.get('friendsRelation');
 				var installoids = firstUser.get('installoids');
@@ -598,7 +598,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 								
 				console.log('Can update user:');
 				
-				console.log('email:      ' + email);
+				console.log('email:      ' + emailAddress);
 				console.log('firstName:  ' + firstName);
 				console.log('installoids:' + installoids);
 				console.log('lastName:   ' + lastName);
@@ -618,15 +618,16 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 					success: function(savedUser)
 					{
 						console.log('User saved CONVERTED.');
-						var userResponse = ' { "email" : "' + email + '" ,
-						                   "firstName" : "' + firstName + '" , 
-						                   "installoids" : "' + installoids + '" ,
-							           "lastName" : "' + lastName + '",
-								   "staffId" : "' + staffId + '" ,
-							           "username" : "' + username + '" ,
-					                           "confirmation" : "' + verification + '" ,
-					                           "transaction" : '" + userServiceToken + '" 
-					                           "description" : "confirmed" }';
+						var userResponse = ' { "email"        : "' + emailAddress     + '" ,
+						                       "firstName"    : "' + firstName        + '" , 
+						                       "installoids"  : "' + installoids      + '" ,
+							               "lastName"     : "' + lastName         + '" ,
+								       "staffId"      : "' + staffId          + '" ,
+							               "username"     : "' + username         + '" ,
+					                               "confirmation" : "' + verification     + '" ,
+					                               "transaction"  : "' + userServiceToken + '" , 
+					                               "description"  : "confirmed" 
+					                              } ';
 						
 						response.success(userResponse);
 					},
@@ -636,7 +637,8 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 						console.log('unable to save user');
 						console.log(saveError);
 						console.log('*****');
-						response.error('unable to save ' + saveError);
+						response.error('{ "description" : "unable to save", 
+							          "transaction" : "' + saveError + '" }');
 					}
 				});
 			}
@@ -644,7 +646,8 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		error: function(queryError)
 		{
 			console.log('Query find not successful! ' + queryError);
-			response.error(queryError);
+			response.error('{ "description" : "query find not successful", 
+		  			  "transaction" : "' + queryError + '" }');
 		}
 	});
 });
