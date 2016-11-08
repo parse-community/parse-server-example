@@ -661,7 +661,7 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	console.log('emailAddress [' + emailAddress + ']');
 	console.log('userId [' + userId + ']');
 	
-	Parse.User.become(sessionToken).then(
+	Parse.Promise.become(sessionToken).then(
 	function (currentUser) 
 	{
 		// The current user is now set to user.
