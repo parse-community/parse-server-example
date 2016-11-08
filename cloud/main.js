@@ -667,17 +667,21 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 		// The current user is now set
 		var currentUser = Parse.User.current();
 		
-		if ( !currentUser )
+		if ( currentUser.objectId != userId )
 		{
+			console.log('going query way');
+			
 			var query = new Parse.Query(Parse.User);
         		query.get(userId, 
 			{
 				useMasterKey: true,
 				success: function(getUser)
 				{
+					console.log('get was successful');
+					
 					if ( !getUser )
 					{
-						response.error('got user, but no getUser object');
+						response.error('no getUser object');
 					}
 					else
 					{
