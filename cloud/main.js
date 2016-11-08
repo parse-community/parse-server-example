@@ -118,7 +118,8 @@ Parse.Cloud.define('barberIdForBarberName', function(request, response)
 Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+	// objectId shoudl be id
+	// just use a get( objectId instead of the below
 	var User = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
 	query.equalTo('objectId', request.params.userId);
@@ -279,9 +280,9 @@ Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, res
 Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+	// changed equalTo objectId to id 2016 11 07
 	var query = new Parse.Query('Services');
-	query.equalTo('objectId', request.params.serviceId);
+	query.equalTo('id', request.params.serviceId);
 	query.equalTo('isActive', false);
 	query.find(
 	{
@@ -312,9 +313,9 @@ Parse.Cloud.define('serviceIdForServiceIdReplacement', function(request, respons
 Parse.Cloud.define('servicesForBarberId', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+	// changed objectId to id
 	var query = new Parse.Query('Barbers');
-	query.equalTo('objectId', request.params.barber);
+	query.equalTo('id', request.params.barber);
 	query.find( 
 	{
 		success: function(results)
@@ -592,7 +593,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				//var lastSeen	= firstUser.get('lastSeen');
 				//var phoneNumber	= firstUser.get('phoneNumber');
 				var staffId	= firstUser.get('staffID');
-				//var userId 	= firstUser.get('objectId');
+				//var userId 	= firstUser.get('id');
 				var username	= firstUser.get('username');
 				//var userRole	= firstUser.get('userRole);
 								
@@ -667,7 +668,7 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 		// The current user is now set
 		var currentUser = Parse.User.current();
 		
-		if ( currentUser.objectId != userId )
+		if ( currentUser.id != userId )
 		{
 			console.log('going query way');
 			
@@ -686,7 +687,7 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 					else
 					{
 						var username = getUser.getUsername;
-						var objectId = getUser.objectId;
+						var objectId = getUser.id;
 			
 						console.log('get username [' + username + ']');
 						console.log('get userId   [' + objectId + ']');
@@ -722,7 +723,7 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 		else
 		{
 			var username = currentUser.getUsername;
-			var objectId = currentUser.objectId;
+			var objectId = currentUser.id;
 
 			console.log('passed userId    [' + userId + ']');
 			console.log('passed email     [' + emailAddress + ']');
