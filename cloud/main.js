@@ -445,16 +445,14 @@ Parse.Cloud.define('getMessageCount', function(request, response)
 // loginUser
 //
 ///////////////////////////////////////
-Parse.Cloud.define('loginUser', function(req, res) 
+Parse.Cloud.define('loginUser', function(request, response) 
 {
-	Parse.Cloud.useMasterKey();
-
 	// Phone Number
-	var phoneNumber		= req.params.phoneNumber;
+	var phoneNumber		= request.params.phoneNumber;
 	phoneNumber		= phoneNumber.replace(/\D/g, '');
 
 	// Verification Code
-	var verificationCode 	= req.params.verificationCode;
+	var verificationCode 	= request.params.verificationCode;
 	verificationCode 	= verificationCode.replace(/\D/g, '');
 
 	// User Service Token
@@ -462,24 +460,21 @@ Parse.Cloud.define('loginUser', function(req, res)
 	
 	if (!phoneNumber || phoneNumber.length != 10)
 	{
-		return res.error('Phone Number missing or invalid length');
+		return response.error('Phone Number missing or invalid length');
 	}
 
 	if (!verificationCode || verificationCode.length < 4 || verificationCode.length > 6)
 	{
-		return res.error('Verification Code missing or invalid length');
+		return response.error('Verification Code missing or invalid length');
 	}
 
 	Parse.User.logIn(phoneNumber, userServiceToken + '-' + verificationCode).then(function (user)
 	{
-		var dateTime = new Date();
-    		user.set('lastSeen',dateTime);
-		user.save(null, {useMasterKey:true});;
-		res.success(user.getSessionToken());
+		response.success(user.getSessionToken());
 	}
-	,function (error)
+	,function (loginError)
 	{
-		res.error(error);
+		response.error(loginError);
 	});
 });
 
@@ -654,103 +649,8 @@ Parse.Cloud.define('getVerificationCode', function(request, response)
 								
 	response.success(newPassword);
 });
-		   
-		   
-///////////////////////////////////////
-//
-// getVerificationCodeForUser
-//
-///////////////////////////////////////
-Parse.Cloud.define('getVerificationCodeForUser', function(request, response) 
-{
-	//Parse.Cloud.useMasterKey();
-	// depreciated, add:
-	// useMasterKey: true,
-	// above your success: lines.
-	
-	console.log('Starting getVerificationCodeForUser');
-	
-	var userId		= request.params.userId;
-	var emailAddress 	= request.params.email;
-	var sessionToken        = request.params.session;
-	
-	console.log('passed email  [' + emailAddress + ']');
-	console.log('passed userId [' + userId + ']');
-						
-	Parse.User.become(sessionToken).then(
-	function (becameUser) 
-	{
-		// The current user is now set
-		var currentUser = Parse.User.current();
-		
-		if ( currentUser.id != userId )
-		{
-			console.log('going query way');
-			
-			var query = new Parse.Query(Parse.User);
-        		query.get(userId, 
-			{
-				useMasterKey: true,
-				success: function(getUser)
-				{
-					console.log('get was successful');
-					
-					if ( !getUser )
-					{
-						response.error('no getUser object');
-					}
-					else
-					{
-						var username = getUser.getUsername;
-						var objectId = getUser.id;
-			
-						console.log('get username [' + username + ']');
-						console.log('get userId   [' + objectId + ']');
-						console.log('double check email [' + emailAddress + ']');
-						
-						if ( username == emailAddress )
-						{
-							if ( userId == objectId )
-							{
-								var verification 	= randomNumberWithNumberOfDigits(5);
-								var token 		= process.env.USER_SERVICE_TOKEN;
-								var newPassword		= token + '-' + verification;
-								
-								response.success(newPassword);
-							}
-							else
-							{
-								response.error('userId and user objectId do not match');
-							}
-						}
-						else
-						{
-							response.error('username and emailAddress do not match');
-						}
-					}
-				},
-				error: function(getError)
-				{
-					response.error('could not get user: ' + getError);
-				}
-			});
-		}
-		else
-		{
-			var verification 	= randomNumberWithNumberOfDigits(5);
-			var token 		= process.env.USER_SERVICE_TOKEN;
-			var newPassword		= token + '-' + verification;
 
-			response.success(newPassword);
-		}
-	}, 
-	function (validateError) 
-	{
-		// The token could not be validated.
-		response.error('User could not be validated: ' + validateError);
-	});
-});
-				 
+
 ///////////////////////////////////////
 //
 // randomNumberWithNumberOfDigits - not public
