@@ -662,9 +662,11 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	console.log('userId [' + userId + ']');
 	
 	Parse.User.become(sessionToken).then(
-	function (currentUser) 
+	function (user) 
 	{
-		// The current user is now set to user.
+		// The current user is now set
+		var currentUser = Parse.User.current();
+		
 		var username = currentUser.getUsername;
 		var objectId = currentUser.objectId;
 		
