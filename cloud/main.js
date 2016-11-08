@@ -285,7 +285,6 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 	var userId =request.params.userId;
 	var userQuery = new Parse.Query(Parse.User);
     userQuery.equalTo("objectId", userId);
-	console.log("userId = " + userId);
     userQuery.limit(1)
     userQuery.find({
     		useMasterKey:true,
@@ -294,7 +293,6 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 					response.error("User doesn't exist! "+ userId);
 					return;
 				}
-				console.log("user = " + results[0]);
     			var user = results[0];
     			var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
                 if(totalAppUseTimeScore > 500) {
