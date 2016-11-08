@@ -656,37 +656,35 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	
 	var userId		= request.params.userId;
 	var emailAddress 	= request.params.emailAddress;
+	var sessionToken        = request.params.session;
 	
 	console.log('emailAddress [' + emailAddress + ']');
 	console.log('userId [' + userId + ']');
 	
-	var User = Parse.Object.extend('_User');
-	var query = new Parse.Query(User);
-	
-	query.get(userId,
+	Parse.User.become(sessionToken).then(
+	function (currentUser) 
 	{
-		useMasterKey: true,
-		success: function(theUser)
+		// The current user is now set to user.
+		var username = currentUser.getUsername;
+		var objectId = currentUser.objectId;
+		
+		if ( username == emailAddress ) && ( userId == objectId )
 		{
-			var userEmail = theUser.getUsername;
-			
-			if ( email == emailAddress )
-			{
-				var verification 	= randomNumberWithNumberOfDigits(5);
-				var token 		= process.env.USER_SERVICE_TOKEN;
-				var newPassword		= token + '-' + verification;
+			var verification 	= randomNumberWithNumberOfDigits(5);
+			var token 		= process.env.USER_SERVICE_TOKEN;
+			var newPassword		= token + '-' + verification;
 
-				response.success(newPassword);
-			}
-			else
-			{
-				response.error('user and email do not match');
-			}
-		},
-		error: function(getError)
-		{
-			response.error('could not get user: ' + getError);
+			response.success(newPassword);
 		}
+		else
+		{
+			response.error('user, user id, and email do not match');
+		}
+	}, 
+	function (validateError) 
+	{
+		// The token could not be validated.
+		response.error('User could not be validated: ' + validateError);
 	});
 });
 				 
