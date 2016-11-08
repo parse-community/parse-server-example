@@ -285,7 +285,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 	var userId =request.params.userId;
 	var userQuery = new Parse.Query(Parse.User);
     userQuery.equalTo("objectId", userId);
-
+	console.log("userId = " + userId);
     userQuery.limit(1)
     userQuery.find({
     		useMasterKey:true,
