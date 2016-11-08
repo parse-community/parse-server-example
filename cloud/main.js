@@ -668,6 +668,11 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 		var username = currentUser.getUsername;
 		var objectId = currentUser.objectId;
 		
+		console.log('userId  [' + userId + ']');
+		console.log('email   [' + emailAddress + ']');
+		console.log('username [' + username + ']');
+		console.log('objectId [' + objectId + ']');
+			    
 		if ( username == emailAddress && userId == objectId )
 		{
 			var verification 	= randomNumberWithNumberOfDigits(5);
