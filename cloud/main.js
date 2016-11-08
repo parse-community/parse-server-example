@@ -639,7 +639,57 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	});
 });
 
-		   
+		  
+///////////////////////////////////////
+//
+// getVerificationCodeForUser
+//
+///////////////////////////////////////
+Parse.Cloud.define('getVerificationCodeForUser', function(request, response) 
+{
+	//Parse.Cloud.useMasterKey();
+	// depreciated, add:
+	// useMasterKey: true,
+	// above your success: lines.
+	
+	console.log('Starting getVerificationCodeForUser');
+	
+	var userId		= request.params.userId;
+	var emailAddress 	= request.params.emailAddress;
+	
+	console.log('emailAddress [' + emailAddress + ']');
+	console.log('userId [' + userId + ']');
+	
+	var User = Parse.Object.extend('_User');
+	var query = new Parse.Query(User);
+	
+	query.get(userId,
+	{
+		useMasterKey: true,
+		success: function(theUser)
+		{
+			var userEmail = theUser.getUsername;
+			
+			if ( email == emailAddress )
+			{
+				var verification 	= randomNumberWithNumberOfDigits(5);
+				var token 		= process.env.USER_SERVICE_TOKEN;
+				var newPassword		= token + '-' + verification;
+
+				response.success(newPassword);
+			}
+			else
+			{
+				response.error('user and email do not match');
+			}
+		},
+		error: function(getError)
+		{
+			response.error('could not get user: ' + getError);
+		}
+	});
+});
+				 
 ///////////////////////////////////////
 //
 // randomNumberWithNumberOfDigits - not public
