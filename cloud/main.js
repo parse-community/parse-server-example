@@ -290,6 +290,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
     userQuery.find({
     		useMasterKey:true,
     		success: function(results) {
+				console.log("user = " + results[0]);
     			var user = results[0];
     			var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
                 if(totalAppUseTimeScore > 500) {
