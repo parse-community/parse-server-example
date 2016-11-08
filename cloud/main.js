@@ -661,14 +661,14 @@ Parse.Cloud.define('getVerificationCodeForUser', function(request, response)
 	console.log('emailAddress [' + emailAddress + ']');
 	console.log('userId [' + userId + ']');
 	
-	Parse.Promise.become(sessionToken).then(
+	Parse.User.become(sessionToken).then(
 	function (currentUser) 
 	{
 		// The current user is now set to user.
 		var username = currentUser.getUsername;
 		var objectId = currentUser.objectId;
 		
-		if ( username == emailAddress ) && ( userId == objectId )
+		if ( username == emailAddress && userId == objectId )
 		{
 			var verification 	= randomNumberWithNumberOfDigits(5);
 			var token 		= process.env.USER_SERVICE_TOKEN;
