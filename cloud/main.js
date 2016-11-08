@@ -551,11 +551,9 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 	
 	var emailAddress 	= request.params.emailAddress;
 	var phoneNumber  	= request.params.phoneNumber;
-	var currentPassword	= request.params.currentPassword;
 	
 	console.log('emailAddress [' + emailAddress + ']');
 	console.log('phoneNumber [' + phoneNumber + ']');
-	console.log('password length: ' + currentPassword.length);
 	
 	var User = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
@@ -572,70 +570,65 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 			if ( results.length == 0 )
 			{
 				console.log('No records found to convert');
-				response.success('No records found to convert');
+				response.success('{"result":"No records found to convert"});
 			}
 			else
 			{
-				console.log('converting only first user, need to clean up others later');
-				
+				console.log('convert only first user, remove the remaining');
+				// Create New User copying from first
+				// lastName, installoids, barberName, isStaffMember, lastSeen, friendsRelation, 
+				// username, allowsMessages, phoneNumber, language, firstname, password, staffID, 
+				// email, userRole (pointer)
 				var firstUser = results[0];
 				
-				var first 	= firstUser.get('firstName');
-				var last 	= firstUser.get('lastName');
-				var userId 	= firstUser.get('objectId');
+				//var messaging	= firstUser.get('allowsMessages');
+				//var barberName 	= firstUser.get('barberName');
+				var email	= firstUser.get('email');
+				var firstName 	= firstUser.get('firstName');
+				//var friends	= firstUser.get('friendsRelation');
+				var installoids = firstUser.get('installoids');
+				//var isStaff	= firstUser.get('isStaffMember');
+				var lastName 	= firstUser.get('lastName');
+				//var lastSeen	= firstUser.get('lastSeen');
+				//var phoneNumber	= firstUser.get('phoneNumber');
+				var staffId	= firstUser.get('staffID');
+				//var userId 	= firstUser.get('objectId');
+				var username	= firstUser.get('username');
+				//var userRole	= firstUser.get('userRole);
+								
+				console.log('Can update user:');
 				
-				console.log('Will update user:');
-				
-				console.log('User: ' + first + ' ' + last + ' (ID: ' + userId + ')');
-				
+				console.log('email:      ' + email);
+				console.log('firstName:  ' + firstName);
+				console.log('installoids:' + installoids);
+				console.log('lastName:   ' + lastName);
+				console.log('staffId:    ' + staffId);
+				console.log('username:   ' + username);
+								
 				var userServiceToken = process.env.USER_SERVICE_TOKEN;
 				
 				console.log('token length: ' + userServiceToken.length);
 				
 				var random  = randomNumberWithNumberOfDigits(5);
 				
-				console.log('last 5: ' + random);
-				
-				var newPassword = userServiceToken + '-' + random;
-						
-				console.log('new password length: ' + newPassword.length);
-				
-    				user.setUsername(phoneNumber);  // attempt to change username
-				
-				console.log('username set');
-				
-				user.set('phoneNumber', phoneNumber);
-				
-				console.log('phoneNumber set');
-				
-				user.setPassword(newPassword);  // attempt to change password
-	    		
-				console.log('new password set');
-				
-				var roleId = process.env.CLIENT_ROLE_ID;
-				
-				var roleQuery = new Parse.Query('Role');
-				roleQuery.get(roleId,
-				{
-					useMasterKey: true,
-					success: function(clientRole)
-					{
-						user.set('userRole', clientRole.toPointer());
-						console.log('set user role to CLIENT');
-					},
-					error: function(rollError)
-					{
-						console.log('unable to set user role');
-					}
-				});
-				
+				user.set('gbAssist',@"CONVERTED")
 				user.save(null, 
 				{
 					useMasterKey: true,
 					success: function(savedUser)
 					{
-						console.log('converted and saved user.');
-						response.success('User converted and saved, random: ' + random);
+						console.log('User saved CONVERTED.');
+						var userResponse = ' { "email" : "' + email + '" ,
+						                   "firstName" : "' + firstName + '" , 
+						                   "installoids" : "' + installoids + '" ,
+							           "lastName" : "' + lastName + '",
+								   "staffId" : "' + staffId + '" ,
+							           "username" : "' + username + '" ,
+					                           "confirmation" : "' + verification + '" ,
+					                           "transaction" : '" + userServiceToken + '" 
+					                           "description" : "confirmed" }';
+						
+						response.success(userResponse);
 					},
 					error: function(saveError)
 					{
