@@ -321,6 +321,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 							userRankQuery.count({
 								useMasterKey:true,
 								success: function(rank) {
+									rank = rank + 1;
 									console.log("Rank = "+rank+", userId = " + userId);
 									user.set("rank", rank);
 									user.save(null, { useMasterKey: true });
