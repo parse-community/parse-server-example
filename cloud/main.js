@@ -19,7 +19,7 @@ Parse.Cloud.define("updateReportedBook", function(request, response) {
     			book.save(null, { useMasterKey: true });
 				response.success("book updated to "+ book.get("active"));
     		},
-    		error: function() {A
+    		error: function() {
     			response.error("book doesn't exist!"+request.params.bookGuId);
     		}
 	});
@@ -285,12 +285,20 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 	var userId =request.params.userId;
 	var userQuery = new Parse.Query(Parse.User);
     userQuery.equalTo("objectId", userId);
-
     userQuery.limit(1)
     userQuery.find({
     		useMasterKey:true,
     		success: function(results) {
+				if(!results[0]){
+					response.error("User doesn't exist! "+ userId);
+					return;
+				}
     			var user = results[0];
+    			var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
+                if(totalAppUseTimeScore > 500) {
+                		totalAppUseTimeScore = 500 + (totalAppUseTimeScore - 500)/10;
+                }
+				console.log("userId = " + userId+", totalAppUseTimeScore="+totalAppUseTimeScore);
 				var bookQuery =new Parse.Query("PublishedBook");
 				bookQuery.equalTo("owner",user);
 				bookQuery.find({
@@ -298,19 +306,44 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 						success: function(results) {
 							var totalReads = 0;
 							var totalLikes = 0;
+
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
 								totalReads += book.get("playedTimes") || 0;
 								totalLikes += book.get("likedTimes") || 0;
 							}
+							var totalScore = totalReads * 10 + totalLikes * 50 + totalAppUseTimeScore;
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
-							user.set("totalScore", totalReads + totalLikes * 5)
-							user.save(null, { useMasterKey: true });
-							response.success("user stats updated: reads="+ totalReads +", likes=" +totalLikes);
+							user.set("totalScore", totalScore )
+							var userRankQuery = new Parse.Query(Parse.User);
+							userRankQuery.greaterThan("totalScore", totalScore);
+							userRankQuery.count({
+								useMasterKey:true,
+								success: function(rank) {
+									console.log("Rank = "+rank+", userId = " + userId);
+									user.set("rank", rank);
+									user.save(null, { useMasterKey: true });
+									response.success({
+										totalScore : totalScore,
+										rank: rank
+									});
+								},
+								error: function() {
+									response.success({
+										totalScore : totalScore
+									});
+								}
+							});
+
+
 						},
 						error: function() {
-							response.error("No book found for user " + userId);
+                            user.set("totalScore", totalAppUseTimeScore )
+                            user.save(null, { useMasterKey: true });
+							response.success({
+								totalScore : totalAppUseTimeScore
+							});
 						}
 				});
     		},
