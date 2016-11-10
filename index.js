@@ -47,8 +47,8 @@ var api = new ParseServer(
 var app = express();
 
 // TWilio Init
-var twilio = require('twilio');
-twilio.initialize(twilioAccountSid,twilioAccountToken);
+//var twilio = require('twilio');
+//twilio.initialize(twilioAccountSid,twilioAccountToken);
 
 // Static Assets
 //
@@ -68,7 +68,7 @@ app.use(mountPath, api);
 
 
 // Twilio
-app.get ('/', twilioController.index);
+//app.get ('/', twilioController.index);
 
 // GETS
 //
