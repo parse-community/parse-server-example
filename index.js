@@ -17,8 +17,8 @@ var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
 var twilioMount			= process.env.TWILIO_MOUNT || '/';
 
 
-var twilio 				= require('twilio');
-var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
+//var twilio 				= require('twilio');
+//var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
 
 
 //
@@ -46,9 +46,9 @@ var api = new ParseServer(
 // App Init
 var app = express();
 
-// var twilio = require('twilio');
-// twilio.initialize(twilioAccountSid,twilioAccountToken);
-
+// TWilio Init
+var twilio = require('twilio');
+twilio.initialize(twilioAccountSid,twilioAccountToken);
 
 // Static Assets
 //
@@ -65,6 +65,10 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
+
+
+// Twilio
+app.get ('/', twilioController.index);
 
 // GETS
 //
