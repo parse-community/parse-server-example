@@ -1,25 +1,33 @@
-// Include Cloud Code module dependencies
-var express = require('express'),
-    twilio = require('twilio');
+var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
-// Create an Express web app (more info: http://expressjs.com/)
-var app = express();
+var twilio 				= require('twilio');
+twilio.initialize(twilioAccountSid, twilioAccountToken);
 
-// Create a route that will respond to am HTTP GET request with some
-// simple TwiML instructions
-app.get('/hello', function(request, response) {
-    // Create a TwiML response generator object
-    var twiml = new twilio.TwimlResponse();
 
-    // add some instructions
-    twiml.say('Hello there! Isn\'t Parse cool?', {
-        voice:'woman'
-    });
+Parse.Cloud.define("sendMessageWithCode", function(request, response)
+{
+// Use the Twilio Cloud Module to send an SMS
+	var toNumber			= request.params.toNumber;
+	var verificationCode	= request.params.verificationCode;
 
-    // Render the TwiML XML document
-    response.type('text/xml');
-    response.send(twiml.toString());
+	var message		= 'Your verification code for the Barbershop Deluxe app is ' + verificationCode;
+
+	twilio.sendMessage(
+	{
+		From: twilioSendingNumber,
+		To: toNumber,
+		Body: message
+	},
+	{
+		success: function(sendResult)
+		{
+			response.success('Message was sent');
+		},
+		error: function(sendError)
+		{
+			response.error('Message not sent: ' + sendError);
+		}
+	});
 });
-
-// Start the Express app
-app.listen();

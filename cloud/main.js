@@ -50,6 +50,8 @@
 //do I need to require app.js?
 //require('./cloud/app.js');
 
+// Twilio Code
+require ('./cloud/twilio.js');
 
 //////////////////////////////////////
 //
@@ -150,7 +152,7 @@ Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	var userId = request.params.userId;
 	var nrHash = request.params.noRepeat;
 
@@ -186,7 +188,7 @@ Parse.Cloud.define('doesMessageToUserWithNoRepeatHashExist', function(request, r
 Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	var User = Parse.Object.extend('_User')
 	var query = new Parse.Query(User);
 	query.get(request.params.objectId,
@@ -224,7 +226,7 @@ Parse.Cloud.define('nameForUserWithObjectId', function(request, response)
 Parse.Cloud.define('serviceIdForBarberNameAndServiceName', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	var query = new Parse.Query('Services');
 	query.equalTo('barberName', request.params.barberName);
 	query.equalTo('serviceName', request.params.serviceName);
@@ -316,14 +318,14 @@ Parse.Cloud.define('servicesForBarberId', function(request, response)
 	// changed objectId to id
 	var query = new Parse.Query('Barbers');
 	query.equalTo('id', request.params.barber);
-	query.find( 
+	query.find(
 	{
 		success: function(results)
 		{
 			var relation = results[0].get('services');
 			var relationQuery = relation.query;
 			relationQuery.equalTo('isActive', true);
-			relationQuery.find( 
+			relationQuery.find(
 			{
 				success: function(results)
 				{
@@ -351,7 +353,7 @@ Parse.Cloud.define('servicesForBarberId', function(request, response)
 Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	var query = new Parse.Query('GlobalSettings');
 	query.equalTo('settingName', 'newAppointmentTally');
 
@@ -385,12 +387,12 @@ Parse.Cloud.define('incrementNewAppointmentTally', function(request, response)
 Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	// Unread Messages
 	var query = new Parse.Query('Messages');
 	query.equalTo('recipientID', request.params.installId);
 	query.doesNotExist('readAt');
-	
+
 	conditionalLog('Getting Unread Messages Count for recipient [' + request.params.installId + ']');
 
 	query.find(
@@ -417,11 +419,11 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 Parse.Cloud.define('getMessageCount', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	// Unread Messages
 	var query = new Parse.Query('Messages');
 	query.equalTo('recipientID', request.params.installId);
-	
+
 	conditionalLog('Getting Messages Count for recipient [' + request.params.installId + ']');
 
 	query.find(
@@ -445,7 +447,7 @@ Parse.Cloud.define('getMessageCount', function(request, response)
 // loginUser
 //
 ///////////////////////////////////////
-Parse.Cloud.define('loginUser', function(request, response) 
+Parse.Cloud.define('loginUser', function(request, response)
 {
 	// Phone Number
 	var phoneNumber		= request.params.phoneNumber;
@@ -457,7 +459,7 @@ Parse.Cloud.define('loginUser', function(request, response)
 
 	// User Service Token
 	var userServiceToken	= process.env.USER_SERVICE_TOKEN;
-	
+
 	if (!phoneNumber || phoneNumber.length != 10)
 	{
 		return response.error('Phone Number missing or invalid length');
@@ -487,7 +489,7 @@ Parse.Cloud.define('loginUser', function(request, response)
 Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response)
 {
 	Parse.Cloud.useMasterKey();
-	
+
 	// All Messages
 	var installId = request.params.installId;
 	var userId = request.params.userId;
@@ -536,24 +538,24 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 // convertUsernameToPhoneNumber
 //
 ///////////////////////////////////////
-Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response) 
+Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 {
 	//Parse.Cloud.useMasterKey();
 	// depreciated, add:
 	// useMasterKey: true,
 	// above your success: lines.
-	
+
 	console.log('Starting convertUsernameToPhoneNumber');
-	
+
 	var emailAddress 	= request.params.emailAddress;
 	var phoneNumber  	= request.params.phoneNumber;
-	
+
 	console.log('emailAddress [' + emailAddress + ']');
 	console.log('phoneNumber [' + phoneNumber + ']');
-	
+
 	var User = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
-	
+
 	query.equalTo('username',emailAddress);
 	query.find(
 	{
@@ -562,7 +564,7 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 		{
 			console.log('find with email address in username was successful.');
 			console.log(results.length + ' records found');
-			
+
 			if ( results.length == 0 )
 			{
 				console.log('No records found to convert');
@@ -572,11 +574,11 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 			{
 				console.log('convert only first user, remove the remaining');
 				// Create New User copying from first
-				// lastName, installoids, barberName, isStaffMember, lastSeen, friendsRelation, 
-				// username, allowsMessages, phoneNumber, language, firstname, password, staffID, 
+				// lastName, installoids, barberName, isStaffMember, lastSeen, friendsRelation,
+				// username, allowsMessages, phoneNumber, language, firstname, password, staffID,
 				// email, userRole (pointer)
 				var firstUser = results[0];
-				
+
 				//var messaging	= firstUser.get('allowsMessages');
 				//var barberName 	= firstUser.get('barberName');
 				var emailAddress= firstUser.get('email');
@@ -591,31 +593,31 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 				//var userId 	= firstUser.get('id');
 				var username	= firstUser.get('username');
 				//var userRole	= firstUser.get('userRole);
-								
+
 				console.log('Can update user:');
-				
+
 				console.log('email:      ' + emailAddress);
 				console.log('firstName:  ' + firstName);
 				console.log('installoids:' + installoids);
 				console.log('lastName:   ' + lastName);
 				console.log('staffId:    ' + staffId);
 				console.log('username:   ' + username);
-								
+
 				var userServiceToken = process.env.USER_SERVICE_TOKEN;
-				
+
 				console.log('token length: ' + userServiceToken.length);
-				
+
 				var random  = randomNumberWithNumberOfDigits(5);
-				
+
 				user.set('gbAssist','CONVERTED')
-				user.save(null, 
+				user.save(null,
 				{
 					useMasterKey: true,
 					success: function(savedUser)
 					{
 						console.log('User saved CONVERTED.');
 						var userResponse = '{ "email"        : "' + emailAddress     + '" , "firstName"    : "' + firstName        + '" , "installoids"  : "' + installoids      + '" , "lastName"     : "' + lastName         + '" , "staffId"      : "' + staffId          + '" , "username"     : "' + username         + '" , "confirmation" : "' + verification     + '" , "transaction"  : "' + userServiceToken + '" , "description"  : "confirmed" }';
-						
+
 						response.success(userResponse);
 					},
 					error: function(saveError)
@@ -641,12 +643,12 @@ Parse.Cloud.define('convertUsernameToPhoneNumber', function(request, response)
 // getVerificationCode
 //
 ///////////////////////////////////////
-Parse.Cloud.define('getVerificationCode', function(request, response) 
+Parse.Cloud.define('getVerificationCode', function(request, response)
 {
 	var verification 	= randomNumberWithNumberOfDigits(5);
 	var token 		= process.env.USER_SERVICE_TOKEN;
 	var newPassword		= token + '-' + verification;
-								
+
 	response.success(newPassword);
 });
 
@@ -681,7 +683,7 @@ function randomNumberWithNumberOfDigits(numDigits)
 function conditionalLog(logText)
 {
 	var doLog = True; //env.process.DEBUG_LOG || True;
-	
+
 	if ( doLog == True || doLog == 'True' )
 	{
 		console.log(logText);
