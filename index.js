@@ -2,18 +2,19 @@
 // compatible API routes.
 
 // Express Always Required
-var express 		= require('express');
+var express 			= require('express');
 
 // Parse Service
-var ParseServer 	= require('parse-server').ParseServer;
-var path 			= require('path');
+var ParseServer 		= require('parse-server').ParseServer;
+var path 				= require('path');
 
 // Twilio Service
 // Twilio Init
 var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
 var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
 
-var twilio = require('twilio')(twilioAccountSid, twilioAccountToken);
+var twilio 				= require('twilio');
+var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
 
 
 //
@@ -78,11 +79,29 @@ app.get('/test', function(req, res) {
 });
 
 
-// Create a route that will respond to am HTTP GET request with some
+// Twilio Incoming SMS Test
+twilioClient.messages.create({
+	body: 'Hello from Twilio Server It's working.',
+	to:   '+16172165525',
+	from: '+18572147755',
+},
+function(mcError, mcMessage)
+{
+	if (mcError)
+	{
+		console.log('error: ' + mcError);
+	}
+	else
+	{
+		console.log('message successful: ' + mcMessage.sid);
+	}
+});
+
+	// Create a route that will respond to am HTTP GET request with some
 // simple TwiML instructions
 app.get('/hello', function(request, response) {
     // Create a TwiML response generator object
-    var twiml = new twilio.TwimlResponse();
+    var twiml = new twilioClient.TwimlResponse();
 
     // add some instructions
     var sayWhat = 'Hello, you have called the messaging number for App Support, we do not accept voice calls. If you need assistance, please use Help and Support from the menu of the app you are using. If you are not able to open the app, you can send an email to App Support at Barbershop Deluxe dot com. Thank you. This call is now disconnecting.';
