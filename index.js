@@ -99,7 +99,47 @@ app.get('/test', function(req, res) {
 
 	// Create a route that will respond to am HTTP GET request with some
 // simple TwiML instructions
-app.get('/hello', function(request, response) {
+app.get('/hello', function(request, response)
+{
+
+	var callerResponse = new twilio.TwimlResponse();
+
+	callerResponse.say('You have dialled 8 5 7, 2 1 4, double 7 double 5.',
+	{
+		voice: 'male',
+		language: 'en-gb'
+	})
+    .pause({ length:2 })
+    .say('This message confirms Server S P status is live.',
+    {
+        voice:'woman',
+        language:'en-au'
+    })
+    .pause( { length:1 })
+    .say('This message confirms Server B A 2 status is live.',
+    {
+        voice:'woman',
+        language:'en-au'
+    })
+    .pause({ length: 2})
+    .say('This call is now ending.',
+    {
+    	voice: 'male',
+    	language: 'en-gb'
+    });
+
+	console.log(response.toString());
+/**
+Outputs the following:
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Say>Welcome to Twilio!</Say>
+    <Pause length="3"></Pause>
+    <Say voice="woman" language="en-gb">Please let us know if we can help during your development.</Say>
+    <Play>http://www.example.com/some_sound.mp3</Play>
+</Response>
+*/
+/*
     // Create a TwiML response generator object
     var twiml = new twilioClient.TwimlResponse();
 
@@ -114,6 +154,7 @@ app.get('/hello', function(request, response) {
     // Render the TwiML XML document
     response.type('text/xml');
     response.send(twiml.toString());
+    */
 });
 
 var port 		= process.env.PORT || 1337;
