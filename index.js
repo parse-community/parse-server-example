@@ -196,15 +196,15 @@ httpServer.listen(port, function()
     console.log('parse-server running on port ' + port + '.');
 });
 
-httpServer.listen(1338, function(request, response)
-{
-	//Create TwiML response
-    var twimlResponse = new twilio.TwimlResponse();
-    twiml.say("You have reached 8 5 7, 2 1 4, double 7 double 5. Incoming calls are not supported, please email app support.");
-
-    response.writeHead(200, {'Content-Type': 'text/xml'});
-    response.end(twiml.toString());
-});
+// httpServer.listen(1338, function(request, response)
+// {
+// 	//Create TwiML response
+//     var twimlResponse = new twilio.TwimlResponse();
+//     twiml.say("You have reached 8 5 7, 2 1 4, double 7 double 5. Incoming calls are not supported, please email app support.");
+//
+//     response.writeHead(200, {'Content-Type': 'text/xml'});
+//     response.end(twiml.toString());
+// });
 
 // This will enable the Live Query real-time server
 //ParseServer.createLiveQueryServer(httpServer);
