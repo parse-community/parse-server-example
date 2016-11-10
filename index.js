@@ -12,6 +12,10 @@ var path 				= require('path');
 // Twilio Init
 var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
 var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+var twilioPort			= process.env.TWILIO_PORT || 1338;
+var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
+var twilioMount			= process.env.TWILIO_MOUNT || '/';
+
 
 var twilio 				= require('twilio');
 var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
@@ -97,38 +101,46 @@ app.get('/test', function(req, res) {
 // 	}
 // });
 
+
+
+
+
+
+
+
+
 	// Create a route that will respond to am HTTP GET request with some
 // simple TwiML instructions
-app.get('/hello', function(request, response)
-{
-
-	var callerResponse = new twilio.TwimlResponse();
-
-	callerResponse.say('You have dialled 8 5 7, 2 1 4, double 7 double 5.',
-	{
-		voice: 'male',
-		language: 'en-gb'
-	})
-    .pause({ length:2 })
-    .say('This message confirms Server S P status is live.',
-    {
-        voice:'woman',
-        language:'en-au'
-    })
-    .pause( { length:1 })
-    .say('This message confirms Server B A 2 status is live.',
-    {
-        voice:'woman',
-        language:'en-au'
-    })
-    .pause({ length: 2})
-    .say('This call is now ending.',
-    {
-    	voice: 'male',
-    	language: 'en-gb'
-    });
-
-	console.log(response.toString());
+// app.get('/hello', function(request, response)
+// {
+//
+// 	var callerResponse = new twilio.TwimlResponse();
+//
+// 	callerResponse.say('You have dialled 8 5 7, 2 1 4, double 7 double 5.',
+// 	{
+// 		voice: 'male',
+// 		language: 'en-gb'
+// 	})
+//     .pause({ length:2 })
+//     .say('This message confirms Server S P status is live.',
+//     {
+//         voice:'woman',
+//         language:'en-au'
+//     })
+//     .pause( { length:1 })
+//     .say('This message confirms Server B A 2 status is live.',
+//     {
+//         voice:'woman',
+//         language:'en-au'
+//     })
+//     .pause({ length: 2})
+//     .say('This call is now ending.',
+//     {
+//     	voice: 'male',
+//     	language: 'en-gb'
+//     });
+//
+// 	console.log(response.toString());
 /**
 Outputs the following:
 <?xml version="1.0" encoding="UTF-8"?>
@@ -157,6 +169,25 @@ Outputs the following:
     */
 });
 
+
+
+
+// TWILIO SERVER
+var twilioHttp			= require('http'),
+
+twilioHttp.createServer(function (request, response)
+{
+    //Create TwiML response
+    var twimlResponse = new twilio.TwimlResponse();
+    twiml.say("You have reached 8 5 7, 2 1 4, double 7 double 5. Incoming calls are not supported, please email app support.");
+
+    response.writeHead(200, {'Content-Type': 'text/xml'});
+    response.end(twiml.toString());
+}).listen(twilioPort, twilioURL);
+
+console.log('TwiML server running at ' + twilioURL + ':' + twilioPort + twilioMount);
+
+// PARSE SERVER
 var port 		= process.env.PORT || 1337;
 var httpServer 	= require('http').createServer(app);
 
