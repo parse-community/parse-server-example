@@ -2,14 +2,19 @@
 // compatible API routes.
 
 // Express Always Required
-var express 	= require('express');
+var express 		= require('express');
 
 // Parse Service
-var ParseServer = require('parse-server').ParseServer;
-var path 		= require('path');
+var ParseServer 	= require('parse-server').ParseServer;
+var path 			= require('path');
 
 // Twilio Service
-var twilio		= require('twilio');
+// Twilio Init
+var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+
+var twilio = require('twilio')(twilioAccountSid, twilioAccountToken);
+
 
 //
 // Parse Init
@@ -31,16 +36,6 @@ var api = new ParseServer(
   //  classNames: ["GlobalSettings"] // List of classes to support for query subscriptions
   //}
 });
-
-//
-// Twilio Init
-var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
-var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
-
-var twilio = require('twilio')(twilioAccountSid, twilioAccountToken);
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
 
 
 // App Init
