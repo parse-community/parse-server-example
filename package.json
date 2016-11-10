@@ -11,10 +11,10 @@
   "dependencies": {
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
+    "mongodb": "~2.1.18",
     "parse": "~1.8.0",
     "parse-server": "~2.2.18",
-    "mongodb": "~2.1.18",
-    "twilio": "~2.9.0"
+    "twilio": "^2.9.3"
   },
   "scripts": {
     "start": "node index.js"
