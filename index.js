@@ -54,7 +54,7 @@ var app = express();
 //
 // Twilio mount /twilio
 // Serve static assets from the /cloud/twilio folder
-app.use('/twilio', express.static(path.join(__dirname, '/cloud/twilio')));
+//app.use('/twilio', express.static(path.join(__dirname, '/cloud/twilio')));
 
 
 // Public mount /public
@@ -167,25 +167,25 @@ Outputs the following:
     response.type('text/xml');
     response.send(twiml.toString());
     */
-});
+//});
 
 
 
 
 // TWILIO SERVER
-var twilioHttp			= require('http'),
+///var twilioHttp			= require('http'),
 
-twilioHttp.createServer(function (request, response)
-{
-    //Create TwiML response
-    var twimlResponse = new twilio.TwimlResponse();
-    twiml.say("You have reached 8 5 7, 2 1 4, double 7 double 5. Incoming calls are not supported, please email app support.");
+//twilioHttp.createServer(function (request, response)
+//{
+//    //Create TwiML response
+//    var twimlResponse = new twilio.TwimlResponse();
+//    twiml.say("You have reached 8 5 7, 2 1 4, double 7 double 5. Incoming calls are not supported, please email app //support.");
+//
+//    response.writeHead(200, {'Content-Type': 'text/xml'});
+//    response.end(twiml.toString());
+//}).listen(twilioPort, twilioURL);
 
-    response.writeHead(200, {'Content-Type': 'text/xml'});
-    response.end(twiml.toString());
-}).listen(twilioPort, twilioURL);
-
-console.log('TwiML server running at ' + twilioURL + ':' + twilioPort + twilioMount);
+//console.log('TwiML server running at ' + twilioURL + ':' + twilioPort + twilioMount);
 
 // PARSE SERVER
 var port 		= process.env.PORT || 1337;
@@ -195,6 +195,16 @@ httpServer.listen(port, function()
 {
     console.log('parse-server running on port ' + port + '.');
 });
+
+httpServer.listen(1338, function(request, response)
+{
+	//Create TwiML response
+    var twimlResponse = new twilio.TwimlResponse();
+    twiml.say("You have reached 8 5 7, 2 1 4, double 7 double 5. Incoming calls are not supported, please email app support.");
+
+    response.writeHead(200, {'Content-Type': 'text/xml'});
+    response.end(twiml.toString());
+}
 
 // This will enable the Live Query real-time server
 //ParseServer.createLiveQueryServer(httpServer);
