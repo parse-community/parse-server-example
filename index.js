@@ -204,7 +204,7 @@ httpServer.listen(1338, function(request, response)
 
     response.writeHead(200, {'Content-Type': 'text/xml'});
     response.end(twiml.toString());
-}
+});
 
 // This will enable the Live Query real-time server
 //ParseServer.createLiveQueryServer(httpServer);
