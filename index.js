@@ -81,7 +81,7 @@ app.get('/test', function(req, res) {
 
 // Twilio Incoming SMS Test
 twilioClient.messages.create({
-	body: 'Hello from Twilio Server It's working.',
+	body: 'Hello from Twilio Server SP, I am waiting to communicate.',
 	to:   '+16172165525',
 	from: '+18572147755',
 },
