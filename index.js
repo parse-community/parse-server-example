@@ -269,8 +269,8 @@ var port 		= process.env.PORT || 1337;
 
 var httpServer = require('http').createServer(app);
 
-httpServer.listen(port, function(request, response) => {
-	//
+httpServer.listen(port, function(request, response)
+{
 	const twiml = new twilio.TwimlResponse();
 
   	twiml.say('Hello from your pals at Twilio! Have fun.');
