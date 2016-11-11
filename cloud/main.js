@@ -306,16 +306,19 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 						success: function(results) {
 							var totalReads = 0;
 							var totalLikes = 0;
+							var totalFeatured = 0;
 
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
 								totalReads += book.get("playedTimes") || 0;
 								totalLikes += book.get("likedTimes") || 0;
+								totalFeatured += book.get("featuredAccepted") || 0;
 							}
-							var totalScore = totalReads * 10 + totalLikes * 50 + totalAppUseTimeScore;
+							var totalScore = totalReads * 10 + totalLikes * 50 + totalFeatured * 150 + totalAppUseTimeScore;
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
-							user.set("totalScore", totalScore )
+							user.set("totalScore", totalScore );
+							user.set("totalFeatured", totalFeatured )
 							var userRankQuery = new Parse.Query(Parse.User);
 							userRankQuery.greaterThan("totalScore", totalScore);
 							userRankQuery.count({
