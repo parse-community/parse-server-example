@@ -14,7 +14,7 @@
     "mongodb": "~2.1.18",
     "parse": "~1.8.0",
     "parse-server": "~2.2.18",
-    "twilio": "^2.9.3"
+    "twilio": "^2.11.0"
   },
   "scripts": {
     "start": "node index.js"
