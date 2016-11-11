@@ -16,7 +16,6 @@ var twilioPort			= process.env.TWILIO_PORT || 1338;
 var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
 var twilioMount			= process.env.TWILIO_MOUNT || '/';
 
-
 var twilio 				= require('twilio');
 var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
 
@@ -54,8 +53,8 @@ var app = express();
 //
 // Twilio mount /twilio
 // Serve static assets from the /cloud/twilio folder
-//app.use('/twilio', express.static(path.join(__dirname, '/cloud/twilio')));
-
+app.use('/twilio', express.static(path.join(__dirname, '/cloud/twilio')));
+app.use('/cloud',  express.static(path.join(__dirname, '/cloud')));
 
 // Public mount /public
 // Serve static assets from the /public folder
