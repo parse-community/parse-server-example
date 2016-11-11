@@ -15,6 +15,7 @@ var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
 var twilioPort			= process.env.TWILIO_PORT || 1338;
 var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
 var twilioMount			= process.env.TWILIO_MOUNT || '/';
+var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
 var twilio 				= require('twilio');
 var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
@@ -41,13 +42,16 @@ var api = new ParseServer(
   //}
 });
 
-
 // App Init
 var app = express();
+
 
 // TWilio Init
 //var twilio = require('twilio');
 //twilio.initialize(twilioAccountSid,twilioAccountToken);
+var twilio 				= require('twilio');
+twilio.initialize(twilioAccountSid, twilioAccountToken);
+
 
 // Static Assets
 //

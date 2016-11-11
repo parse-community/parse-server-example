@@ -1,9 +1,9 @@
-var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
-var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
-var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
-
-var twilio 				= require('twilio');
-twilio.initialize(twilioAccountSid, twilioAccountToken);
+// var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+// var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+// var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
+//
+// var twilio 				= require('twilio');
+// twilio.initialize(twilioAccountSid, twilioAccountToken);
 
 
 
