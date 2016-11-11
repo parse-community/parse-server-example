@@ -50,9 +50,39 @@ var app = express();
 //var twilio = require('twilio');
 //twilio.initialize(twilioAccountSid,twilioAccountToken);
 var twilio 				= require('twilio');
-twilio.initialize(twilioAccountSid, twilioAccountToken);
+	// Create a route that will respond to am HTTP GET request with some
+//simple TwiML instructions
+app.get('/hello', function(request, response)
+{
+	twilio.initialize(twilioAccountSid, twilioAccountToken);
 
+	var callerResponse = new twilio.TwimlResponse();
 
+	callerResponse.say('You have dialled 8 5 7, 2 1 4, double 7 double 5.',
+	{
+		voice: 'male',
+		language: 'en-gb'
+	})
+    .pause({ length:2 })
+    .say('This message confirms Server S P status is live.',
+    {
+        voice:'woman',
+        language:'en-au'
+    })
+    .pause( { length:1 })
+    .say('This message confirms Server B A 2 status is live.',
+    {
+        voice:'woman',
+        language:'en-au'
+    })
+    .pause({ length: 2})
+    .say('This call is now ending.',
+    {
+    	voice: 'male',
+    	language: 'en-gb'
+    });
+
+});
 // Static Assets
 //
 // Twilio mount /twilio
