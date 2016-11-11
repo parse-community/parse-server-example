@@ -271,7 +271,8 @@ var httpServer = require('http').createServer(app);
 
 httpServer.listen(port, function(request, response)
 {
-	const twiml = new twilio.TwimlResponse();
+	const twilio	= require('twilio');
+	const twiml 	= new twilio.TwimlResponse();
 
   	twiml.say('Hello from your pals at Twilio! Have fun.');
 
