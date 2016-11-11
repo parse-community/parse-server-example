@@ -17,8 +17,8 @@ var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
 var twilioMount			= process.env.TWILIO_MOUNT || '/';
 
 
-//var twilio 				= require('twilio');
-//var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
+var twilio 				= require('twilio');
+var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
 
 
 //
