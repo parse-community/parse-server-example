@@ -8,7 +8,14 @@ var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
 Parse.Cloud.define('sendSMS', function(request, response)
 {
+	Parse.Cloud.useMasterKey();
+	console.log('sendSMS with:');
     console.log(request);
+
+	var tas = twilioAccountSid.substring(1,5);
+	var tat = twilioAccountToken.substring(1,5);
+	console.log('account sid starts ' + tas);
+	console.log('account token starts ' + tat);
 
     var twilio	= require('twilio')(twilioAccountSid,twilioAccountToken);
 	var to 		= request.params.toNumber;
