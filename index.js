@@ -51,21 +51,8 @@ var app = express();
 //twilio.initialize(twilioAccountSid,twilioAccountToken);
 //var twilio 				= require('twilio');
 
-const http = require('http');
-const twilio = require('twilio');
-
-http.createServer((req, res) => {
-  // Create TwiML response
-  const twiml = new twilio.TwimlResponse();
-
-  twiml.say('Hello from your pals at Twilio! Have fun.');
-
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
-})
-.listen(1338, 'secret-plateau-54525.herokuapp.com');
-
-console.log('TwiML server running at http://127.0.0.1:1337/');
+//const http = require('http');
+//const twilio = require('twilio');
 
 
 
@@ -247,13 +234,54 @@ Outputs the following:
 
 //console.log('TwiML server running at ' + twilioURL + ':' + twilioPort + twilioMount);
 
+
+const twilio = require('twilio');
+
+http.createServer((req, res) => {
+  // Create TwiML response
+  const twiml = new twilio.TwimlResponse();
+
+  twiml.say('Hello from your pals at Twilio! Have fun.');
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
+})
+.listen(1338, 'secret-plateau-54525.herokuapp.com');
+
+console.log('TwiML server running at http://127.0.0.1:1337/');
+
+
+
+
+
+
 // PARSE SERVER
 var port 		= process.env.PORT || 1337;
-var httpServer 	= require('http').createServer(app);
+
+// THESE SIX LINES ORIGINAL PARSE LINES, AND WORK WITHOUT TWILIO
+//var httpServer 	= require('http').createServer(app);
+//
+//httpServer.listen(port, function()
+//{
+//    console.log('parse-server running on port ' + port + '.');
+//});
+
+
+var httpServer = require('http');
+
+httpServer.createServer( (request, response) => {
+	//
+	const twiml = new twilio.TwimlResponse();
+
+  	twiml.say('Hello from your pals at Twilio! Have fun.');
+
+  	response.writeHead(200, {'Content-Type': 'text/xml'});
+  	response.end(twiml.toString());
+});
 
 httpServer.listen(port, function()
 {
-    console.log('parse-server running on port ' + port + '.');
+	console.log('parse-server and twilio running on port ' + port + '.');
 });
 
 // httpServer.listen(1338, function(request, response)
