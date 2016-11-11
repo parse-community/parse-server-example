@@ -267,9 +267,9 @@ var port 		= process.env.PORT || 1337;
 //});
 
 
-var httpServer = require('http');
+var httpServer = require('http').createServer(app);
 
-httpServer.createServer( (request, response) => {
+httpServer.listen(port, function(request, response) => {
 	//
 	const twiml = new twilio.TwimlResponse();
 
@@ -279,10 +279,10 @@ httpServer.createServer( (request, response) => {
   	response.end(twiml.toString());
 });
 
-httpServer.listen(port, function()
-{
-	console.log('parse-server and twilio running on port ' + port + '.');
-});
+//httpServer.listen(port, function()
+//{
+console.log('parse-server and twilio running on port ' + port + '.');
+//});
 
 // httpServer.listen(1338, function(request, response)
 // {
