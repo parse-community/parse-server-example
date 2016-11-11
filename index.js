@@ -17,8 +17,8 @@ var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
 var twilioMount			= process.env.TWILIO_MOUNT || '/';
 var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
-var twilio 				= require('twilio');
-var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
+//var twilio 				= require('twilio');
+//var twilioClient		= new twilio.RestClient(twilioAccountSid, twilioAccountToken);
 
 
 //
@@ -49,40 +49,63 @@ var app = express();
 // TWilio Init
 //var twilio = require('twilio');
 //twilio.initialize(twilioAccountSid,twilioAccountToken);
-var twilio 				= require('twilio');
+//var twilio 				= require('twilio');
+
+const http = require('http');
+const twilio = require('twilio');
+
+http.createServer((req, res) => {
+  // Create TwiML response
+  const twiml = new twilio.TwimlResponse();
+
+  twiml.say('Hello from your pals at Twilio! Have fun.');
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
+})
+.listen(1338, 'secret-plateau-54525.herokuapp.com');
+
+console.log('TwiML server running at http://127.0.0.1:1337/');
+
+
+
+
+
+
+
 	// Create a route that will respond to am HTTP GET request with some
 //simple TwiML instructions
-app.get('/hello', function(request, response)
-{
-	twilio.initialize(twilioAccountSid, twilioAccountToken);
-
-	var callerResponse = new twilio.TwimlResponse();
-
-	callerResponse.say('You have dialled 8 5 7, 2 1 4, double 7 double 5.',
-	{
-		voice: 'male',
-		language: 'en-gb'
-	})
-    .pause({ length:2 })
-    .say('This message confirms Server S P status is live.',
-    {
-        voice:'woman',
-        language:'en-au'
-    })
-    .pause( { length:1 })
-    .say('This message confirms Server B A 2 status is live.',
-    {
-        voice:'woman',
-        language:'en-au'
-    })
-    .pause({ length: 2})
-    .say('This call is now ending.',
-    {
-    	voice: 'male',
-    	language: 'en-gb'
-    });
-
-});
+// app.get('/hello', function(request, response)
+// {
+// 	twilio.initialize(twilioAccountSid, twilioAccountToken);
+//
+// 	var callerResponse = new twilio.TwimlResponse();
+//
+// 	callerResponse.say('You have dialled 8 5 7, 2 1 4, double 7 double 5.',
+// 	{
+// 		voice: 'male',
+// 		language: 'en-gb'
+// 	})
+//     .pause({ length:2 })
+//     .say('This message confirms Server S P status is live.',
+//     {
+//         voice:'woman',
+//         language:'en-au'
+//     })
+//     .pause( { length:1 })
+//     .say('This message confirms Server B A 2 status is live.',
+//     {
+//         voice:'woman',
+//         language:'en-au'
+//     })
+//     .pause({ length: 2})
+//     .say('This call is now ending.',
+//     {
+//     	voice: 'male',
+//     	language: 'en-gb'
+//     });
+//
+// });
 // Static Assets
 //
 // Twilio mount /twilio
