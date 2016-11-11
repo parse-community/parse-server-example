@@ -76,7 +76,6 @@ app.get('/test', function(req, res) {
 // PARSE SERVER
 var port 		= process.env.PORT || 1337;
 
-THESE SIX LINES ORIGINAL PARSE LINES, AND WORK WITHOUT TWILIO
 var httpServer 	= require('http').createServer(app);
 
 httpServer.listen(port, function()
