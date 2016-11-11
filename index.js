@@ -235,20 +235,20 @@ Outputs the following:
 //console.log('TwiML server running at ' + twilioURL + ':' + twilioPort + twilioMount);
 
 
-const twilio = require('twilio');
-
-http.createServer((req, res) => {
-  // Create TwiML response
-  const twiml = new twilio.TwimlResponse();
-
-  twiml.say('Hello from your pals at Twilio! Have fun.');
-
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
-})
-.listen(1338, 'secret-plateau-54525.herokuapp.com');
-
-console.log('TwiML server running at http://127.0.0.1:1337/');
+// const twilio = require('twilio');
+//
+// http.createServer((req, res) => {
+//   // Create TwiML response
+//   const twiml = new twilio.TwimlResponse();
+//
+//   twiml.say('Hello from your pals at Twilio! Have fun.');
+//
+//   res.writeHead(200, {'Content-Type': 'text/xml'});
+//   res.end(twiml.toString());
+// })
+// .listen(1338, 'secret-plateau-54525.herokuapp.com');
+//
+// console.log('TwiML server running at http://127.0.0.1:1337/');
 
 
 
