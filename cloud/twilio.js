@@ -1,14 +1,40 @@
-// var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
-// var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
-// var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
+var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 //
 // var twilio 				= require('twilio');
 // twilio.initialize(twilioAccountSid, twilioAccountToken);
 
 
+Parse.Cloud.define('sendSMS', function(request, response)
+{
+    console.log(request);
+
+    var twilio	= require('twilio')(twilioAccountSid,twilioAccountToken);
+	var to 		= request.params.toNumber;
+	var message	= request.params.message;
+
+    twilio.sendMessage(
+    {
+        to: to,
+        from: twilioSendingNumber,
+        body: message
+
+    }, function(error, responseData)
+    {
+        if (error)
+        {
+            response.error(error);
+        }
+        else
+        {
+            response.success(responseData);
+        }
+    });
+});
+
 
 /*
-
 
 //const express = require('express');
 //const twilio = require('twilio');
