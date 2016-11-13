@@ -11,16 +11,17 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
-var filesAdapter = null;  // enable Gridstore to be the default
-if (process.env.S3_ENABLE) {
-    var S3Adapter = require('parse-server').S3Adapter;
 
-    filesAdapter = new S3Adapter(
-        process.env.AWS_ACCESS_KEY,
-        process.env.AWS_SECRET_ACCESS_KEY,
-        {bucket: process.env.AWS_BUCKET_NAME, bucketPrefix: "", directAccess: true}
-    );
-}
+//var filesAdapter = null;  // enable Gridstore to be the default
+//if (process.env.S3_ENABLE) {
+    //var S3Adapter = require('parse-server').S3Adapter;
+
+    //filesAdapter = new S3Adapter(
+        //process.env.AWS_ACCESS_KEY,
+        //process.env.AWS_SECRET_ACCESS_KEY,
+        //{bucket: process.env.AWS_BUCKET_NAME, bucketPrefix: "", directAccess: true}
+    //);
+//}
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
