@@ -18,7 +18,7 @@ if (process.env.S3_ENABLE) {
     filesAdapter = new S3Adapter(
         process.env.S3_ACCESS_KEY,
         process.env.S3_SECRET_KEY,
-        {bucket: process.env.S3_BUCKET, bucketPrefix:process.env.S3_BUCKET_PREFIX , directAccess: true}
+        {bucket: process.env.S3_BUCKET, bucketPrefix: "" , directAccess: true}
     );
 }
 
@@ -27,6 +27,7 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  filesAdapter: filesAdapter,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
