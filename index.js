@@ -16,9 +16,9 @@ if (process.env.S3_ENABLE) {
     var S3Adapter = require('parse-server').S3Adapter;
 
     filesAdapter = new S3Adapter(
-        process.env.AWS_ACCESS_KEY,
-        process.env.AWS_SECRET_ACCESS_KEY,
-        {bucket: process.env.AWS_BUCKET_NAME, bucketPrefix: "", directAccess: true}
+        process.env.S3_ACCESS_KEY,
+        process.env.S3_SECRET_KEY,
+        {bucket: process.env.S3_BUCKET, bucketPrefix:process.env.S3_BUCKET_PREFIX , directAccess: true}
     );
 }
 
