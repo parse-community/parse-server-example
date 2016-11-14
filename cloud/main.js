@@ -311,7 +311,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
-								var isBookActive = book.get("active") || true;
+								var isBookActive = book.get("active") || (book.get("active")=== undefined);
 								if(isBookActive){
 									totalReads += book.get("playedTimes") || 0;
 									totalLikes += book.get("likedTimes") || 0;
