@@ -488,8 +488,8 @@ Parse.Cloud.define('loginUser', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response)
 {
-	Parse.Cloud.useMasterKey();
-
+	//Parse.Cloud.useMasterKey();
+	//
 	// All Messages
 	var installId = request.params.installId;
 	var userId = request.params.userId;
@@ -499,10 +499,11 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 	query.doesNotExist('userID');
 	query.find(
 	{
+		useMasterKey: true,
 		success: function(results)
 		{
-			conditionalLog('Testing Converting');
-			conditionalLog('found: ' + results.length);
+			console.log('Testing Converting');
+			console.log('found: ' + results.length);
 			if ( results.length == 0 )
 			{
 				response.success('no messages to convert');
