@@ -19,7 +19,6 @@ Parse.Cloud.define('pushChannelTest', function(request, response) {
   var payload = { "alert": message, 
                   "customdata": customData
                 };
-  };
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
 
