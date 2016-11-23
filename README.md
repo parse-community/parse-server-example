@@ -1,12 +1,12 @@
 # parse-server-example
 
-Example project using the parse-server module on Express.
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express.
 
-Read the full server guide here: https://parse.com/docs/server/guide
+Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-server/wiki/Parse-Server-Guide
 
 ### For Local Development
 
-* Make sure you have at least Node 4.1. `node --version`
+* Make sure you have at least Node 4.3. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`
 * Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
@@ -16,7 +16,7 @@ Read the full server guide here: https://parse.com/docs/server/guide
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Getting Started With Heroku + Mongolab Development
+### Getting Started With Heroku + mLab Development
 
 #### With the Heroku Button
 
@@ -26,7 +26,7 @@ Read the full server guide here: https://parse.com/docs/server/guide
 
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [MongoLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox`
+* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
@@ -53,6 +53,23 @@ Read the full server guide here: https://parse.com/docs/server/guide
 A detailed tutorial is available here:
 [Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
 
+
+### Getting Started With Google App Engine
+
+1. Clone the repo and change directory to it 
+1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
+1. [Enable billing](https://console.cloud.google.com/project/_/settings) for your project.
+1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
+1. Setup a MongoDB server.  You have a few options:
+  1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
+  1. Use [MongoLab](https://mongolab.com/google/) to create a free MongoDB deployment on Google Cloud Platform.
+1. Modify `app.yaml` to update your environment variables.
+1. Delete `Dockerfile`
+1. Deploy it with `gcloud preview app deploy`
+
+A detailed tutorial is available here:
+[Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
+
 ### Getting Started With Scalingo
 
 #### With the Scalingo button
@@ -68,13 +85,30 @@ A detailed tutorial is available here:
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
 * Deploy it with: `git push scalingo master`
 
-### Using it
+### Getting Started With OpenShift Online (Next Gen)
 
-You can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
+1. Register for a free [OpenShift Online (Next Gen) account](http://www.openshift.com/devpreview/register.html)
+1. Create a project in the [OpenShift Online Console](https://console.preview.openshift.com/console/).
+1. Install the [OpenShift CLI](https://docs.openshift.com/online/getting_started/beyond_the_basics.html#btb-installing-the-openshift-cli).
+1. Add the Parse Server template to your project: `oc create -f https://raw.githubusercontent.com/ParsePlatform/parse-server-example/master/openshift.json`
+1. Deploy Parse Server from the web console
+  1. Open your project in the [OpenShift Online Console](https://console.preview.openshift.com/console/):
+  1. Click **Add to Project** from the top navigation
+  1. Scroll down and select **NodeJS > Parse Server**
+  1. (Optionally) Update the Parse Server settings (parameters)
+  1. Click **Create**
+
+A detailed tutorial is available here:
+[Running Parse Server on OpenShift Online (Next Gen)](https://blog.openshift.com/parse-server/)
+
+# Using it
+
+Before using it, you can access a test page to verify if the basic setup is working fine [http://localhost:1337/test](http://localhost:1337/test).
+Then you can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
 
 Example request to a server running locally:
 
-```
+```curl
 curl -X POST \
   -H "X-Parse-Application-Id: myAppId" \
   -H "Content-Type: application/json" \
@@ -90,9 +124,10 @@ curl -X POST \
 
 Example using it via JavaScript:
 
-```
+```javascript
 Parse.initialize('myAppId','unused');
 Parse.serverURL = 'https://whatever.herokuapp.com';
+
 var obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 obj.save().then(function(obj) {
@@ -104,4 +139,26 @@ obj.save().then(function(obj) {
 }, function(err) { console.log(err); });
 ```
 
+Example using it on Android:
+```java
+//in your application class
+
+Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+  .applicationId("myAppId")
+  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .build());
+
+ParseObject testObject = new ParseObject("TestObject");
+testObject.put("foo", "bar");
+testObject.saveInBackground();
+```
+Example using it on iOS (Swift):
+```swift
+//in your AppDelegate
+
+Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
+  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
+  configuration.applicationId = "<# Your APP_ID #>"
+}))
+```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
