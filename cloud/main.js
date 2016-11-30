@@ -310,8 +310,12 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
-								totalReads += book.get("playedTimes") || 0;
-								totalLikes += book.get("likedTimes") || 0;
+								var bookReads = book.get("playedTimes") || 0;
+								var bookLikes = book.get("likedTimes") || 0;
+								if (bookReads >= bookLikes) {
+									totalReads += bookReads;
+									totalLikes += bookLikes;
+								}
 								totalFeatured += book.get("featuredAccepted") || 0;
 							}
 							var totalScore = totalReads * 10 + totalLikes * 50 + totalFeatured * 150 + totalAppUseTimeScore;
