@@ -361,7 +361,6 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 								if(isBookActive){
 									var bookReads = book.get("playedTimes") || 0;
 									var bookLikes = book.get("likedTimes") || 0;
-									console.log("bookReads = "+bookReads+", bookLikes = " + bookLikes);
 									if (bookReads >= bookLikes) {
 										totalReads += bookReads;
 										totalLikes += bookLikes;
@@ -373,7 +372,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 									totalBannedBook ++;
 								}
 							}
-							var totalScore = totalReads * 10 + totalLikes * 50 + totalFeatured * 250 + totalAppUseTimeScore - totalBannedBook * 250 - totalCheats * 250;
+							var totalScore = totalReads * 10 + totalLikes * 50 + totalFeatured * 250 + totalAppUseTimeScore - totalBannedBook * 250;
 							user.set("totalReadsByOthers", totalReads);
 							user.set("totalLikesByOthers", totalLikes);
 							user.set("totalScore", totalScore );
