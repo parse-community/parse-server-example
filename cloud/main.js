@@ -11,7 +11,8 @@ Parse.Cloud.define('pushChannelTest', function(request, response) {
 
   var message = params.message;
   var customData = params.customData;
-  var locationNotif = params.locationNotif;
+  var locationLat = params.locationLat;
+  var locationLong = params.locationLong;
 
   // use to custom tweak whatever payload you wish to send
   var pushQuery = new Parse.Query(Parse.Installation);
@@ -19,7 +20,8 @@ Parse.Cloud.define('pushChannelTest', function(request, response) {
 
   var payload = { "alert": message, 
                   "customdata": customData,
-                  "locationNotif": locationNotif
+                  "locationLat": locationLat,
+                  "locationLong": locationLong
                 };
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
