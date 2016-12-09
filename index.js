@@ -16,7 +16,7 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'smartcityaccessibility',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  restKey: process.env.REST_KEY || '2139d-231cb2-738fe'
+  restKey: process.env.REST_KEY || '2139d-231cb2-738fe',
   serverURL: process.env.SERVER_URL || 'https://smartcityaccessibility.herokuapp.com/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
