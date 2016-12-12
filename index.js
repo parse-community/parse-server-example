@@ -17,6 +17,7 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'parkingmanagment',
   masterKey: process.env.MASTER_KEY || 'sefiandshay', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'https://pm-parse-server.herokuapp.com/parse',  // Don't forget to change to https if needed
+  restAPIKey: '2139d-231cb2-738aa'
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
