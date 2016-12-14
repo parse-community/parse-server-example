@@ -10,6 +10,7 @@ var expirationDate = new Date(today.getTime() - (time));
     
 var query = new Parse.Query('ParkingSpaces');
     query.lessThan('createdAt', expirationDate);
+	query.equalsTo('taken', false);
     query.find().then(function (spots) {
 		var arrayLength = spots.length;
 		console.log("found "+arrayLength+" spots relevant");
