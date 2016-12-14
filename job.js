@@ -16,7 +16,7 @@ var query = new Parse.Query('ParkingSpaces');
 		for (var i = 0; i < arrayLength; i++) {
 			if ( spots[i].get('taken') == false ){
 				console.log("found free spot, setting taken");
-				spots[i].set('taken', true);
+				spots[i].set('taken', null);
 				spots[i].save();
 			}
 		}
