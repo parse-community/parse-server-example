@@ -19,7 +19,7 @@ Parse.Cloud.job('deleteOldParkings', function(request, status) {
         query.find().then(function (spots) {
 			var arrayLength = spots.length;
 			for (var i = 0; i < arrayLength; i++) {
-				if(spots[i].get('taken') == false){
+				if(Boolean(spots[i].get('taken')) == false){
 					spots[i].set('taken', null, {
 						success: function() {
 							
