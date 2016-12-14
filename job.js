@@ -9,17 +9,17 @@ var time = (minutes * 60 * 1000);
 var expirationDate = new Date(today.getTime() - (time));
     
 var query = new Parse.Query('ParkingSpaces');
-    query.lessThan('createdAt', expirationDate);
+    query.lessThan('updatedAt', expirationDate);
 	query.equalsTo('taken', false);
     query.find().then(function (spots) {
 		var arrayLength = spots.length;
 		console.log("found "+arrayLength+" spots relevant");
 		for (var i = 0; i < arrayLength; i++) {
-			//if ( spots[i].get('taken') == false ){
-			console.log("found free spot, setting taken");
-			spots[i].set('taken', null);
-			spots[i].save();
-			//}
+			if ( spots[i].get('taken') == false ){
+				console.log("found free spot, setting taken");
+				spots[i].set('taken', null);
+				spots[i].save();
+			}
 		}
 		console.log("finished.");
     }, function (error) {});
