@@ -15,11 +15,11 @@ var query = new Parse.Query('ParkingSpaces');
 		var arrayLength = spots.length;
 		console.log("found "+arrayLength+" spots relevant");
 		for (var i = 0; i < arrayLength; i++) {
-			if ( spots[i].get('taken') == false ){
-				console.log("found free spot, setting taken");
-				spots[i].set('taken', null);
-				spots[i].save();
-			}
+			//if ( spots[i].get('taken') == false ){
+			console.log("found free spot, setting taken");
+			spots[i].set('taken', null);
+			spots[i].save();
+			//}
 		}
 		console.log("finished.");
     }, function (error) {});
