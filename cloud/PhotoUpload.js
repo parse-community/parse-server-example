@@ -301,7 +301,7 @@ Parse.Cloud.define("allpaths", function(request, response) {
       for (var i = 0; i < ct; i+=1000) {
         pathPromises.push(getPhotoUploadQueryForDevice(request.params.deviceId).limit(1000).skip(i).find());
       }
-      return Parse.Promise.when(pathPromises);
+      return Parse.Promise.when.apply(this, pathPromises);
     } else {
 
     }
