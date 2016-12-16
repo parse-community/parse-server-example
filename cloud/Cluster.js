@@ -48,7 +48,7 @@ exports.clusterForDeviceNearLocation = function(deviceId, location, forImage) {
         }
       }
     });
-    return Parse.Promise.when(newClusters);
+    return Parse.Promise.when.apply(this, newClusters);
   }, function(error) {
     console.log("Error searching for cluster");
     console.log(error);

@@ -21,7 +21,7 @@ function processSingleBatch(batch) {
     newObject.set(batchObject);
     createdInBatch.push(newObject.save());
   });
-  return Parse.Promise.when(createdInBatch);
+  return Parse.Promise.when.apply(this, createdInBatch);
 }
 
 Parse.Cloud.beforeSave(className, function(request,response) {

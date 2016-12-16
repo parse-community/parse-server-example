@@ -143,7 +143,7 @@ exports.createEventForLatest = function(deviceId, completionCallback) {
         }
       });
     }
-    return Parse.Promise.when(promises);
+    return Parse.Promise.when.apply(this, promises);
   }).done(function () {
       completionCallback();
     }

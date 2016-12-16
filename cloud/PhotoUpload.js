@@ -203,7 +203,7 @@ exports.getClusterBag = function(deviceId) {
       var mediaRelation = clusterResult.relation("media");
       mixResults.push(mediaRelation.query().find());
     });
-    return Parse.Promise.when(mixResults);
+    return Parse.Promise.when.apply(this, mixResults);
   });
 
 };
