@@ -262,11 +262,11 @@ Parse.Cloud.afterSave("GameInvites", function(request, response) {
    }, {
         useMasterKey: true,
          success:function(results) {
-  
+            console.error("game invite push success");
          }, 
   
          error:function(error) {
-            console.error("push error: " + error.message);
+            console.error("game invite push error: " + error.message);
          }
       });
 });
