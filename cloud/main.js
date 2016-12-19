@@ -174,6 +174,7 @@ Parse.Cloud.afterSave('Game', function(request, response) {
       },
       push_time: new Date(request.object.get('eventDate') - (30 * 60000))
    }, {
+         useMasterKey: true,
          success:function(results) {
   
          }, 
@@ -259,6 +260,7 @@ Parse.Cloud.afterSave("GameInvites", function(request, response) {
          alert: "You've been invited to join " + request.object.get("gameNameString")
       }
    }, {
+        useMasterKey: true,
          success:function(results) {
   
          }, 
@@ -291,6 +293,7 @@ Parse.Cloud.afterSave("FollowRequests", function(request, response) {
                alert: handle + " has sent you a friend request!"
             }
          }, {
+            useMasterKey: true,
             success:function(results) {
                 console.error("followrequest push success");
             }, 
