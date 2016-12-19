@@ -25,7 +25,7 @@ var api = new ParseServer({
   },
   push: {
     ios: {
-      pfx: __dirname + '/pushcert.p12',
+      pfx: 'apnscert.p12',
       bundleId: 'com.RecCheckApp.Rec-Check-App'
     }
   }
