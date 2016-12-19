@@ -26,8 +26,7 @@ var api = new ParseServer({
   push: {
     ios: {
       pfx: './pushcert.p12',
-      bundleId: 'com.RecCheckApp.Rec-Check-App',
-      production: true
+      bundleId: 'com.RecCheckApp.Rec-Check-App'
     }
   }
 });
