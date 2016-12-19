@@ -22,7 +22,7 @@ Parse.Cloud.define('hello', function(request, response) {
 			detectPPM : request.params.detectPPM                                            
 		 }
   }, { useMasterKey: true }).then(function() {
-      response.success("########Push was sent successfully.")
+      response.success("########Push was sent successfully...20161219Channel")
   }, function(error) {
       response.error("##########Push failed to send with error: " + error.message);
   });
@@ -48,7 +48,7 @@ Parse.Cloud.define("sendPushToSingle", function(request, response) {
 		 }
   }, { useMasterKey: true }).then(function() {
 	   console.log("#### PUSH OK for : " + request.params.pushSingle2Cloud )
-      response.success("Push was sent successfully.")
+      response.success("Push was sent successfully...20161219Single")
   }, function(error) {
 	   console.log("#### PUSH ERROR" + error.message);
       response.error("Push failed to send with error: " + error.message);
