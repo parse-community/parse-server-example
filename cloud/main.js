@@ -210,8 +210,8 @@ Parse.Cloud.afterSave('Game', function(request, response) {
   
    var query = new Parse.Query(Parse.Installation);
    var id = request.object.id;
-   query.equalTo("channels", id);
-     
+   query.containedIn("channels", [id]);
+   
    var date = new Date(request.object.get('eventDate') - (30 * 60000));
    console.error("date: " + date);
 
