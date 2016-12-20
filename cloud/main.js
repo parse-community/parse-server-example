@@ -62,26 +62,28 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
 
             /// GAME JOINED PUSH NOTIFICATION
             var userObject = gameObject.get("createdBy");
-            var query = new Parse.Query(Parse.Installation);
-            query.containedIn("channels", [gameId]);
-            query.notEqualTo("profileId", userObject.get("profileObjectId"));
-            Parse.Push.send({
-              where: query,
-              data: {
-                 alert: "A new player has joined up for " + gameObject.get("groupName") + "!"
-              }
-            }, {
-              useMasterKey: true,
-               success:function(results) {
-                  console.error("game joined push success");
-               },
+            userObject.fetch().then(function(results) {
+              var user = results.first
+              console.error("user object: " + user);
+              var query = new Parse.Query(Parse.Installation);
+              query.containedIn("channels", [gameId]);
+              query.notEqualTo("profileId", userObject.get("profileObjectId"));
+              Parse.Push.send({
+                where: query,
+                data: {
+                   alert: "A new player has joined up for " + user.get("groupName") + "!"
+                }
+              }, {
+                useMasterKey: true,
+                 success:function(results) {
+                    console.error("game joined push success");
+                 },
 
-               error:function(error) {
-                  console.error("game joined push error: " + error.message);
-               }
+                 error:function(error) {
+                    console.error("game joined push error: " + error.message);
+                 }
+              });
             });
-              
-
           } else {
             console.error("A game with id " + gameId + " was not found.");
           };
