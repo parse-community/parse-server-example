@@ -61,30 +61,26 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
             gameObject.save();
 
             /// GAME JOINED PUSH NOTIFICATION
-            var queryUsers = new Parse.Query("User")
-            queryUsers.equalTo("objectId", gameObject.get("createdBy"));
-            queryUsers.first({
-              success: function(userObject) {
-                var query = new Parse.Query(Parse.Installation);
-                query.containedIn("channels", [gameId]);
-                query.notEqualTo("profileId", userObject.get("profileObjectId"));
-                Parse.Push.send({
-                  where: query,
-                  data: {
-                     alert: "A new player has joined up for " + gameObject.get("groupName") + "!"
-                  }
-                }, {
-                  useMasterKey: true,
-                   success:function(results) {
-                      console.error("game joined push success");
-                   },
-
-                   error:function(error) {
-                      console.error("game joined push error: " + error.message);
-                   }
-                });
+            var userObject = gameObject.get("createdBy");
+            var query = new Parse.Query(Parse.Installation);
+            query.containedIn("channels", [gameId]);
+            query.notEqualTo("profileId", userObject.get("profileObjectId"));
+            Parse.Push.send({
+              where: query,
+              data: {
+                 alert: "A new player has joined up for " + gameObject.get("groupName") + "!"
               }
+            }, {
+              useMasterKey: true,
+               success:function(results) {
+                  console.error("game joined push success");
+               },
+
+               error:function(error) {
+                  console.error("game joined push error: " + error.message);
+               }
             });
+              
 
           } else {
             console.error("A game with id " + gameId + " was not found.");
