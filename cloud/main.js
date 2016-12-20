@@ -74,6 +74,7 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
                   console.error("game joined push success");
 
                   /// ADD GAMEID TO USER'S INSTALLATION CHANNELS
+                  Parse.Cloud.useMasterKey();
                   var installQuery = new Parse.Query(Parse.Installation);
                   installQuery.equalTo("profileId", profileId);
                   installQuery.find({
@@ -101,6 +102,7 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
                   console.error("game joined push error: " + error.message);
 
                   /// ADD GAMEID TO USER'S INSTALLATION CHANNELS
+                  Parse.Cloud.useMasterKey();
                   var installQuery = new Parse.Query(Parse.Installation);
                   installQuery.equalTo("profileId", profileId);
                   installQuery.find({
