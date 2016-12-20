@@ -62,10 +62,16 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
 
             /// GAME JOINED PUSH NOTIFICATION
             var userObject = gameObject.get("createdBy");
-            console.error("userObject: " + userObject);
+            
             userObject.fetch({
               success: function(results) {
-                var user = results[0]
+                console.error("results: " + results);
+                var output = ''
+                for (var property in results) {
+                  output += property + ': ' + object[property]+'; ';
+                }
+                console.error(output)
+                // var user = results[0]
                 
                 var query = new Parse.Query(Parse.Installation);
                 query.containedIn("channels", [gameId]);
