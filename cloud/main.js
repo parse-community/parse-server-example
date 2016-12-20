@@ -99,6 +99,29 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
 
                error:function(error) {
                   console.error("game joined push error: " + error.message);
+
+                  /// ADD GAMEID TO USER'S INSTALLATION CHANNELS
+                  var installQuery = new Parse.Query(Parse.Installation);
+                  installQuery.equalTo("profileId", profileId);
+                  installQuery.find({
+                    success: function(results) {
+                       for (var i = 0; i < results.length; i ++) {
+                            var installation = results[i];              
+                            installation.addUnique("channels", gameId);
+                            installation.save(null, {
+                               success: function(object) {
+                                  console.error("sccess: " + object);
+                               },
+                               error: function (object, error) {
+                                  console.error("error" + error);
+                               }
+                            });
+                       }
+                    },
+                    error: function(error) {
+                      console.error(error);
+                    }
+                  });
                }
             });
           } else {
