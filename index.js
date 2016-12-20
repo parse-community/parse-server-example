@@ -11,14 +11,26 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+var OneSignalPushAdapter = require('parse-server-onesignal-push-adapter');
+var oneSignalPushAdapter = new OneSignalPushAdapter({
+  oneSignalAppId:"fc943c1e-8446-4e8d-a651-91339dc9b2e7",
+  oneSignalApiKey:"MTNiNWVkYjktMWMzYS00YTVlLTgwZTMtZDI0ZjMyYjgxNmIx"
+});
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  appId: process.env.APP_ID || 'HamrD3OpwqZ7rpqNYCVCvWiFkhy8LpQGrrdcxTvE',
+  fileKey: process.env.FILE_KEY || '4a9cb07d-450b-4323-aaee-3d60319a5695',
+  masterKey: process.env.MASTER_KEY || 'bVH8zxxRM7EMNALMKqIdBTf5XUd7S6txfWy6ogPE', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'https://parseserverreccheck.herokuapp.com/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  },
+  push: {
+    adapter: oneSignalPushAdapter
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
