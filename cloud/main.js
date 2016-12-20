@@ -66,7 +66,7 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
             Parse.Push.send({
                 where: query,
                 data: {
-                   alert: "A new player has joined up in " + gameObject.get("gameNameString")
+                   alert: "A new player has joined up in " + gameObject.get("groupName")
                 }
              }, {
                   useMasterKey: true,
