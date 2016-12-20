@@ -13,6 +13,12 @@ if (!databaseUri) {
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+var OneSignalPushAdapter = require('parse-server-onesignal-push-adapter');
+var oneSignalPushAdapter = new OneSignalPushAdapter({
+  oneSignalAppId:"fc943c1e-8446-4e8d-a651-91339dc9b2e7",
+  oneSignalApiKey:"MTNiNWVkYjktMWMzYS00YTVlLTgwZTMtZDI0ZjMyYjgxNmIx"
+});
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
@@ -24,10 +30,7 @@ var api = new ParseServer({
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   },
   push: {
-    ios: {
-      pfx: 'apnscert.p12',
-      bundleId: 'com.RecCheckApp.Rec-Check-App'
-    }
+    adapter: oneSignalPushAdapter
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
