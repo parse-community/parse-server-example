@@ -63,15 +63,15 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
             /// GAME JOINED PUSH NOTIFICATION
             var userObject = gameObject.get("createdBy");
             userObject.fetch().then(function(results) {
-              var user = results.first
+              var user = results[0]
               console.error("user object: " + user);
               var query = new Parse.Query(Parse.Installation);
               query.containedIn("channels", [gameId]);
-              query.notEqualTo("profileId", userObject.get("profileObjectId"));
+              query.notEqualTo("profileId", user.get("profileObjectId"));
               Parse.Push.send({
                 where: query,
                 data: {
-                   alert: "A new player has joined up for " + user.get("groupName") + "!"
+                   alert: "A new player has joined up for " + gameObject.get("groupName") + "!"
                 }
               }, {
                 useMasterKey: true,
