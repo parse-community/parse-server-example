@@ -49,7 +49,6 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
   query.count({
     success: function(count) {
   
-      // Do something with the returned Parse.Object values
       var joinedPlayersCount = count;
       var Game = Parse.Object.extend("Game");
       var queryGameObject = new Parse.Query(Game);
@@ -60,6 +59,26 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
             gameObject.set("numPlayers", joinedPlayersCount);
             console.error("num players set to " + gameObject.get("numPlayers"));
             gameObject.save();
+
+            /// GAME JOINED PUSH NOTIFICATION
+            var query = new Parse.Query(Parse.Installation);
+            query.containedIn("channels", [gameId]);
+            Parse.Push.send({
+                where: query,
+                data: {
+                   alert: "A new player has joined up in " + gameObject.get("gameNameString")
+                }
+             }, {
+                  useMasterKey: true,
+                   success:function(results) {
+                      console.error("game joined push success");
+                   },
+
+                   error:function(error) {
+                      console.error("game joined push error: " + error.message);
+                   }
+                });
+
           } else {
             console.error("A game with id " + gameId + " was not found.");
           };
