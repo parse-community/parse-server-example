@@ -61,37 +61,45 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
             gameObject.save();
 
             /// GAME JOINED PUSH NOTIFICATION
-            var userObject = gameObject.get("createdBy");
-            
-            userObject.fetch({
-              success: function(results) {
-                console.error("results: " + results);
-                var output = ''
-                for (var property in results) {
-                  output += property + ': ' + object[property]+'; ';
-                }
-                console.error(output)
-                // var user = results[0]
-                
-                var query = new Parse.Query(Parse.Installation);
-                query.containedIn("channels", [gameId]);
-                query.notEqualTo("profileId", user.get("profileObjectId"));
-                Parse.Push.send({
-                  where: query,
-                  data: {
-                     alert: "A new player has joined up for " + gameObject.get("groupName") + "!"
-                  }
-                }, {
-                  useMasterKey: true,
-                   success:function(results) {
-                      console.error("game joined push success");
-                   },
-
-                   error:function(error) {
-                      console.error("game joined push error: " + error.message);
-                   }
-                });
+            var query = new Parse.Query(Parse.Installation);
+            query.containedIn("channels", [gameId]);
+            Parse.Push.send({
+              where: query,
+              data: {
+                 alert: "A new player has joined up for " + gameObject.get("groupName") + "!"
               }
+            }, {
+              useMasterKey: true,
+               success:function(results) {
+                  console.error("game joined push success");
+
+                  /// ADD GAMEID TO USER'S INSTALLATION CHANNELS
+                  var installQuery = new Parse.Query(Parse.Installation);
+                  installQuery.equalTo("profileId", profileId);
+                  installQuery.find({
+                    success: function(results) {
+                       for (var i = 0; i < results.length; i ++) {
+                            var installation = results[i];              
+                            installation.addUnique("channels", gameId);
+                            installation.save(null, {
+                               success: function(object) {
+                                  console.error("sccess: " + object);
+                               },
+                               error: function (object, error) {
+                                  console.error("error" + error);
+                               }
+                            });
+                       }
+                    },
+                    error: function(error) {
+                      console.error(error);
+                    }
+                  });
+               },
+
+               error:function(error) {
+                  console.error("game joined push error: " + error.message);
+               }
             });
           } else {
             console.error("A game with id " + gameId + " was not found.");
@@ -107,28 +115,7 @@ Parse.Cloud.afterSave("User_Game", function(request, response) {
     }
   });
   
-  Parse.Cloud.useMasterKey();
-  var query = new Parse.Query(Parse.Installation);
-  query.equalTo("profileId", profileId);
-  query.find({
-    success: function(results) {
-       for (var i = 0; i < results.length; i ++) {
-            var installation = results[i];              
-            installation.addUnique("channels", gameId);
-            installation.save(null, {
-               success: function(object) {
-                  console.error("sccess: " + object);
-               },
-               error: function (object, error) {
-                  console.error("error" + error);
-               }
-            });
-       }
-    },
-    error: function(error) {
-      console.error(error);
-    }
-  });
+  
 });
   
 Parse.Cloud.afterSave("Activity", function(request, response) {
