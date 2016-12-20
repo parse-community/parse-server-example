@@ -119,25 +119,31 @@ Parse.Cloud.define('barberIdForBarberName', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 {
-	Parse.Cloud.useMasterKey();
-	// objectId shoudl be id
-	// just use a get( objectId instead of the below
-	var User = Parse.Object.extend('_User');
+	console.log('canReplyToUserWithId ' + request.params.userId);
+
+	var User  = Parse.Object.extend('_User');
 	var query = new Parse.Query(User);
 	query.equalTo('objectId', request.params.userId);
 	query.get(
 	{
+		useMasterKey: true,
 		success: function(result)
 		{
+			console.log('found user!');
 			var canReply = result.get('allowsMessages');
 			if ( canReply == null )
 			{
 				canReply = false;
 			}
+			console.log('can reply is ' + canReply);
+
 			response.success(canReply);
 		},
 		error: function(error)
 		{
+			console.log('ERROR querying user');
+			console.log(error);
+
 			response.error('user lookup failed');
 		}
 	});
