@@ -122,8 +122,11 @@ Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 	console.log('canReplyToUserWithId ' + request.params.userId);
 
 	var User  = Parse.Object.extend('_User');
+	console.log('1');
 	var query = new Parse.Query(User);
+	console.log('2');
 	query.equalTo('objectId', request.params.userId);
+	console.log('3');
 	query.get(
 	{
 		useMasterKey: true,
@@ -149,6 +152,52 @@ Parse.Cloud.define('canReplyToUserWithId', function(request, response)
 	});
 });
 
+Parse.Cloud.define("canReplyToUserWithId_B", function(request, response)
+{
+	console.log('canReplyToUserWithId_B ' + request.params.userId);
+
+	var query = new Parse.Query('_User');
+	console.log('1');
+	query.equalTo('objectId', request.params.userId);
+	console.log('2');
+	query.find(
+	{
+		useMasterKey: true,
+		success: function(results)
+		{
+			console.log('3');
+			if ( results.length == 1 )
+			{
+				console.log('4');
+				var canReply = results[0].get('allowsMessages');
+				if ( canReply == null )
+				{
+					console.log('5');
+					canReply = false;
+				}
+				console.log('6 can reply:');
+				console.log(canReply);
+				response.success(canReply);
+			}
+			else if ( results.length > 1 )
+			{
+				console.log('more than one user found');
+				response.error('more than one user found');
+			}
+			else
+			{
+				console.log('no user found');
+				response.error('no user found with that objectId');
+			}
+		},
+		error: function(error)
+		{
+			console.log('error quering user ' + request.params.userId);
+			console.log(error);
+			response.error('user lookup failed');
+		}
+	});
+});
 
 ///////////////////////////////////////
 //
