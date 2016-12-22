@@ -37,9 +37,12 @@ Parse.Cloud.beforeSave(className, function(request,response) {
 });
 
 Parse.Cloud.afterSave(className, function(request, response) {
+  var deviceId = request.object.get("deviceId");
   request.object.set("processed", true);
   processSingleBatch(request.object).then(function (batchObjects) {
-    push.sendPushToDevice(request.object.get("deviceId"), "", "batch", {});
+    return upload.clusterUnclusteredForDevice(deviceId);
+  }).then(function(clusteredObjects) {
+    push.sendPushToDevice(deviceId, "", "batch", {});
   });
   response.success();
 });

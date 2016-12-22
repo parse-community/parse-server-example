@@ -77,16 +77,20 @@ var photoMix = function(request, response) {
 
     var now = Date.now();
     var nowFomatted = moment();
+    var hydratedResponse = [];
     _.each(responseResult, function(uploadObject) {
       uploadObject.set("lastPhotoMixResponse", now);
       uploadObject.set("lastPhotoMixFormatted", nowFomatted.format());
+      hydratedResponse.push(new Parse.Query(photoUpload.ClassObject).get(uploadObject.id));
     });
     Parse.Object.saveAll(responseResult);
-    response.success(responseResult);
+    Parse.Promise.when(hydratedResponse).then(function() {
+      response.success(arguments);
+    });
   }, function(errors) {
     response.error("Errors retrieving photoMix");
   });
-}
+};
 
 Parse.Cloud.define("photoMix", function(request, response) {
   photoMix(request, response);
