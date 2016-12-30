@@ -85,7 +85,7 @@ var photoMix = function(request, response) {
     });
     Parse.Object.saveAll(responseResult);
     Parse.Promise.when(hydratedResponse).then(function() {
-      response.success(arguments);
+      response.success(arguments[0]);
     });
   }, function(errors) {
     response.error("Errors retrieving photoMix");
