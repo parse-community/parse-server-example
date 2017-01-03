@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.4",
-    "parse-server": "2.2.x",
+    "parse-server": "2.3.x",
     "parse-dashboard": "^1.0.11",
     "parse-server-azure-config": "^1.0.0"
   },
