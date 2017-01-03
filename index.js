@@ -80,11 +80,8 @@ app.get('/test', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/test.html'));
 });
 //-----------------------------------xxx3
+//-----------------------------------xxx3
 var port = process.env.PORT || 1337;
-var httpServer = require('http').createServer(app);
-httpServer.listen(port, function() {
+app.listen(port, function() {
     console.log('parse-server-example running on port ' + port + '.');
 });
-
-// This will enable the Live Query real-time server
-ParseServer.createLiveQueryServer(httpServer);
