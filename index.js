@@ -3,12 +3,6 @@
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
-var path = require('path');
-
-require('dotenv').config();// include .env data
-
-var logger = require('parse-server/lib/Adapters/Logger/FileLoggerAdapter').FileLoggerAdapter;
-
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGOLAB_URI
 
@@ -52,12 +46,7 @@ var api = new ParseServer({
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   push: pushConfig,
   filesAdapter: filesAdapter,
-  serverURL: process.env.SERVER_URL || 'http://localhost/parse' , // needed for Parse Cloud and push notifications
-   loggerAdapter: new logger({ logsFolder: './' }),
-  verbose: true,
-  liveQuery: {
-    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
-  }
+  serverURL: process.env.SERVER_URL || 'http://localhost/parse'  // needed for Parse Cloud and push notifications
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
@@ -73,13 +62,6 @@ app.use(mountPath, api);
 app.get('/', function(req, res) {
   res.status(200).send('I dream of being a web site...2017010301');
 });
-
-// There will be a test page available on the /test path of your server url
-// Remove this before launching your app
-app.get('/test', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
-});
-//-----------------------------------xxx3
 //-----------------------------------xxx3
 var port = process.env.PORT || 1337;
 app.listen(port, function() {
