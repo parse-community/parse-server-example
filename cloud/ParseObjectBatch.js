@@ -5,11 +5,14 @@
 var _ = require("underscore");
 var upload = require("./PhotoUpload");
 var push = require("./Push");
+var kue = require("kue"), queue = kue.createQueue({jobEvents: false});
 
 var className = "ParseObjectBatch";
 var BatchUploadObject = Parse.Object.extend(className);
 
-function processSingleBatch(batch) {
+function processSingleBatch(deflatedBatch) {
+  deflatedBatch.className = className;
+  var batch = Parse.Object.fromJSON(deflatedBatch);
   var objectArrayStr = batch.get("parseObjectJson");
   var objectType = batch.get("parseObjectType");
   var ParseObject = Parse.Object.extend(objectType);
@@ -21,6 +24,7 @@ function processSingleBatch(batch) {
     newObject.set(batchObject);
     createdInBatch.push(newObject.save());
   });
+  batch.set("processed", true);
   return Parse.Promise.when.apply(this, createdInBatch);
 }
 
@@ -38,11 +42,14 @@ Parse.Cloud.beforeSave(className, function(request,response) {
 
 Parse.Cloud.afterSave(className, function(request, response) {
   var deviceId = request.object.get("deviceId");
-  request.object.set("processed", true);
-  processSingleBatch(request.object).then(function (batchObjects) {
-    return upload.clusterUnclusteredForDevice(deviceId);
-  }).then(function(clusteredObjects) {
-    push.sendPushToDevice(deviceId, "", "batch", {});
+  var job = queue.create("batch", {batchObj: request.object, deviceId: deviceId}).save();
+  queue.process("batch", function(job, done) {
+    processSingleBatch(job.data.batchObj).then(function(newObjects) {
+      return upload.clusterUnclusteredForDevice(job.data.deviceId);
+    }).then(function(clustered){
+      push.sendPushToDevice(job.data.deviceId, "", "batch", {});
+      done();
+    });
   });
   response.success();
 });

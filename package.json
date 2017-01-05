@@ -16,7 +16,10 @@
     "fbgraph": "1.2.0",
     "moment": "~2.10.6",
     "moment-timezone": "~0.4.0",
-    "underscore": "*"
+    "underscore": "*",
+    "hiredis": "0.5.0",
+    "redis": "2.6.3",
+    "kue": "0.11.5"
   },
   "scripts": {
     "start": "node index.js"
