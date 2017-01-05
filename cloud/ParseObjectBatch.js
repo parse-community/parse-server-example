@@ -24,7 +24,7 @@ function processSingleBatch(deflatedBatch) {
     newObject.set(batchObject);
     createdInBatch.push(newObject.save());
   });
-  batch.set("processed", true);
+  batch.set("processed", true).save();
   return Parse.Promise.when.apply(this, createdInBatch);
 }
 
@@ -42,14 +42,16 @@ Parse.Cloud.beforeSave(className, function(request,response) {
 
 Parse.Cloud.afterSave(className, function(request, response) {
   var deviceId = request.object.get("deviceId");
-  var job = queue.create("batch", {batchObj: request.object, deviceId: deviceId}).save();
-  queue.process("batch", function(job, done) {
-    processSingleBatch(job.data.batchObj).then(function(newObjects) {
-      return upload.clusterUnclusteredForDevice(job.data.deviceId);
-    }).then(function(clustered){
-      push.sendPushToDevice(job.data.deviceId, "", "batch", {});
-      done();
+  if (request.object.existed() == false) {
+    var job = queue.create("batch", {batchObj: request.object, deviceId: deviceId}).removeOnComplete(true).save();
+    queue.process("batch", function (job, done) {
+      processSingleBatch(job.data.batchObj).then(function (newObjects) {
+        return upload.clusterUnclusteredForDevice(job.data.deviceId);
+      }).then(function (clustered) {
+        push.sendPushToDevice(job.data.deviceId, "", "batch", {});
+        done();
+      });
     });
-  });
+  }
   response.success();
 });
