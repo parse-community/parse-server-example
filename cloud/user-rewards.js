@@ -12,7 +12,7 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 				var user = results[0];
 				if(user){
 					console.log("found user:"+user.get("email"));
-					var userProfileQuery =new Parse.Query("UserStats");
+					var userProfileQuery =new Parse.Query("UserProfile");
 					userProfileQuery.equalTo("username",username);
                     userProfileQuery.limit(1);
 					userProfileQuery.find({useMasterKey:true})
