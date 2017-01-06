@@ -33,7 +33,14 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 				var user = results[0];
 				if(user){
 					console.log("found user:"+user.get("email"));
-					updateUserProfile(user, response);
+					updateUserProfile(user, {
+						success: function(returnValue) {
+						  response.success(returnValue);
+						},
+						error: function(error) {
+						  response.error(error);
+						}
+					  });
 				}else{
 					response.error("user doesn't exist:"+username);
 				}
