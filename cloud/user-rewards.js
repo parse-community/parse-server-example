@@ -6,6 +6,7 @@ function updateUserProfile(user, response) {
 	userProfileQuery.limit(1);
 	userProfileQuery.find({useMasterKey:true})
 			.then(function(results) {
+				console.log("results:"+results.toJSON());
 				var userProfile = results[0];
 				if(userProfile){
 					console.log("userProfile:"+userProfile.toJSON());
