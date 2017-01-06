@@ -26,6 +26,9 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 								}else{
 									response.error("userProfile doesn't exist:"+username);
 								}
+							},
+							function(error) {
+							  response.error("failed to query UserProfile:"+error);
 							});
 				}else{
 					response.error("user doesn't exist:"+username);
