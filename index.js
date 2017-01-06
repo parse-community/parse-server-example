@@ -54,15 +54,20 @@ httpServer.listen(port, function() {
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
 
-
+var kue = require("kue");
 if (process.env.REDISTOGO_URL) {
   var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-  var redis = require("kue/node_modules/redis").createClient(rtg.port, rtg.hostname);
-
-  redis.auth(rtg.auth.split(":")[1]);
+  var redisOptions = {
+    host: rtg.hostname,
+    port: rtg.port,
+    auth: rtg.auth.split(":")[1]
+  };
+  kue.createQueue({
+    redis: redisOptions
+  });
 } else {
   console.log("using local redis (from kue)");
-  var redis = require("kue/node_modules/redis").createClient();
+  kue.createQueue();
 }
 var kue = require("kue");
 kue.app.listen(3000);
