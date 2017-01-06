@@ -592,6 +592,61 @@ response.error('depreciated function, with same params, use all 3 of these inste
 
 ///////////////////////////////////////
 //
+// convertMessagesFromDeviceRecipientToUserReceiver
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertMessagesFromDeviceRecipientToUserReceiver', function(request, response)
+{
+	//Parse.Cloud.useMasterKey();
+	//
+	// All Messages
+	var installId	= request.params.installId;
+	var userId		= request.params.userId;
+
+	var query		= new Parse.Query('Messages');
+	query.equalTo('recipientID', installId);
+	query.doesNotExist('receiverID');
+	query.find(
+	{
+		useMasterKey: true,
+		success: function(results)
+		{
+			var foundStr = results.length.toString();
+			console.log('Converting from Install ID In recipientID to User ID in receiverID');
+			console.log('found: ' + foundStr);
+
+			if ( results.length == 0 )
+			{
+				response.success('no messages to convert');
+				//conditionalLog('none to convert');
+			}
+			else
+			{
+				for ( mIdx = 0; mIdx < results.length; mIdx++ )
+				{
+					var msgId = results[mIdx].objectId;
+					console.log`('converting msg ' + msgId);
+					results[mIdx].set('userID', '-not-used-');
+					results[mIdx].set('recipientID', '-not-used-');
+					results[mIdx].set('receiverID', userId);
+					results[mIdx].save();
+				}
+				var count		= results.length;
+				var countStr	= count.toString();
+				var reply		= 'converted ' + countStr + ' messages';
+				response.success(reply);
+			}
+		},
+		error: function(error)
+		{
+			response.error('unable to convert messages ' + error);
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
 // convertUsernameToPhoneNumber
 //
 ///////////////////////////////////////
