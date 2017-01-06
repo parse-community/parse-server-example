@@ -69,5 +69,5 @@ if (process.env.REDISTOGO_URL) {
   console.log("using local redis (from kue)");
   kue.createQueue();
 }
-var kue = require("kue");
-kue.app.listen(3000);
+
+app.use('/queue', kue.app);
