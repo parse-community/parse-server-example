@@ -471,22 +471,42 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 // getMessageCount
 //
 ///////////////////////////////////////
-Parse.Cloud.define('getMessageCount', function(request, response)
+Parse.Cloud.define('getMessagesCount', function(request, response)
 {
-	Parse.Cloud.useMasterKey();
-
+	//Parse.Cloud.useMasterKey();
 	// Unread Messages
-	var query = new Parse.Query('Messages');
-	query.equalTo('recipientID', request.params.installId);
+	var receiverID = request.params.receiverID;
 
-	conditionalLog('Getting Messages Count for recipient [' + request.params.installId + ']');
+	var query = new Parse.Query('Messages');
+	query.equalTo('receiverID', receiverID);
+
+	console.log('Getting Messages Count for user [' + receiverID + ']');
 
 	query.find(
 	{
 		success: function(results)
 		{
-			conditionalLog('SUCCESS: ');
-			response.success(results.count);
+			var allCount = results.count;
+			var newCount = 0;
+
+			for (mIdx = 0; mIdx < results.count; mIdx++)
+			{
+				var message = results[mIdx];
+				if ( message.has('readAt') )
+				{
+					// not new
+				}
+				else
+				{
+					newCount++;
+				}
+			}
+			console.log('messages count: ' + allCount.toString();
+			console.log('unread count:   ' + newCount.toString();
+			console.log('SUCCESS');
+			var theResult = {'allCount': allCount,'newCount':newCount};
+
+			response.success(theResult);
 		},
 		error: function(error)
 		{
