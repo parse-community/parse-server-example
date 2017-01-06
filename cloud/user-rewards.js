@@ -1,7 +1,7 @@
 // User login update
 function updateUserProfile(user, response) {
 	console.log("update userProfile:"+user.get("email"));
-	var userProfileQuery =new Parse.Query("UserProfile");
+	var userProfileQuery =new Parse.Query("_User");
 	userProfileQuery.equalTo("username",username);
 	userProfileQuery.limit(1);
 	userProfileQuery.find({useMasterKey:true})
