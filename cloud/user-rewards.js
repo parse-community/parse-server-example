@@ -6,15 +6,21 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 	console.log("search with username:"+username);
 	userQuery.equalTo("username",username);
 	userQuery.limit(1);
-	userQuery.find({useMasterKey:true}).then(function(results) {
-        var user = results[0];
-		if(user){
-			console.log("found user:"+user.get("email"));
-			response.success("user found: "+ user.get("email"));
-		}else{
-			response.error("user doesn't exist:"+username);
-		}
-       });
+	userQuery.find({useMasterKey:true})
+		.then(
+			function(results) {
+				var user = results[0];
+				if(user){
+					console.log("found user:"+user.get("email"));
+					response.success("user found: "+ user.get("email"));
+				}else{
+					response.error("user doesn't exist:"+username);
+				}
+			},
+			function(error) {
+			  response.error("failed to query user by username:"+username);
+			}
+		   );
 
 //	userQuery.find({
 //			useMasterKey:true,
