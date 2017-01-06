@@ -34,4 +34,18 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 	console.log("search with username:"+username);
 });
 
+function testQuery(username){
+    var query = new Parse.Query(Parse.User);
+    userQuery.equalTo("username",username);
+    return query.find();
+}
 
+Parse.Cloud.define("ValidateUserData", function(request, response){
+	var username =	request.params.username;
+    Parse.Cloud.useMasterKey();
+
+    Parse.Promise.when([testQuery(username), testQuery("asd")]).then(function(results){
+        console.log(results.length); // Returns 4 NOT 8
+        response.success(results.toJSON());
+    });
+});
