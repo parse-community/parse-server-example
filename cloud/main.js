@@ -1,4 +1,4 @@
-require('user-rewards.js')
+require('./user-rewards')
 
 
 Parse.Cloud.define('hello', function(req, res) {
