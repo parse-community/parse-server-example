@@ -627,9 +627,7 @@ Parse.Cloud.define('convertMessagesFromDeviceRecipientToUserReceiver', function(
 					results[mIdx].set('recipientID', '-not-used-');
 					results[mIdx].set('receiverID', userId);
 					results[mIdx].save();
-					}
 				}
-
 				var count		= results.length;
 				var countStr	= count.toString();
 				var reply		= 'converted ' + countStr + ' messages';
@@ -681,7 +679,6 @@ Parse.Cloud.define('convertMessagesFromUserRecipientToUserReceiver', function(re
 					results[mIdx].set('recipientID', '-not-used-');
 					results[mIdx].set('receiverID', userId);
 					results[mIdx].save();
-					}
 				}
 
 				var count		= results.length;
@@ -735,7 +732,6 @@ Parse.Cloud.define('convertMessagesFromUserUserToUserReceiver', function(request
 					results[mIdx].set('recipientID', '-not-used-');
 					results[mIdx].set('receiverID', userId);
 					results[mIdx].save();
-					}
 				}
 
 				var count		= results.length;
