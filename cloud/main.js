@@ -543,21 +543,75 @@ Parse.Cloud.define('loginUser', function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response)
 {
+response.error('depreciated function, with same params, use all 3 of these instead: convertMessagesFromDeviceRecipientToUserReceiver, convertMessagesFromUserRecipientToUserReceiver, convertMessagesFromUserUserToUserReceiver');
 	//Parse.Cloud.useMasterKey();
 	//
 	// All Messages
-	var installId = request.params.installId;
-	var userId = request.params.userId;
+	//var installId = request.params.installId;
+	//var userId = request.params.userId;
+	//
+	//var query = new Parse.Query('Messages');
+	//query.equalTo('recipientID', installId);
+	//query.doesNotExist('userID');
+	//query.find(
+	//{
+	//	useMasterKey: true,
+	//	success: function(results)
+	//	{
+	//		console.log('Testing Converting');
+	//		console.log('found: ' + results.length);
+	//		if ( results.length == 0 )
+	//		{
+	//			response.success('no messages to convert');
+	//			//conditionalLog('none to convert');
+	//		}
+	//		else
+	//		{
+	//			for ( m = 0; m < results.length; m++ )
+	//			{
+	//				//conditionalLog(results[m].objectId);
+	//				if ( m == 0 )
+	//				{
+	//					results[m].set('userID', userId);
+	//					results[m].save();
+	//				}
+	//			}
+	//			var count = results.length;
+	//			var countStr  = count.toString();
+	//			var reply = 'converted ' + countStr + ' messages';
+	//			response.success(reply);
+	//		}
+	//	},
+	//	error: function(error)
+	//	{
+	//		response.error('unable to convert messages ' + error);
+	//	}
+	//});
+});
 
-	var query = new Parse.Query('Messages');
+
+///////////////////////////////////////
+//
+// convertMessagesFromDeviceRecipientToUserReceiver
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertMessagesFromDeviceRecipientToUserReceiver', function(request, response)
+{
+	//Parse.Cloud.useMasterKey();
+	//
+	// All Messages
+	var installId	= request.params.installId;
+	var userId		= request.params.userId;
+
+	var query		= new Parse.Query('Messages');
 	query.equalTo('recipientID', installId);
-	query.doesNotExist('userID');
+	query.doesNotExist('receiverID');
 	query.find(
 	{
 		useMasterKey: true,
 		success: function(results)
 		{
-			console.log('Testing Converting');
+			console.log('Converting from Install ID In recipientID to User ID in receiverID');
 			console.log('found: ' + results.length);
 			if ( results.length == 0 )
 			{
@@ -566,18 +620,127 @@ Parse.Cloud.define('convertMessagesFromDeviceToUser', function(request, response
 			}
 			else
 			{
-				for ( m = 0; m < results.length; m++ )
+				for ( mIdx = 0; mIdx < results.length; mIdx++ )
 				{
-					//conditionalLog(results[m].objectId);
-					if ( m == 0 )
-					{
-						results[m].set('userID', userId);
-						results[m].save();
+					console.log`('converting msg ' + results[mIdx].objectId);
+					results[mIdx].set('userID', '-not-used-');
+					results[mIdx].set('recipientID', '-not-used-');
+					results[mIdx].set('receiverID', userId);
+					results[mIdx].save();
 					}
 				}
-				var count = results.length;
-				var countStr  = count.toString();
-				var reply = 'converted ' + countStr + ' messages';
+
+				var count		= results.length;
+				var countStr	= count.toString();
+				var reply		= 'converted ' + countStr + ' messages';
+				response.success(reply);
+			}
+		},
+		error: function(error)
+		{
+			response.error('unable to convert messages ' + error);
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
+// convertMessagesFromUserRecipientToUserReceiver
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertMessagesFromUserRecipientToUserReceiver', function(request, response)
+{
+	//Parse.Cloud.useMasterKey();
+	//
+	// All Messages
+	var installId	= request.params.installId;
+	var userId		= request.params.userId;
+
+	var query		= new Parse.Query('Messages');
+	query.equalTo('recipientID', userId);
+	query.doesNotExist('receiverID');
+	query.find(
+	{
+		useMasterKey: true,
+		success: function(results)
+		{
+			console.log('Converting from User ID in recipientID to receiverID');
+			console.log('found: ' + results.length);
+			if ( results.length == 0 )
+			{
+				response.success('no messages to convert');
+				//conditionalLog('none to convert');
+			}
+			else
+			{
+				for ( mIdx = 0; mIdx < results.length; mIdx++ )
+				{
+					console.log`('converting msg ' + results[mIdx].objectId);
+					results[mIdx].set('userID', '-not-used-');
+					results[mIdx].set('recipientID', '-not-used-');
+					results[mIdx].set('receiverID', userId);
+					results[mIdx].save();
+					}
+				}
+
+				var count		= results.length;
+				var countStr	= count.toString();
+				var reply		= 'converted ' + countStr + ' messages';
+				response.success(reply);
+			}
+		},
+		error: function(error)
+		{
+			response.error('unable to convert messages ' + error);
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
+// convertMessagesFromUserIDToReceiverID
+//
+///////////////////////////////////////
+Parse.Cloud.define('convertMessagesFromUserUserToUserReceiver', function(request, response)
+{
+	//Parse.Cloud.useMasterKey();
+	//
+	// All Messages
+	var installId	= request.params.installId;
+	var userId		= request.params.userId;
+
+	var query		= new Parse.Query('Messages');
+	query.equalTo('userID', userId);
+	query.doesNotExist('receiverID');
+	query.find(
+	{
+		useMasterKey: true,
+		success: function(results)
+		{
+			console.log('Converting from User ID in userID to receiverID');
+			console.log('found: ' + results.length);
+			if ( results.length == 0 )
+			{
+				response.success('no messages to convert');
+				//conditionalLog('none to convert');
+			}
+			else
+			{
+				for ( mIdx = 0; mIdx < results.length; mIdx++ )
+				{
+					console.log`('converting msg ' + results[mIdx].objectId);
+					results[mIdx].set('userID', '-not-used-');
+					results[mIdx].set('recipientID', '-not-used-');
+					results[mIdx].set('receiverID', userId);
+					results[mIdx].save();
+					}
+				}
+
+				var count		= results.length;
+				var countStr	= count.toString();
+				var reply		= 'converted ' + countStr + ' messages';
 				response.success(reply);
 			}
 		},
