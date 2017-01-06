@@ -19,10 +19,12 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 							.then(function(results) {
 								var userProfile = results[0];
 								if(userProfile){
-									var result =  JSON.parse(userProfile.toJSON());
-									result.test = "test123";
-									console.log("result:"+result.toJSON());
-									response.success(result.toJSON());
+								console.log("userProfile:"+userProfile.toJSON());
+//									var result =  JSON.parse(userProfile.toJSON());
+//									result.test = "test123";
+//									console.log("result:"+result.toJSON());
+									userProfile.set("test","test123")
+									response.success(userProfile.toJSON());
 								}else{
 									response.error("userProfile doesn't exist:"+username);
 								}
