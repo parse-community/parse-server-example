@@ -14,12 +14,13 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 	userQuery.equalTo("username",username);
 	userQuery.limit(1);
 	userQuery.find({useMasterKey:true})
-		.then(
-			function(results) {
+		.then( function (results) {
 				var user = results[0];
 				if(user){
 					console.log("found user:"+user.get("email"));
-					return findUserProfile(username, userProfileQuery);
+					userProfileQuery.equalTo("username", username);
+					userProfileQuery.limit(1);
+					return userProfileQuery.find({useMasterKey:true});
 				}else{
 					response.error("user doesn't exist:"+username);
 				}
