@@ -19,7 +19,8 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 							.then(function(results) {
 								var userProfile = results[0];
 								if(userProfile){
-									response.success("userProfile found: "+ userProfile.get("email"));
+									userProfile.test = "test";
+									response.success(userProfile);
 								}else{
 									response.error("userProfile doesn't exist:"+username);
 								}
