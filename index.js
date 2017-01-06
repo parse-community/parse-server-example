@@ -55,7 +55,7 @@ httpServer.listen(port, function() {
 ParseServer.createLiveQueryServer(httpServer);
 
 console.log("REDISTOGO_URL:" + process.env.REDISTOGO_URL);
-if (process.env.REDISTOGO_URL) {
+if (process.env.REDISTOGO_URL !== undefined) {
   var rtg   = require("url").parse(process.env.REDISTOGO_URL);
   var redis = require("redis").createClient(rtg.port, rtg.hostname);
 
