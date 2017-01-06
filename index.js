@@ -57,13 +57,13 @@ ParseServer.createLiveQueryServer(httpServer);
 var kue = require("kue");
 if (process.env.REDISTOGO_URL) {
   var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-  var redisOptions = {
-    host: rtg.hostname,
-    port: rtg.port,
-    auth: rtg.auth.split(":")[1]
-  };
+  //var redisOptions = {
+  //  host: rtg.hostname,
+  //  port: rtg.port,
+  //  auth: rtg.auth.split(":")[1]
+  //};
   kue.createQueue({
-    redis: redisOptions
+    redis: process.env.REDISTOGO_URL
   });
 } else {
   console.log("using local redis (from kue)");
