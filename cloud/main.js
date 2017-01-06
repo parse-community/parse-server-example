@@ -360,16 +360,6 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 
 							for (i=0; i < results.length; i++) {
 								var book = results[i];
-								var isBookActive = book.get("active") || (book.get("active")=== undefined);
-								if(isBookActive){
-								var bookReads = book.get("playedTimes") || 0;
-                                var bookLikes = book.get("likedTimes") || 0;
-                                if (bookReads >= bookLikes) {
-									totalReads += bookReads;
-									totalLikes += bookLikes;
-								}else{
-									totalCheats ++;
-								}
 								totalReads += book.get("playedTimes") || 0;
 								totalLikes += book.get("likedTimes") || 0;
 								totalFeatured += book.get("featuredAccepted") || 0;
