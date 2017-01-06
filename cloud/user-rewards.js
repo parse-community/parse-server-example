@@ -1,24 +1,10 @@
 // User login update
-function updateUserProfile(user, response) {
+function findUserProfile(user) {
 	console.log("update userProfile:"+user.get("email"));
 	var userProfileQuery =new Parse.Query("_User");
 	userProfileQuery.equalTo("username",username);
 	userProfileQuery.limit(1);
-	userProfileQuery.find({useMasterKey:true})
-			.then(function(results) {
-				console.log("results:"+results.toJSON());
-				var userProfile = results[0];
-				if(userProfile){
-					console.log("userProfile:"+userProfile.toJSON());
-					userProfile.set("test","test123")
-					response.success(userProfile.toJSON());
-				}else{
-					response.error("userProfile doesn't exist:"+username);
-				}
-			},
-			function(error) {
-			  response.error("failed to query UserProfile:"+error);
-			});
+	return userProfileQuery.find({useMasterKey:true});
 };
 
 Parse.Cloud.define("UpdateUserStats", function(request, response) {
@@ -34,21 +20,25 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 				var user = results[0];
 				if(user){
 					console.log("found user:"+user.get("email"));
-					updateUserProfile(user, {
-						success: function(returnValue) {
-						  response.success(returnValue);
-						},
-						error: function(error) {
-						  response.error(error);
-						}
-					  });
+					return findUserProfile(user);
 				}else{
 					response.error("user doesn't exist:"+username);
 				}
-			},
-			function(error) {
-			  response.error("failed to query user by username:"+username);
-			});
+			})
+		.then(function(results) {
+			console.log("results:"+results.toJSON());
+			var userProfile = results[0];
+			if(userProfile){
+				console.log("userProfile:"+userProfile.toJSON());
+				userProfile.set("test","test123")
+				response.success(userProfile.toJSON());
+			}else{
+				response.error("userProfile doesn't exist:"+username);
+			}
+		},
+		function(error) {
+		  response.error("failed to query UserProfile:"+error);
+		});
 
 //	userQuery.find({
 //			useMasterKey:true,
