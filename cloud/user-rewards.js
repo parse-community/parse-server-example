@@ -12,7 +12,7 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 	var userProfileQuery =new Parse.Query("UserProfile");
 	userProfileQuery.equalTo("username", username);
     userProfileQuery.limit(1);
-	promises.push(userProfileQuery.find());
+	promises.push(userProfileQuery.find({useMasterKey:true}));
 
 	Parse.Promise.when(promises).then(function(users,userProfiles){
        console.log("user:"+user.toJSON());
