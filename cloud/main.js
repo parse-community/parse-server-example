@@ -536,8 +536,8 @@ Parse.Cloud.define('getMessagesCount', function(request, response)
 					newCount++;
 				}
 			}
-			console.log('messages count: ' + allCount.toString();
-			console.log('unread count:   ' + newCount.toString();
+			console.log('messages count: ' + allCount.toString() );
+			console.log('unread count:   ' + newCount.toString() );
 			console.log('SUCCESS');
 			var theResult = '{"allCount": ' + allCount + ',"newCount": ' + newCount + '}';
 
