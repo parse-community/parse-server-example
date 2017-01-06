@@ -17,9 +17,11 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 			useMasterKey:true,
 			success: function(results) {
     		  	var user = results[0];
+    		  	console.log("found user:"+user.get("email"));
 				response.success("user found: "+ user.get("email"));
     		},
     		error: function() {
+    			console.log("not found user:"+username);
     			response.error("user doesn't exist:"+username);
     		}
 	});
