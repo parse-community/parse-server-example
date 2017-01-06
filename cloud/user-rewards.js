@@ -1,8 +1,6 @@
 // User login update
-function findUserProfile(user) {
-	console.log("update userProfile:"+user.get("email"));
-	var userProfileQuery =new Parse.Query("_User");
-	userProfileQuery.equalTo("username",user.get("username"));
+function findUserProfile(username, userProfileQuery) {
+	userProfileQuery.equalTo("username", username);
 	userProfileQuery.limit(1);
 	return userProfileQuery.find({useMasterKey:true});
 };
@@ -11,6 +9,7 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 
 	var username =request.params.username;
 	var userQuery =new Parse.Query("_User");
+	var userProfileQuery =new Parse.Query("UserProfile");
 	console.log("search with username:"+username);
 	userQuery.equalTo("username",username);
 	userQuery.limit(1);
@@ -20,7 +19,7 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 				var user = results[0];
 				if(user){
 					console.log("found user:"+user.get("email"));
-					return findUserProfile(user);
+					return findUserProfile(username, userProfileQuery);
 				}else{
 					response.error("user doesn't exist:"+username);
 				}
