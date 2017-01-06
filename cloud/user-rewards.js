@@ -42,10 +42,9 @@ function testQuery(username){
 
 Parse.Cloud.define("ValidateUserData", function(request, response){
 	var username =	request.params.username;
-    Parse.Cloud.useMasterKey();
 
     Parse.Promise.when([testQuery(username), testQuery("asd")]).then(function(results){
-        console.log(results.length); // Returns 4 NOT 8
-        response.success(results.toJSON());
+        console.log("results.length="+results.length); // Returns 4 NOT 8
+        response.success(results[0].toJSON());
     });
 });
