@@ -35,9 +35,9 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 });
 
 function testQuery(username){
-    var query = new Parse.Query(Parse.User);
+    var userQuery = new Parse.Query(Parse.User);
     userQuery.equalTo("username",username);
-    return query.find();
+    return userQuery.find();
 }
 
 Parse.Cloud.define("ValidateUserData", function(request, response){
