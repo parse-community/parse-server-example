@@ -448,18 +448,18 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 	query.equalTo('recipientID', request.params.installId);
 	query.doesNotExist('readAt');
 
-	conditionalLog('Getting Unread Messages Count for recipient [' + request.params.installId + ']');
+	console.log('Getting Unread Messages Count for recipient [' + request.params.installId + ']');
 
 	query.find(
 	{
 		success: function(results)
 		{
-			conditionalLog('SUCCESS: ');
+			console.log('SUCCESS: ');
 			response.success(results.count);
 		},
 		error: function(error)
 		{
-			conditionalLog('ERROR: ');
+			console.log('ERROR: ');
 			response.error('unable to get unread messages: ' + error);
 		}
 	});
@@ -469,6 +469,40 @@ Parse.Cloud.define('getUnreadMessageCount', function(request, response)
 ///////////////////////////////////////
 //
 // getMessageCount
+//
+///////////////////////////////////////
+Parse.Cloud.define('getMessageCount', function(request, response)
+{
+	//Parse.Cloud.useMasterKey();
+
+	//Parse.Cloud.useMasterKey();
+	// Unread Messages
+
+	var query = new Parse.Query('Messages');
+	query.equalTo('recipientID', request.params.installId);
+
+	console.log('Getting Messages Count for recipient [' + request.params.installId + ']');
+
+	query.find(
+	{
+		useMasterKey: true,
+		success: function(results)
+		{
+			console.log('SUCCESS: ');
+			response.success(results.count);
+		},
+		error: function(error)
+		{
+			console.log('ERROR: ');
+			response.error('unable to get messages: ' + error);
+		}
+	});
+});
+
+
+///////////////////////////////////////
+//
+// getMessagesCount
 //
 ///////////////////////////////////////
 Parse.Cloud.define('getMessagesCount', function(request, response)
@@ -484,6 +518,7 @@ Parse.Cloud.define('getMessagesCount', function(request, response)
 
 	query.find(
 	{
+		useMasterKey: true,
 		success: function(results)
 		{
 			var allCount = results.count;
@@ -504,13 +539,14 @@ Parse.Cloud.define('getMessagesCount', function(request, response)
 			console.log('messages count: ' + allCount.toString();
 			console.log('unread count:   ' + newCount.toString();
 			console.log('SUCCESS');
-			var theResult = {'allCount': allCount,'newCount':newCount};
+			var theResult = '{"allCount": ' + allCount + ',"newCount": ' + newCount + '}';
 
 			response.success(theResult);
 		},
 		error: function(error)
 		{
-			conditionalLog('ERROR: ');
+			console.log('ERROR: ');
+			console.log(error);
 			response.error('unable to get messages: ' + error);
 		}
 	});
