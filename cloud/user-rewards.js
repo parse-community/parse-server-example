@@ -2,7 +2,7 @@
 function findUserProfile(user) {
 	console.log("update userProfile:"+user.get("email"));
 	var userProfileQuery =new Parse.Query("_User");
-	userProfileQuery.equalTo("username",username);
+	userProfileQuery.equalTo("username",user.get("username"));
 	userProfileQuery.limit(1);
 	return userProfileQuery.find({useMasterKey:true});
 };
