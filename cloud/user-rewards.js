@@ -2,7 +2,7 @@
 Parse.Cloud.define("UpdateUserStats", function(request, response) {
 
 	var username =request.params.username;
-	var userQuery =new Parse.Query("_User2");
+	var userQuery =new Parse.Query("_User");
 	console.log("search with username:"+username);
 	userQuery.equalTo("username",username);
 	userQuery.limit(1);
