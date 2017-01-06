@@ -1,3 +1,6 @@
+require('cloud/user-rewards.js')
+
+
 Parse.Cloud.define('hello', function(req, res) {
   res.success('Hi from anitales');
 });
