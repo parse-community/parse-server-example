@@ -625,7 +625,7 @@ Parse.Cloud.define('convertMessagesFromDeviceRecipientToUserReceiver', function(
 				for ( mIdx = 0; mIdx < results.length; mIdx++ )
 				{
 					var msgId = results[mIdx].objectId;
-					console.log`('converting msg ' + msgId);
+					console.log('converting msg ' + msgId);
 					results[mIdx].set('userID', '-not-used-');
 					results[mIdx].set('recipientID', '-not-used-');
 					results[mIdx].set('receiverID', userId);
