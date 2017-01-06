@@ -55,15 +55,14 @@ httpServer.listen(port, function() {
 ParseServer.createLiveQueryServer(httpServer);
 
 
-if (process.env.REDISTOGO_URL !== undefined) {
-  console.log("REDISTOGO_URL:" + process.env.REDISTOGO_URL);
+if (process.env.REDISTOGO_URL) {
   var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-  var redis = require("redis").createClient(rtg.port, rtg.hostname);
+  var redis = require("kue/node_modules/redis").createClient(rtg.port, rtg.hostname);
 
   redis.auth(rtg.auth.split(":")[1]);
 } else {
-  console.log("using local redis");
-  var redis = require("redis").createClient();
+  console.log("using local redis (from kue)");
+  var redis = require("kue/node_modules/redis").createClient();
 }
 var kue = require("kue");
 kue.app.listen(3000);
