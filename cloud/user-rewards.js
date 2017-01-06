@@ -17,7 +17,7 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 			useMasterKey:true,
 			success: function(results) {
     		  	var user = results[0];
-				response.success("user updated to "+ book.get("active"));
+				response.success("user found: "+ user.get("email"));
     		},
     		error: function() {
     			response.error("user doesn't exist:"+username);
