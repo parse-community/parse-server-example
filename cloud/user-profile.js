@@ -42,7 +42,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 function createUserProfile(user, params){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
 	userProfile = new UserProfileClass();
-	userProfile.set("username", user.get("username");
+	userProfile.set("username", user.get("username"));
 	userProfile.set("email", user.get("email") || params.email);
 	console.log("creating new userProfile:" + userProfile);
 	return userProfile.save(null, { useMasterKey: true });
