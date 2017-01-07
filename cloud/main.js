@@ -82,22 +82,22 @@ Parse.Cloud.define("status", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("barberIdForBarberName", function(request, response)
 {
-	//Parse.Cloud.useMasterKey();
-	var pBarberName = request.params.barberName;
+    //Parse.Cloud.useMasterKey();
+    var pBarberName = request.params.barberName;
 
     var query = new Parse.Query("Barbers");
     query.equalTo("barberName", pBarberName);
     query.equalTo("isActive", true);
     query.find(
-	{
-		useMasterKey: true,
-		success: function(results)
-		{
-			if ( results.length == 1 )
-			{
-				var barberId = results[0].id;
-				response.success(barberId);
-			}
+    {
+        useMasterKey: true,
+        success: function(results)
+        {
+            if ( results.length == 1 )
+            {
+                var barberId = results[0].id;
+                response.success(barberId);
+            }
             else if ( results.length > 1 )
             {
                 response.error("more than one barber found");
@@ -125,9 +125,9 @@ Parse.Cloud.define("userWithUserIdExists", function(request, response)
 {
     var userId = request.params.userId;
 
-	console.log('userWithUserIdExists called');
-	console.log('with params:');
-	console.log('userId [' + userId + ']');
+    console.log('userWithUserIdExists called');
+    console.log('with params:');
+    console.log('userId [' + userId + ']');
 
     if (userId != null && userId !== "")
     {
@@ -135,7 +135,7 @@ Parse.Cloud.define("userWithUserIdExists", function(request, response)
         return;
     }
 
-	console.log('continuing...');
+    console.log('continuing...');
 
     var User         = Parse.Object.extend("_User");
     var userQuery    = new Parse.Query(User);
@@ -1131,9 +1131,9 @@ Parse.Cloud.define("createMessageForUser", function(request, response)
     var msgSubtitle        = request.params.subtitle;
     var msgBody            = request.params.body;
 
-	console.log('createMessageForUser called');
-	console.log('with params:');
-	console.log('senderID [' + msgSenderId + '], receiverID [' + msgReceiverID + '], title [' + msgTitle + '], subtitle [' + msgSubtitle + '], body [' + msgBody + ']');
+    console.log('createMessageForUser called');
+    console.log('with params:');
+    console.log('senderID [' + msgSenderId + '], receiverID [' + msgReceiverID + '], title [' + msgTitle + '], subtitle [' + msgSubtitle + '], body [' + msgBody + ']');
 
     Parse.Cloud.run("userWithUserIdExists",
     {
@@ -1190,9 +1190,9 @@ Parse.Cloud.define("saveMessageForUserThenNotify", function(request, response)
 
     var receivingUser    = null;
 
-	console.log('saveMessageForUserThenNotify called');
-	console.log('with params:');
-	console.log('senderID [' + pSenderId + '], receiverID [' + pReceiverID + '], title [' + pMsgTitle + '], subtitle [' + pMsgSubtitle + '], body [' + pMsgBody + ']');
+    console.log('saveMessageForUserThenNotify called');
+    console.log('with params:');
+    console.log('senderID [' + pSenderId + '], receiverID [' + pReceiverID + '], title [' + pMsgTitle + '], subtitle [' + pMsgSubtitle + '], body [' + pMsgBody + ']');
 
     Parse.Cloud.run("createMessageForUser",
     {
