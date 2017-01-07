@@ -16,10 +16,9 @@ Parse.Cloud.define("UpdateUserStats", function(request, response) {
 
 	Parse.Promise.when(promises).then( function(userProfiles) {
 //       console.log("user:"+user.toJSON());
-       console.log("userProfile:"+userProfile.toJSON());
+       console.log("userProfile:"+userProfile);
        var userProfile = results[0];
        if(userProfile){
-			console.log("userProfile:"+userProfile.toJSON());
 			userProfile.set("test","test123")
 			response.success(userProfile.toJSON());
 		}else{
@@ -45,7 +44,7 @@ Parse.Cloud.define("ValidateUserData", function(request, response){
 
     Parse.Promise.when([testQuery(username), testQuery("asd")]).then(function(results){
         console.log("results.length="+results.length); // Returns 4 NOT 8
-       	response.success(results[0]);
+       	response.success(results);
     }, function(error){
          	console.log("error:"+error);
            	response.error("failed to query UserProfile:"+error);
