@@ -20,20 +20,44 @@ var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
 //
 // Parse Init
-var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
+var databaseUri 		= process.env.DATABASE_URI || process.env.MONGODB_URI;
 
-if (!databaseUri)
+if ( !databaseUri )
 {
-  console.log('DATABASE_URI not specified, falling back to localhost.');
+	console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+// databaseURI	is the mLab database connection string
+// cloud		the path to the main cloud code file
+// appId		self explanatory, really!
+// masterKey	KEEP THIS SECRET
+// serverURL	this is what the app uses to connect.
+//
 var api = new ParseServer(
 {
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+	databaseURI:	databaseUri					||	'mongodb://localhost:27017/dev',
+	cloud:			process.env.CLOUD_CODE_MAIN	||	__dirname + '/cloud/main.js',
+	appId:			process.env.APP_ID			||	'myAppId',
+	masterKey:		process.env.MASTER_KEY		||	'',
+	serverURL:		process.env.SERVER_URL		||	'http://localhost:1337/parse',
+	push:
+	{
+		ios:
+		[
+			{
+				pfx:		__dirname + '/push_bin/ca.4xq.Barbershop8.Push_Development_Expires_2017-12-12.p12',
+				passphrase:	process.env.PUSH_DEVELOPMENT_P12_PASSPHRASE,
+				bundleId:	'ca.4xq.Barbershop8',
+				production:	false
+			},
+			{
+				pfx:		__dirname + '/push_bin/ca.4xq.Barbershop8.Push_Production_Expires_2017-10-06.p12',
+				passphrase:	process.env.PUSH_PRODUCTION_P12_PASSPHRASE,
+				bundleId:	'ca.4xq.Barbershop8',
+				production:	true
+			}
+		]
+	}
   //liveQuery: {
   //  classNames: ["GlobalSettings"] // List of classes to support for query subscriptions
   //}
