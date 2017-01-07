@@ -33,6 +33,22 @@ if ( !databaseUri )
 // masterKey	KEEP THIS SECRET
 // serverURL	this is what the app uses to connect.
 //
+
+/*
+ * NOTE ABOUT CLIENT KEYS
+ * From:
+ * github.com/ParsePlatform/parse-server/wiki/Parse-Server-Guide#why-do-i-need-to-set-failindexkeytoolongfalse
+ *
+ * Parse Server does not require the use of client-side keys.
+ * This includes the client key, JavaScript key, .NET key, and REST API key.
+ *
+ * The Application ID is sufficient to secure your app.
+ *
+ * However, you have the option to specify any of these four keys upon initialization.
+ * Upon doing so, Parse Server will enforce that any clients passing a key matches.
+ * The behavior is consistent with hosted Parse.
+ */
+
 var api = new ParseServer(
 {
 	databaseURI:	databaseUri					||	'mongodb://localhost:27017/dev',
