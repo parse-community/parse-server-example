@@ -1,6 +1,6 @@
 // User profile update
 
-
+//deprecated, but need to keep it for backward compatible
 Parse.Cloud.define("updateUserStats", function(request, response) {
 
 	var userId =request.params.userId;
