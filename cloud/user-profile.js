@@ -23,12 +23,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 				 		return Parse.Promise.as(userProfile);
 				// response.success(userProfile.toJSON());
 				}else{
-					var UserProfileClass = Parse.Object.extend("UserProfile");
-					userProfile = new UserProfileClass();
-					userProfile.set("username", username);
-					userProfile.set("email", user.get("email") || request.params.email);
-					console.log("creating new userProfile:" + userProfile);
-					return userProfile.save(null, { useMasterKey: true });
+						return createUserProfile(user, request.params);
 					// response.error("userProfile doesn't exist:"+username);
 				}
 	    }, function(error){
@@ -47,6 +42,14 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	console.log("search with username:"+username);
 });
 
+function createUserProfile(user, params){
+	var UserProfileClass = Parse.Object.extend("UserProfile");
+	userProfile = new UserProfileClass();
+	userProfile.set("username", user.get("username");
+	userProfile.set("email", user.get("email") || request.params.email);
+	console.log("creating new userProfile:" + userProfile);
+	return userProfile.save(null, { useMasterKey: true });
+}
 
 //deprecated, but need to keep it for backward compatible
 Parse.Cloud.define("updateUserStats", function(request, response) {
