@@ -56,8 +56,8 @@ Parse.Cloud.define("transferPublishedBookCountryCode", function(request, respons
                   var publishedBook = results[i];
                   if(publishedBook && publishedBook.get("owner")){
 						var owner = publishedBook.get("owner");
-						var ownerCountry = owner.get("country_code")
-						var ownerUserId = owner.get("username")
+						var ownerCountry = owner.get("country_code");
+						var ownerUserId = owner.get("username");
 	//					console.log("Found user "+ownerUserId+","+ownerCountry);
 						if(ownerCountry){
 						results[i].set("countryCode", ownerCountry);

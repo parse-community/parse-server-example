@@ -39,10 +39,11 @@ Parse.Cloud.define("addedFriend", function(request, response) {
 	query.find({
 		success: function(results) {
 			var language = results[0].get("language");
+            var alertText;
 			if(language === "CHINESE") {
-				var alertText = "你已經收到了一個朋友的要求。";
+				alertText = "你已經收到了一個朋友的要求。";
 			} else {
-				var alertText = "You've recieved a friend request.";
+				alertText = "You've recieved a friend request.";
 			}
 			Parse.Push.send({
 			    where: pushQuery,

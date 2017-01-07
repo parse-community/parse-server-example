@@ -46,7 +46,7 @@ function createUserProfile(user, params){
 	userProfile.set("email", user.get("email") || params.email);
 	console.log("creating new userProfile:" + userProfile);
 	return userProfile.save(null, { useMasterKey: true });
-};
+}
 
 //deprecated, but need to keep it for backward compatible
 Parse.Cloud.define("updateUserStats", function(request, response) {
@@ -54,7 +54,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 	var userId =request.params.userId;
 	var userQuery = new Parse.Query(Parse.User);
     userQuery.equalTo("objectId", userId);
-    userQuery.limit(1)
+    userQuery.limit(1);
     userQuery.find({
     		useMasterKey:true,
     		success: function(results) {
@@ -127,7 +127,7 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 
 						},
 						error: function() {
-                            user.set("totalScore", totalAppUseTimeScore )
+                            user.set("totalScore", totalAppUseTimeScore );
                             user.save(null, { useMasterKey: true });
 							response.success({
 								totalScore : totalAppUseTimeScore
