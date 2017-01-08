@@ -34,7 +34,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	    	console.log("error:"+error);
 	      	response.error("failed to query UserProfile:"+error);
 	    }).then( function (userProfileHolder){
-				console.log("final userProfileHolder" + userProfileHolder);
+				console.log("final userProfileHolder:" + userProfileHolder);
 				userProfileHolder.set("test","test123");
 				response.success(userProfileHolder);
 			}, function(error){
@@ -53,19 +53,16 @@ function createUserProfile(user, params){
 	console.log("creating new userProfile:" + userProfile);
 	//apply inital register rewards
 	var initalReward = findProductByName(params.products, "register_reward");
-	applyProductToUser(userProfile, initalReward);
-
 	return applyProductToUser(userProfile, initalReward);
 }
 
 function findProductByName(products, name){
 	for (var i = 0; i < products.length; i++) {
 		if(products[i].get("name") == name  ){
-			console.log("found product:" + products[i].get("name"));
 			return products[i];
 		}
 	}
-	console.log("could not find product:" + name);
+	console.log("error: could not find product:" + name);
 }
 
 //return a promise contains userProfileHolder
@@ -88,13 +85,13 @@ function applyProductToUser(userProfile, product, amount){
 	var promises = [];
 	promises.push(userProfile.save(null, { useMasterKey: true }));
 	promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
-	Parse.Promise.when(promises).then( function(results) {
+	return Parse.Promise.when(promises).then( function(results) {
 		var userProfileHolder = {
 			userProfile: results[0],
 			purchaseHistory: [results[1]]
 		};
-		console.log("created userProfileHolder:"+userProfileHolder);
-		return userProfileHolder;
+		console.log("created userProfileHolder:" + JSON.stringify(userProfileHolder));
+		return Parse.Promise.as(userProfileHolder);
 	});
 }
 
