@@ -22,7 +22,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	       var user = results[0][0];
 	       var userProfile = results[1][0];
 		   var products = results[2];
-		   params.products = products;
+		   request.params.products = products;
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
 		 		return Parse.Promise.as(userProfile);
