@@ -92,16 +92,7 @@ function applyProductToUser(userProfileHolder, product, amount){
 	var userProfile = userProfileHolder.userProfile;
 	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
 
-	var coinsChange = 0;
-	switch (product.get("name"))
-	{
-	   case "register_reward":
-	   		coinsChange = - product.get("price")* amount;
-	   		break;
-	   case "saeed":
-	   		break;
-	   default:
-	}
+	var coinsChange = - product.get("price")* amount;
 	userProfile.increment("coins", coinsChange);
 
 	var promises = [];
