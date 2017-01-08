@@ -49,9 +49,8 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 //return a promise contains updated userProfileHolder
 function applyDailyReward (userProfileHolder) {
 	var userProfile = userProfileHolder.userProfile;
-	var lastDailyRewardDate = userProfile.get("last_daily_reward_date") ||  new Date();
+	var lastDailyRewardDate = userProfile.get("last_daily_reward_date") ||  userProfile.get("createdAt");
 	if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
-		//no rewards
 		return Parse.Promise.as(userProfileHolder);
 	}else{
 		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "daily_reward"));
