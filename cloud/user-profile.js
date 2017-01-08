@@ -53,6 +53,7 @@ function applyDailyReward (userProfileHolder) {
 	if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
 		return Parse.Promise.as(userProfileHolder);
 	}else{
+		userProfile.set("last_daily_reward_date", new Date());
 		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "daily_reward"));
 	}
 }
@@ -64,8 +65,8 @@ function createUserProfile(user, params, products){
 	userProfile.set("email", params.email || user.get("email") );
 	console.log("creating new userProfile:" + userProfile);
 	//apply inital register rewards
-	var initalReward = findProductByName(products, "register_reward");
-	return applyProductToUser(createUserProfileHolder(userProfile, products), initalReward);
+	var initialReward = findProductByName(products, "register_reward");
+	return applyProductToUser(createUserProfileHolder(userProfile, products), initialReward);
 }
 
 function createUserProfileHolder(userProfile, products){
