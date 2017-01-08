@@ -26,7 +26,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 		   request.params.products = products;
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
-		 		return Parse.Promise.as(userProfile);
+		 		return Parse.Promise.as(createUserProfileHolder(userProfile));
 			}else{
 				return createUserProfile(user, request.params);
 			}
@@ -35,7 +35,6 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	      	response.error("failed to query UserProfile:"+error);
 	    }).then( function (userProfileHolder){
 				var responseString = JSON.stringify(userProfileHolder);
-				console.log("final response:" + responseString);
 				response.success(responseString);
 			}, function(error){
 	    	console.log("error:"+error);
@@ -53,7 +52,14 @@ function createUserProfile(user, params){
 	console.log("creating new userProfile:" + userProfile);
 	//apply inital register rewards
 	var initalReward = findProductByName(params.products, "register_reward");
-	return applyProductToUser(userProfile, initalReward);
+	return applyProductToUser(createUserProfileHolder(userProfile), initalReward);
+}
+
+function createUserProfileHolder(userProfile){
+	return {
+		userProfile: userProfile, //parse object
+		purchaseHistory: [] //array of purchaseHistory parse object
+	};
 }
 
 function findProductByName(products, name){
@@ -66,9 +72,12 @@ function findProductByName(products, name){
 }
 
 //return a promise contains userProfileHolder
-function applyProductToUser(userProfile, product, amount){
-	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
+function applyProductToUser(userProfileHolder, product, amount){
 	amount = amount || 1;
+
+	var userProfile = userProfileHolder.userProfile;
+	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
+
 	var coinsChange = 0;
 	switch (product.get("name"))
 	{
@@ -77,20 +86,18 @@ function applyProductToUser(userProfile, product, amount){
 	   		break;
 	   case "saeed":
 	   		break;
-	   case "larry":
-	       break;
 	   default:
 	}
 	userProfile.increment("coins", coinsChange);
+
 	var promises = [];
 	promises.push(userProfile.save(null, { useMasterKey: true }));
 	promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
+
 	return Parse.Promise.when(promises).then( function(results) {
-		var userProfileHolder = {
-			userProfile: results[0],
-			purchaseHistory: [results[1]]
-		};
-		console.log("created userProfileHolder:" + JSON.stringify(userProfileHolder));
+		userProfileHolder.userProfile = results[0];
+		userProfileHolder.purchaseHistory.push(results[1]); // add new purchaseHistory
+		console.log("updated userProfileHolder:" + JSON.stringify(userProfileHolder));
 		return Parse.Promise.as(userProfileHolder);
 	});
 }
