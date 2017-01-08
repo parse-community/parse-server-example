@@ -14,10 +14,15 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
     userProfileQuery.limit(1);
 	promises.push(userProfileQuery.find({useMasterKey:true}));
 
+	var productQuery =new Parse.Query("Product");
+	promises.push(userProfileQuery.find({useMasterKey:true}));
+
 	Parse.Promise.when(promises).then( function(results) {
 //       console.log("user:"+user.toJSON());
 	       var user = results[0][0];
 	       var userProfile = results[1][0];
+		   var products = results[2];
+		   params.products = products;
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
 		 		return Parse.Promise.as(userProfile);
@@ -45,7 +50,34 @@ function createUserProfile(user, params){
 	userProfile.set("username", user.get("username"));
 	userProfile.set("email", user.get("email") || params.email);
 	console.log("creating new userProfile:" + userProfile);
+
+	var initalReward = findProductByName(params.products);
+	applyProductToUser(userProfile, initalReward);
 	return userProfile.save(null, { useMasterKey: true });
+}
+
+function findProductByName(products, name){
+	for (var i = 0; i < products.length; i++) {
+		if(products[i].get("name") == name  ){
+			return products[i];
+		}
+	}
+}
+
+function applyProductToUser(userProfile, product, amount){
+	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
+	amount = amount || 1;
+	switch (product.get("name"))
+	{
+	   case "register_reward":
+	   		userProfile.set("coin", - product.get("price")* amount);
+	   		break;
+	   case "saeed":
+	   		break;
+	   case "larry":
+	       break;
+	   default:
+	}
 }
 
 //deprecated, but need to keep it for backward compatible
