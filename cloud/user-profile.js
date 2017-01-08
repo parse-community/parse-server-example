@@ -33,10 +33,10 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	    }, function(error){
 	    	console.log("error:"+error);
 	      	response.error("failed to query UserProfile:"+error);
-	    }).then( function (userProfile){
-				console.log("final userProfile" + userProfile);
-				userProfile.set("test","test123");
-				response.success(userProfile.toJSON());
+	    }).then( function (userProfileHolder){
+				console.log("final userProfileHolder" + userProfileHolder);
+				userProfileHolder.set("test","test123");
+				response.success(userProfileHolder);
 			}, function(error){
 	    	console.log("error:"+error);
 	      	response.error("failed to return UserProfile:"+error);
@@ -51,10 +51,11 @@ function createUserProfile(user, params){
 	userProfile.set("username", user.get("username"));
 	userProfile.set("email", user.get("email") || params.email);
 	console.log("creating new userProfile:" + userProfile);
-
+	//apply inital register rewards
 	var initalReward = findProductByName(params.products, "register_reward");
 	applyProductToUser(userProfile, initalReward);
-	return userProfile.save(null, { useMasterKey: true });
+
+	return applyProductToUser(userProfile, initalReward);
 }
 
 function findProductByName(products, name){
@@ -67,13 +68,15 @@ function findProductByName(products, name){
 	console.log("could not find product:" + name);
 }
 
+//return a promise contains userProfileHolder
 function applyProductToUser(userProfile, product, amount){
 	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
 	amount = amount || 1;
+	var coinsChange = 0;
 	switch (product.get("name"))
 	{
 	   case "register_reward":
-	   		userProfile.set("coin", - product.get("price")* amount);
+	   		coinsChange = - product.get("price")* amount;
 	   		break;
 	   case "saeed":
 	   		break;
@@ -81,6 +84,31 @@ function applyProductToUser(userProfile, product, amount){
 	       break;
 	   default:
 	}
+	userProfile.increment("coins", coinsChange);
+	var promises = [];
+	promises.push(userProfile.save(null, { useMasterKey: true }));
+	promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
+	Parse.Promise.when(promises).then( function(results) {
+		var userProfileHolder = {
+			userProfile: results[0],
+			purchaseHistory: [results[1]]
+		};
+		console.log("created userProfileHolder:"+userProfileHolder);
+		return userProfileHolder;
+	});
+}
+
+// return a promise contains userPurchaseHistory
+function recordUserPurchaseHistory(userProfile, product, amount, coinsChange){
+	var UserPurchaseHistoryClass = Parse.Object.extend("UserPurchaseHistory");
+	userPurchaseHistory = new UserPurchaseHistoryClass();
+	userPurchaseHistory.set("username", userProfile.get("username"));
+	userPurchaseHistory.set("product_name", product.get("name"));
+	userPurchaseHistory.set("amount", amount);
+	userPurchaseHistory.set("coins_change", coinsChange);
+	console.log("creating new userPurchaseHistory:" + userPurchaseHistory);
+
+	return userPurchaseHistory.save(null, { useMasterKey: true });
 }
 
 //deprecated, but need to keep it for backward compatible
