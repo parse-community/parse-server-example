@@ -51,7 +51,7 @@ function createUserProfile(user, params){
 	userProfile.set("email", user.get("email") || params.email);
 	console.log("creating new userProfile:" + userProfile);
 
-	var initalReward = findProductByName(params.products);
+	var initalReward = findProductByName(params.products, "register_reward");
 	applyProductToUser(userProfile, initalReward);
 	return userProfile.save(null, { useMasterKey: true });
 }
@@ -59,9 +59,11 @@ function createUserProfile(user, params){
 function findProductByName(products, name){
 	for (var i = 0; i < products.length; i++) {
 		if(products[i].get("name") == name  ){
+			console.log("found product:" + products[i].get("name"));
 			return products[i];
 		}
 	}
+	console.log("could not find product:" + name);
 }
 
 function applyProductToUser(userProfile, product, amount){
