@@ -23,12 +23,12 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	       var userProfile = results[1][0];
 		   var products = results[2];
 		   console.log("found products:" + products);
-		   request.params.products = products;
+
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
-		 		return Parse.Promise.as(createUserProfileHolder(userProfile));
+		 		return Parse.Promise.as(createUserProfileHolder(userProfile, products));
 			}else{
-				return createUserProfile(user, request.params);
+				return createUserProfile(user, request.params, products);
 			}
 	    }, function(error){
 	    	console.log("error:"+error);
@@ -57,20 +57,21 @@ function applyDailyReward (userProfileHolder) {
 	}
 }
 
-function createUserProfile(user, params){
+function createUserProfile(user, params, products){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
 	userProfile = new UserProfileClass();
 	userProfile.set("username", user.get("username"));
-	userProfile.set("email", user.get("email") || params.email);
+	userProfile.set("email", params.email || user.get("email") );
 	console.log("creating new userProfile:" + userProfile);
 	//apply inital register rewards
-	var initalReward = findProductByName(params.products, "register_reward");
-	return applyProductToUser(createUserProfileHolder(userProfile), initalReward);
+	var initalReward = findProductByName(products, "register_reward");
+	return applyProductToUser(createUserProfileHolder(userProfile, products), initalReward);
 }
 
-function createUserProfileHolder(userProfile){
+function createUserProfileHolder(userProfile, products){
 	return {
 		userProfile: userProfile, //parse object
+		products: products,
 		purchaseHistories: [] //array of purchaseHistory parse object
 	};
 }
