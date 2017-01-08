@@ -97,8 +97,8 @@ function applyProductToUser(userProfileHolder, product, amount){
 	return Parse.Promise.when(promises).then( function(results) {
 		userProfileHolder.userProfile = results[0];
 		var purchaseHistory = results[1];
-		purchaseHistory.description = product.get("description");
-		purchaseHistory.description_cn = product.get("description_cn");
+		purchaseHistory.set("description", product.get("description"));
+		purchaseHistory.set("description_cn", product.get("description_cn"));
 		userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
 		console.log("updated userProfileHolder:" + JSON.stringify(userProfileHolder));
 		return Parse.Promise.as(userProfileHolder);
