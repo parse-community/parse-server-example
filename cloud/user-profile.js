@@ -33,6 +33,8 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	    }, function(error){
 	    	console.log("error:"+error);
 	      	response.error("failed to query UserProfile:"+error);
+		}).then( function (userProfileHolder){
+			return applyDailyReward(userProfileHolder);
 	    }).then( function (userProfileHolder){
 				var responseString = JSON.stringify(userProfileHolder);
 				response.success(responseString);
@@ -43,6 +45,18 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 
 	console.log("search with username:"+username);
 });
+
+//return a promise contains updated userProfileHolder
+function applyDailyReward (userProfileHolder) {
+	var userProfile = userProfileHolder.userProfile;
+	var lastDailyRewardDate = userProfile.get("last_daily_reward_date") ||  new Date();
+	if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
+		//no rewards
+		return Parse.Promise.as(userProfileHolder);
+	}else{
+		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "daily_reward"));
+	}
+}
 
 function createUserProfile(user, params){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
