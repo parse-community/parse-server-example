@@ -15,7 +15,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	promises.push(userProfileQuery.find({useMasterKey:true}));
 
 	var productQuery =new Parse.Query("Product");
-	promises.push(userProfileQuery.find({useMasterKey:true}));
+	promises.push(productQuery.find({useMasterKey:true}));
 
 	Parse.Promise.when(promises).then( function(results) {
 //       console.log("user:"+user.toJSON());
