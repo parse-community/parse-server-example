@@ -36,7 +36,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	    }).then( function (userProfileHolder){
 				console.log("final userProfileHolder:" + userProfileHolder);
 				userProfileHolder.set("test","test123");
-				response.success(userProfileHolder);
+				response.success(JSON.stringify(userProfileHolder));
 			}, function(error){
 	    	console.log("error:"+error);
 	      	response.error("failed to return UserProfile:"+error);
