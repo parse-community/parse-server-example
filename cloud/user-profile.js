@@ -163,18 +163,46 @@ function findProductByName(products, name){
 	throw new Error("no_such_product:"+name);
 }
 
+
+function applyProductChange(userProfile, product,  amount) {
+	console.log("applying product to user:"+product.get("name")+" - "+ userProfile.get("username"));
+
+	var coinsChange = - product.get("price")* amount;
+	if((userProfile.get("coins")+ coinsChange) <0){
+		throw new Error("error_not_enough_coin");
+	}
+	userProfile.increment("coins", coinsChange);
+
+	switch (product.get("name")) {
+		case "max_book_pages":
+			var current = userProfile.get("max_page_number") || 60; //default max page number
+			userProfile.set("max_page_number", current + amount);
+			break;
+		case "max_avatars":
+			var current = userProfile.get("max_avatar_number") || 3; //default max avatar number
+			userProfile.set("max_avatar_number", current + amount);
+			break;
+		case "max_record_secs":
+			var current = userProfile.get("max_recording_length") || 10; //default max recording length
+			userProfile.set("max_recording_length", current + amount);
+			break;
+		case "max_custom_assets":
+			var current = userProfile.get("max_custom_asset_number") || 40; //default max custom asset number
+			userProfile.set("max_custom_asset_number", current + amount);
+			break;
+	}
+}
+
 //return a promise contains userProfileHolder
 function applyProductToUser(userProfileHolder, product, amount){
 	amount = amount || 1;
 
 	var userProfile = userProfileHolder.userProfile;
-	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
-
-	var coinsChange = - product.get("price")* amount;
-	if((userProfile.get("coins")+ coinsChange) <0){
-		return Parse.Promise.error("error_not_enough_coin");
+	try{
+		applyProductChange(userProfile, product,  amount);
+	}catch (e) {
+		return Parse.Promise.error(e.message);
 	}
-	userProfile.increment("coins", coinsChange);
 
 	var promises = [];
 	promises.push(userProfile.save(null, { useMasterKey: true }));
