@@ -45,6 +45,8 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 			return refreshUserStats(userProfileHolder, books);
 		}).then( function (userProfileHolder){
 			return applyDailyReward(userProfileHolder);
+		}).then( function (userProfileHolder){
+			return applyLevelUpReward(userProfileHolder);
 	    }).then( function (userProfileHolder){
 				var responseString = JSON.stringify(userProfileHolder);
 				response.success(responseString);
@@ -65,6 +67,19 @@ function applyDailyReward (userProfileHolder) {
 	}else{
 		userProfile.set("last_daily_reward_date", new Date());
 		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "daily_reward"));
+	}
+}
+
+//return a promise contains updated userProfileHolder
+function applyLevelUpReward (userProfileHolder) {
+	var userProfile = userProfileHolder.userProfile;
+	var currentUserLevel = userProfileHolder.user.get("user_level")
+	var lastUserLevel = userProfile.get("last_user_level") ||  1;
+	if(currentUserLevel > lastUserLevel) {
+		userProfile.set("last_user_level", currentUserLevel);
+		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward"), currentUserLevel - lastUserLevel);
+	}else{
+		return Parse.Promise.as(userProfileHolder);
 	}
 }
 
