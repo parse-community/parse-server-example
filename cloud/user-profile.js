@@ -36,7 +36,7 @@ Parse.Cloud.define("UserPurchase", function(request, response) {
 	}).then( function (userProfileHolder){
 		var product = findProductByName(userProfileHolder.products, productName);
 		if(product.get("type") == "rewards" && (product.get("name") != "read_book_reward" || amount != 1)){
-			throw new Error("could_not_buy_rewards:"+productName);
+			return Parse.Promise.error("error_could_not_buy_rewards:"+productName);
 		}
         return applyProductToUser(userProfileHolder, product, amount);
 	}).then( function (userProfileHolder){
@@ -44,7 +44,7 @@ Parse.Cloud.define("UserPurchase", function(request, response) {
 		response.success(responseString);
 	}, function(error){
 		console.log("error:"+error);
-		response.error(JSON.stringify(error));
+		response.error(error);
 	});
 });
 
@@ -172,7 +172,7 @@ function applyProductToUser(userProfileHolder, product, amount){
 
 	var coinsChange = - product.get("price")* amount;
 	if((userProfile.get("coins")+ coinsChange) <0){
-		throw new Error("error_not_enough_coin");
+		return Parse.Promise.error("error_not_enough_coin");
 	}
 	userProfile.increment("coins", coinsChange);
 
