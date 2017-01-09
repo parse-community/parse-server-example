@@ -117,7 +117,7 @@ function applyProductToUser(userProfileHolder, product, amount){
 		purchaseHistory.set("description", product.get("description"));
 		purchaseHistory.set("description_cn", product.get("description_cn"));
 		userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
-		console.log("updated userProfileHolder:" + JSON.stringify(userProfileHolder));
+		console.log("updated userProfileHolder:" + userProfileHolder);
 		return Parse.Promise.as(userProfileHolder);
 	});
 }
@@ -143,7 +143,10 @@ function refreshUserStats(userProfileHolder, books){
 	var totalFeatured = 0;
 	var totalBannedBook = 0;
 	var totalCheats = 0;
-
+	var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
+	if(totalAppUseTimeScore > 500) {
+		totalAppUseTimeScore = 500 + (totalAppUseTimeScore - 500)/10;
+	}
 	for (i=0; i < books.length; i++) {
 		var book = books[i];
 		var isBookActive = book.get("active") || (book.get("active")=== undefined);
