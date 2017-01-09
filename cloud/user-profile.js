@@ -172,6 +172,8 @@ function refreshUserStats(userProfileHolder, books){
 	user.set("totalBanned", totalBannedBook );
 	user.set("totalCheats", totalCheats );
 
+	updateUserLevelInfo(user);
+
 	var userRankQuery = new Parse.Query(Parse.User);
 	userRankQuery.greaterThan("totalScore", totalScore);
 	return userRankQuery.count({
@@ -182,6 +184,22 @@ function refreshUserStats(userProfileHolder, books){
 			}).then( function (user){
 				return Parse.Promise.as(userProfileHolder);
 			});
+}
+
+function updateUserLevelInfo(user){
+	var score = user.get("totalScore");
+	var userlevel;
+	var percentToNextLevel;
+	if(userTotalScore >= 10){
+		userlevel = Math.floor((Math.log(Math.floor(score/10))/Math.log(2)) + 2);
+		var levelLowerScore = Math.pow(2,userlevel - 2) * 10;
+		percentToNextLevel = (score - levelLowerScore)/levelLowerScore;
+	}else{
+		userlevel = 1;
+		percentToNextLevel = 0;
+	}
+	user.set("user_level", userlevel);
+	user.set("percent_to_next_level", percentToNextLevel);
 }
 
 //deprecated, but need to keep it for backward compatible
