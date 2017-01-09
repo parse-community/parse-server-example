@@ -190,7 +190,7 @@ function updateUserLevelInfo(user){
 	var score = user.get("totalScore");
 	var userlevel;
 	var percentToNextLevel;
-	if(userTotalScore >= 10){
+	if(score >= 10){
 		userlevel = Math.floor((Math.log(Math.floor(score/10))/Math.log(2)) + 2);
 		var levelLowerScore = Math.pow(2,userlevel - 2) * 10;
 		percentToNextLevel = (score - levelLowerScore)/levelLowerScore;
