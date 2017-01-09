@@ -191,6 +191,7 @@ function applyProductChange(userProfile, product,  amount) {
 			userProfile.set("max_custom_asset_number", current + amount);
 			break;
 	}
+	return coinsChange;
 }
 
 //return a promise contains userProfileHolder
@@ -199,24 +200,24 @@ function applyProductToUser(userProfileHolder, product, amount){
 
 	var userProfile = userProfileHolder.userProfile;
 	try{
-		applyProductChange(userProfile, product,  amount);
+		var coinsChange = applyProductChange(userProfile, product,  amount);
+		
+		var promises = [];
+		promises.push(userProfile.save(null, {useMasterKey: true}));
+		promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
+
+		return Parse.Promise.when(promises).then(function (results) {
+			userProfileHolder.userProfile = results[0];
+			var purchaseHistory = results[1];
+			purchaseHistory.set("description", product.get("description"));
+			purchaseHistory.set("description_cn", product.get("description_cn"));
+			userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
+			console.log("updated userProfileHolder:" + userProfileHolder);
+			return Parse.Promise.as(userProfileHolder);
+		});
 	}catch (e) {
 		return Parse.Promise.error(e.message);
 	}
-
-	var promises = [];
-	promises.push(userProfile.save(null, { useMasterKey: true }));
-	promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
-
-	return Parse.Promise.when(promises).then( function(results) {
-		userProfileHolder.userProfile = results[0];
-		var purchaseHistory = results[1];
-		purchaseHistory.set("description", product.get("description"));
-		purchaseHistory.set("description_cn", product.get("description_cn"));
-		userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
-		console.log("updated userProfileHolder:" + userProfileHolder);
-		return Parse.Promise.as(userProfileHolder);
-	});
 }
 
 // return a promise contains userPurchaseHistory
