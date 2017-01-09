@@ -44,7 +44,7 @@ Parse.Cloud.define("UserPurchase", function(request, response) {
 		response.success(responseString);
 	}, function(error){
 		console.log("error:"+error);
-		response.error(error);
+		response.error(JSON.stringify(error));
 	});
 });
 
