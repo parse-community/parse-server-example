@@ -17,22 +17,32 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	var productQuery =new Parse.Query("Product");
 	promises.push(productQuery.find({useMasterKey:true}));
 
+	var bookQuery =new Parse.Query("PublishedBook");
+	bookQuery.equalTo("AuthorName",username);
+	promises.push(bookQuery.find({useMasterKey:true}));
+
+	var books;
 	Parse.Promise.when(promises).then( function(results) {
 //       console.log("user:"+user.toJSON());
 	       var user = results[0][0];
 	       var userProfile = results[1][0];
 		   var products = results[2];
-		   console.log("found products:" + products);
-
+			books = results[3];
+		   if(!user){
+			   response.error("User doesn't exist! "+ username);
+		   }
+		
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
-		 		return Parse.Promise.as(createUserProfileHolder(userProfile, products));
+		 		return Parse.Promise.as(createUserProfileHolder(user, userProfile, products));
 			}else{
-				return createUserProfile(user, request.params, products);
+				return createUserProfileInHolder(user, request.params, products);
 			}
 	    }, function(error){
 	    	console.log("error:"+error);
 	      	response.error("failed to query UserProfile:"+error);
+		}).then( function (userProfileHolder){
+			return refreshUserStats(userProfileHolder, books);
 		}).then( function (userProfileHolder){
 			return applyDailyReward(userProfileHolder);
 	    }).then( function (userProfileHolder){
@@ -58,7 +68,7 @@ function applyDailyReward (userProfileHolder) {
 	}
 }
 
-function createUserProfile(user, params, products){
+function createUserProfileInHolder(user, params, products){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
 	userProfile = new UserProfileClass();
 	userProfile.set("username", user.get("username"));
@@ -66,11 +76,12 @@ function createUserProfile(user, params, products){
 	console.log("creating new userProfile:" + userProfile);
 	//apply inital register rewards
 	var initialReward = findProductByName(products, "register_reward");
-	return applyProductToUser(createUserProfileHolder(userProfile, products), initialReward);
+	return applyProductToUser(createUserProfileHolder(user, userProfile, products), initialReward);
 }
 
-function createUserProfileHolder(userProfile, products){
+function createUserProfileHolder(user, userProfile, products){
 	return {
+		user: user,
 		userProfile: userProfile, //parse object
 		products: products,
 		purchaseHistories: [] //array of purchaseHistory parse object
@@ -124,6 +135,52 @@ function recordUserPurchaseHistory(userProfile, product, amount, coinsChange){
 	return userPurchaseHistory.save(null, { useMasterKey: true });
 }
 
+//return a promise contains updated user with stats
+function refreshUserStats(userProfileHolder, books){
+	var user = userProfileHolder.user;
+	var totalReads = 0;
+	var totalLikes = 0;
+	var totalFeatured = 0;
+	var totalBannedBook = 0;
+	var totalCheats = 0;
+
+	for (i=0; i < books.length; i++) {
+		var book = books[i];
+		var isBookActive = book.get("active") || (book.get("active")=== undefined);
+		if(isBookActive){
+			var bookReads = book.get("playedTimes") || 0;
+			var bookLikes = book.get("likedTimes") || 0;
+			if (bookReads >= bookLikes) {
+				totalReads += bookReads;
+				totalLikes += bookLikes;
+			}else{
+				totalCheats ++;
+			}
+			totalFeatured += book.get("featuredAccepted") || 0;
+		}else{
+			totalBannedBook ++;
+		}
+	}
+	var totalScore = totalReads * 10 + totalLikes * 50 + totalFeatured * 250 + totalAppUseTimeScore - totalBannedBook * 250 - totalCheats * 250;
+	user.set("totalReadsByOthers", totalReads);
+	user.set("totalLikesByOthers", totalLikes);
+	user.set("totalScore", totalScore );
+	user.set("totalFeatured", totalFeatured );
+	user.set("totalBanned", totalBannedBook );
+	user.set("totalCheats", totalCheats );
+
+	var userRankQuery = new Parse.Query(Parse.User);
+	userRankQuery.greaterThan("totalScore", totalScore);
+	return userRankQuery.count({
+				useMasterKey:true
+			}).then(function (rank){
+				user.set("rank", rank+1)
+				return user.save(null, { useMasterKey: true });
+			}).then( function (user){
+				return Parse.Promise.as(userProfileHolder);
+			});
+}
+
 //deprecated, but need to keep it for backward compatible
 Parse.Cloud.define("updateUserStats", function(request, response) {
 
@@ -148,15 +205,15 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 				bookQuery.equalTo("owner",user);
 				bookQuery.find({
 						useMasterKey:true,
-						success: function(results) {
+						success: function(books) {
 							var totalReads = 0;
 							var totalLikes = 0;
 							var totalFeatured = 0;
 							var totalBannedBook = 0;
 							var totalCheats = 0;
 
-							for (i=0; i < results.length; i++) {
-								var book = results[i];
+							for (i=0; i < books.length; i++) {
+								var book = books[i];
 								var isBookActive = book.get("active") || (book.get("active")=== undefined);
 								if(isBookActive){
 									var bookReads = book.get("playedTimes") || 0;
