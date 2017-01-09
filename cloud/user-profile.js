@@ -1,3 +1,53 @@
+// User purchase with coins (include read_book_reward)
+Parse.Cloud.define("UpdateUserProfile", function(request, response) {
+	var username =request.params.username;
+	var productName = request.params.purchase.product;
+	var amount = request.params.purchase.amount;
+	var promises = [];
+
+	var userQuery =new Parse.Query("_User");
+	userQuery.equalTo("username",username);
+	userQuery.limit(1);
+	promises.push(userQuery.find());
+
+	var userProfileQuery =new Parse.Query("UserProfile");
+	userProfileQuery.equalTo("username", username);
+	userProfileQuery.limit(1);
+	promises.push(userProfileQuery.find({useMasterKey:true}));
+
+	var productQuery =new Parse.Query("Product");
+	promises.push(productQuery.find({useMasterKey:true}));
+
+	Parse.Promise.when(promises).then( function(results) {
+//       console.log("user:"+user.toJSON());
+		var user = results[0][0];
+		var userProfile = results[1][0];
+		var products = results[2];
+
+		if(!user){
+			response.error("User doesn't exist! "+ username);
+		}
+		if(userProfile){
+			console.log("found existing userProfile:" + userProfile);
+			return Parse.Promise.as(createUserProfileHolder(user, userProfile, products));
+		}else{
+			return createUserProfileInHolder(user, request.params, products);
+		}
+	}).then( function (userProfileHolder){
+		var product = findProductByName(userProfileHolder.products, productName);
+		if(poduct.get("type") == "rewards" && poduct.get("name") != "read_book_reward"){
+			throw new Error("could_not_buy_rewards:"+productName);
+		}
+        return applyProductToUser(userProfileHolder, product, amount);
+	}).then( function (userProfileHolder){
+		var responseString = JSON.stringify(userProfileHolder);
+		response.success(responseString);
+	}, function(error){
+		console.log("error:"+error);
+		response.error(error);
+	});
+});
+
 // User profile update
 Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	var username =request.params.username;
@@ -110,6 +160,7 @@ function findProductByName(products, name){
 		}
 	}
 	console.log("error: could not find product:" + name);
+	throw new Error("no_such_product:"+name);
 }
 
 //return a promise contains userProfileHolder
@@ -120,6 +171,9 @@ function applyProductToUser(userProfileHolder, product, amount){
 	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
 
 	var coinsChange = - product.get("price")* amount;
+	if((userProfile.get("coins")+ coinsChange) <0){
+		throw new Error("error_not_enough_coin");
+	}
 	userProfile.increment("coins", coinsChange);
 
 	var promises = [];
