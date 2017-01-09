@@ -1,5 +1,5 @@
 // User purchase with coins (include read_book_reward)
-Parse.Cloud.define("UpdateUserProfile", function(request, response) {
+Parse.Cloud.define("UserPurchase", function(request, response) {
 	var username =request.params.username;
 	var productName = request.params.purchase.product;
 	var amount = request.params.purchase.amount;
