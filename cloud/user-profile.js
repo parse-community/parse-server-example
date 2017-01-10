@@ -1,8 +1,8 @@
 // User purchase with coins (include read_book_reward)
 Parse.Cloud.define("UserPurchase", function(request, response) {
 	var username =request.params.username;
-	var productName = request.params.purchase.product;
-	var amount = request.params.purchase.amount || 1;
+	var productName = request.params.productName;
+	var amount = request.params.amount || 1;
 	var promises = [];
 
 	var userQuery =new Parse.Query("_User");
