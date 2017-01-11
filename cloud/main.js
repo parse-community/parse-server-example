@@ -77,6 +77,48 @@ Parse.Cloud.define("status", function(request, response)
 
 ///////////////////////////////////////
 //
+// barberIdForBarberFirstNameLastName
+//
+///////////////////////////////////////
+Parse.Cloud.define("barberIdForBarberFirstNameLastName", function(request, response)
+{
+    //Parse.Cloud.useMasterKey();
+    var pFirstName = request.params.firstName;
+    var pLastName  = request.params.lastName
+
+    var query = new Parse.Query("Barbers");
+    query.equalTo("firstName", pFirstName);
+    query.equalTo("lastName", pLastName);
+    query.equalTo("isActive", true);
+    query.find(
+    {
+        useMasterKey: true,
+        success: function(results)
+        {
+            if ( results.length == 1 )
+            {
+                var barberId = results[0].id;
+                response.success(barberId);
+            }
+            else if ( results.length > 1 )
+            {
+                response.error("more than one barber found");
+            }
+            else
+            {
+                response.error("no barbers found with that name");
+            }
+        },
+        error: function(error)
+        {
+            response.error("barber name lookup failed: " + error);
+        }
+    });
+});
+
+
+///////////////////////////////////////
+//
 // barberIdForBarberName
 //
 ///////////////////////////////////////
@@ -113,7 +155,6 @@ Parse.Cloud.define("barberIdForBarberName", function(request, response)
         }
     });
 });
-
 
 
 ///////////////////////////////////////
@@ -221,31 +262,24 @@ Parse.Cloud.define("canReplyToUserWithId", function(request, response)
     console.log("canReplyToUserWithId " + request.params.userId);
 
     var User  = Parse.Object.extend("_User");
-    console.log("1");
     var query = new Parse.Query(User);
-    console.log("2");
     query.equalTo("objectId", request.params.userId);
-    console.log("3");
     query.get(
     {
         useMasterKey: true,
         success: function(result)
         {
-            console.log("found user!");
             var canReply = result.get("allowsMessages");
             if ( canReply == null )
             {
                 canReply = false;
             }
-            console.log("can reply is " + canReply);
-
             response.success(canReply);
         },
         error: function(error)
         {
             console.log("ERROR querying user");
             console.log(error);
-
             response.error("user lookup failed");
         }
     });
@@ -305,7 +339,7 @@ Parse.Cloud.define("canReplyToUserWithId_B", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("doesMessageToUserWithNoRepeatHashExist", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
 
     var userId = request.params.userId;
     var nrHash = request.params.noRepeat;
@@ -315,6 +349,7 @@ Parse.Cloud.define("doesMessageToUserWithNoRepeatHashExist", function(request, r
     query.equalTo("noRepeat", request.params.noRepeat);
     query.find(
     {
+    	useMasterKey: true,
         success: function(results)
         {
             if ( results.length == 0 )
@@ -341,12 +376,13 @@ Parse.Cloud.define("doesMessageToUserWithNoRepeatHashExist", function(request, r
 ///////////////////////////////////////
 Parse.Cloud.define("nameForUserWithObjectId", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
 
     var User = Parse.Object.extend("_User");
     var query = new Parse.Query(User);
     query.get(request.params.objectId,
     {
+    	useMasterKey: true,
         success: function(object)
         {
             // object is an instance of Parse.Object.
@@ -379,13 +415,14 @@ Parse.Cloud.define("nameForUserWithObjectId", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("serviceIdForBarberNameAndServiceName", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
 
     var query = new Parse.Query("Services");
     query.equalTo("barberName", request.params.barberName);
     query.equalTo("serviceName", request.params.serviceName);
     query.find(
     {
+    	useMasterKey: true,
         success: function(results)
         {
             if ( results.length == 1 )
@@ -435,13 +472,14 @@ Parse.Cloud.define("serviceIdForBarberNameAndServiceName", function(request, res
 ///////////////////////////////////////
 Parse.Cloud.define("serviceIdForServiceIdReplacement", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
     // changed equalTo objectId to id 2016 11 07
     var query = new Parse.Query("Services");
     query.equalTo("id", request.params.serviceId);
     query.equalTo("isActive", false);
     query.find(
     {
+    	useMasterKey: true,
         success: function(results)
         {
             if ( results.length == 0 )
@@ -468,12 +506,13 @@ Parse.Cloud.define("serviceIdForServiceIdReplacement", function(request, respons
 ///////////////////////////////////////
 Parse.Cloud.define("servicesForBarberId", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
     // changed objectId to id
     var query = new Parse.Query("Barbers");
     query.equalTo("id", request.params.barber);
     query.find(
     {
+    	useMasterKey: true,
         success: function(results)
         {
             var relation = results[0].get("services");
@@ -506,13 +545,14 @@ Parse.Cloud.define("servicesForBarberId", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("incrementNewAppointmentTally", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
 
     var query = new Parse.Query("GlobalSettings");
     query.equalTo("settingName", "newAppointmentTally");
 
     query.find(
     {
+    	useMasterKey: true,
         success: function(results)
         {
             var resultObject = results[0];
@@ -540,7 +580,7 @@ Parse.Cloud.define("incrementNewAppointmentTally", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("getUnreadMessageCount", function(request, response)
 {
-    Parse.Cloud.useMasterKey();
+    //Parse.Cloud.useMasterKey();
 
     // Unread Messages
     var query = new Parse.Query("Messages");
@@ -551,6 +591,7 @@ Parse.Cloud.define("getUnreadMessageCount", function(request, response)
 
     query.find(
     {
+    	useMasterKey: true,
         success: function(results)
         {
             console.log("SUCCESS: ");
@@ -1003,6 +1044,121 @@ Parse.Cloud.define("convertUsernameToPhoneNumber", function(request, response)
     var query = new Parse.Query(User);
 
     query.equalTo("username", emailAddress);
+    query.find(
+    {
+        useMasterKey: true,
+        success: function(results)
+        {
+            console.log("find with email address in username was successful.");
+            console.log(results.length + " records found");
+
+            if ( results.length == 0 )
+            {
+                console.log("No records found to convert");
+                response.success( "{ 'description' : 'No records found to convert' }" );
+            }
+            else
+            {
+                console.log("convert only first user, remove the remaining");
+                // Create New User copying from first
+                // lastName, installoids, barberName, isStaffMember, lastSeen, friendsRelation,
+                // username, allowsMessages, phoneNumber, language, firstname, password, staffID,
+                // email, userRole (pointer)
+                var firstUser = results[0];
+
+                //var messaging    = firstUser.get("allowsMessages");
+                //var barberName     = firstUser.get("barberName");
+                var emailAddress= firstUser.get("email");
+                var firstName     = firstUser.get("firstName");
+                //var friends    = firstUser.get("friendsRelation");
+                var installoids = firstUser.get("installoids");
+                //var isStaff    = firstUser.get("isStaffMember");
+                var lastName     = firstUser.get("lastName");
+                //var lastSeen    = firstUser.get("lastSeen");
+                //var phoneNumber    = firstUser.get("phoneNumber");
+                var staffId    = firstUser.get("staffID");
+                //var userId     = firstUser.get("id");
+                var username    = firstUser.get("username");
+                //var userRole    = firstUser.get("userRole);
+
+                console.log("Can update user:");
+
+                console.log("email:      " + emailAddress);
+                console.log("firstName:  " + firstName);
+                console.log("installoids:" + installoids);
+                console.log("lastName:   " + lastName);
+                console.log("staffId:    " + staffId);
+                console.log("username:   " + username);
+
+                var userServiceToken = process.env.USER_SERVICE_TOKEN;
+
+                console.log("token length: " + userServiceToken.length);
+
+                var random  = randomNumberWithNumberOfDigits(5);
+
+                firstUser.set("gbAssist","CONVERTED")
+                firstUser.save(null,
+                {
+                    useMasterKey: true,
+                    success: function(savedUser)
+                    {
+                        console.log("User saved CONVERTED.");
+                        var userResponse = "{ 'email'        : '" + emailAddress     +
+                                          "', 'firstName'    : '" + firstName        +
+                                          "', 'installoids'  : '" + installoids      +
+                                          "', 'lastName'     : '" + lastName         +
+                                          "', 'staffId'      : '" + staffId          +
+                                          "', 'username'     : '" + username         +
+                                          "', 'confirmation' : '" + verification     +
+                                          "', 'transaction'  : '" + userServiceToken +
+                                          "', 'description'  : 'confirmed' }";
+
+                        response.success(userResponse);
+                    },
+                    error: function(saveError)
+                    {
+                        console.log("unable to save user");
+                        console.log(saveError);
+                        response.error("Save was not successful: " + saveError);
+                    }
+                });
+            }
+        },
+        error: function(queryError)
+        {
+            console.log("Query find not successful! " + queryError);
+            response.error("Query find not successful: " + queryError);
+        }
+    });
+});
+
+
+///////////////////////////////////////
+//
+// resetUserToVersionOne
+//
+///////////////////////////////////////
+Parse.Cloud.define("resetUserToVersionOne", function(request, response)
+{
+    //Parse.Cloud.useMasterKey();
+    // depreciated, add:
+    // useMasterKey: true,
+    // above your success: lines.
+
+    console.log("Starting resetUserToVersionOne");
+
+    var emailAddress     = request.params.emailAddress;
+    var hashed			 = request.params.hashed
+    var phoneNumber      = request.params.phoneNumber;
+
+    console.log("emailAddress [" + emailAddress + "]");
+    console.log("phoneNumber [" + phoneNumber + "]");
+
+    var User  = Parse.Object.extend("_User");
+    var query = new Parse.Query(User);
+
+    query.equalTo("username", phoneNumber);
+    query.equalTo("", emailAddress);
     query.find(
     {
         useMasterKey: true,
