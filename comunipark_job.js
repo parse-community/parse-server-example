@@ -5,7 +5,7 @@ Parse.Cloud.useMasterKey();
 
 var today = new Date();
 var days = 1;
-var time = (days * 60 * 60 * 1000);
+var time = (days * 24 * 60 * 60 * 1000);
 var expirationDate = new Date(today.getTime() - (time));
     
 var query = new Parse.Query('ParkingSpaces');
