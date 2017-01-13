@@ -4,8 +4,8 @@ Parse.serverURL = process.env.SERVER_URL;
 Parse.Cloud.useMasterKey();
 
 var today = new Date();
-var minutes = 5;
-var time = (minutes * 60 * 1000);
+var days = 1;
+var time = (days * 60 * 60 * 1000);
 var expirationDate = new Date(today.getTime() - (time));
     
 var query = new Parse.Query('ParkingSpaces');
@@ -14,11 +14,8 @@ var query = new Parse.Query('ParkingSpaces');
 		var arrayLength = spots.length;
 		console.log("found "+arrayLength+" spots relevant");
 		for (var i = 0; i < arrayLength; i++) {
-			if ( spots[i].get('taken') == false ){
-				console.log("found free spot, setting taken");
-				spots[i].set('taken', null);
-				spots[i].save();
-			}
+			spots[i].destroy()
+			console.log("destroyed.")
 		}
 		console.log("finished.");
     }, function (error) {});
