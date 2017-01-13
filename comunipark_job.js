@@ -14,7 +14,7 @@ var query = new Parse.Query('ParkingSpaces');
 		var arrayLength = spots.length;
 		console.log("found "+arrayLength+" spots relevant");
 		for (var i = 0; i < arrayLength; i++) {
-			spots[i].destroy()
+			spots[i].destroy();
 			console.log("destroyed.")
 		}
 		console.log("finished.");
