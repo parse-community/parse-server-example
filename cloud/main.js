@@ -1,3 +1,20 @@
+Parse.Cloud.define("addCanonicalHandles", function(request, response) {
+  var query = new Parse.Query("Profile");
+  query.find({
+    success: function(results) {
+      var sum = 0;
+      for (var i = 0; i < results.length; ++i) {
+        handle = results[i].get("handle");
+        results[i].set("canonicalHandle", handle.toLowerCase())
+      }
+      response.success("added canonical handles");
+    },
+    error: function() {
+      response.error("profile lookup failed");
+    }
+  });
+});
+
 Parse.Cloud.define("testPush", function(request, response) {
    var query = new Parse.Query("Installation");
    query.equalTo("profileId", "xdIy97hRiC");
