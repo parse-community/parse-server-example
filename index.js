@@ -2,6 +2,7 @@
 // compatible API routes.
 
 var express = require('express');
+var _ = require('underscore');
 var ParseServer = require('parse-server').ParseServer;
 var ParseDashboard = require('parse-dashboard');
 var path = require('path');
@@ -56,16 +57,26 @@ app.use(mountPath, api);
 
 // make the Parse Dashboard available at /dashboard
 app.use('/dashboard', function(req, res, next){
-	var ipObject = get_ip(req);
-	console.log("Request IP: "+ipObject);
-	
-	if(process.env.DASHBOARD_ALLOWED_IP == ""){
-		next();
-	} else if(ipObject.clientIp == process.env.DASHBOARD_ALLOWED_IP){
-		next();
-	} else {
-		res.status(401).send("Unauthorized Access: "+ipObject.clientIp);
-	}
+  var ipObject = get_ip(req);
+  console.log("Request IP: "+ipObject);
+  
+  if(process.env.DASHBOARD_ALLOWED_IP == ""){
+    next();
+  } else {
+    var IPs = process.env.DASHBOARD_ALLOWED_IP.split(",");
+    var allowed = false;
+    _.each(IPs,function(ip){
+      if(ipObject.clientIp == ip){
+        allowed = true;
+      }
+    })
+	  
+    if(allowed){
+      next();
+    } else {
+      res.status(401).send("Unauthorized Access: "+ipObject.clientIp);
+    }
+  } 
 }, dashboard);
 
 // Parse Server plays nicely with the rest of your web routes
