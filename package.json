@@ -13,7 +13,7 @@
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
     "parse-server": "*",
-    "parse-dashboard": "~1.10.13",
+    "parse-dashboard": "~1.0.22",
     "ipware": "~0.0.8"
   },
   "scripts": {
