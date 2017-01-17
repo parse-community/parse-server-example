@@ -12,9 +12,9 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "~2.2.2",
+    "parse-server": "*",
     "parse-dashboard": "~1.10.13",
-	  "ipware": "~0.0.8
+    "ipware": "~0.0.8"
   },
   "scripts": {
     "start": "node index.js"
