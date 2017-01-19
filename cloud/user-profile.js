@@ -1,3 +1,53 @@
+// User purchase with coins (include read_book_reward)
+Parse.Cloud.define("UserPurchase", function(request, response) {
+	var username =request.params.username;
+	var productName = request.params.productName;
+	var amount = request.params.amount || 1;
+	var promises = [];
+
+	var userQuery =new Parse.Query("_User");
+	userQuery.equalTo("username",username);
+	userQuery.limit(1);
+	promises.push(userQuery.find());
+
+	var userProfileQuery =new Parse.Query("UserProfile");
+	userProfileQuery.equalTo("username", username);
+	userProfileQuery.limit(1);
+	promises.push(userProfileQuery.find({useMasterKey:true}));
+
+	var productQuery =new Parse.Query("Product");
+	promises.push(productQuery.find({useMasterKey:true}));
+
+	Parse.Promise.when(promises).then( function(results) {
+//       console.log("user:"+user.toJSON());
+		var user = results[0][0];
+		var userProfile = results[1][0];
+		var products = results[2];
+
+		if(!user){
+			response.error("User doesn't exist! "+ username);
+		}
+		if(userProfile){
+			console.log("found existing userProfile:" + userProfile);
+			return Parse.Promise.as(createUserProfileHolder(user, userProfile, products));
+		}else{
+			return createUserProfileInHolder(user, request.params, products);
+		}
+	}).then( function (userProfileHolder){
+		var product = findProductByName(userProfileHolder.products, productName);
+		if(product.get("type") == "rewards" && (product.get("name") != "read_book_reward" || amount != 1)){
+			return Parse.Promise.error("error_could_not_buy_rewards:"+productName);
+		}
+        return applyProductToUser(userProfileHolder, product, amount);
+	}).then( function (userProfileHolder){
+		var responseString = JSON.stringify(userProfileHolder);
+		response.success(responseString);
+	}, function(error){
+		console.log("error:"+error);
+		response.error(error);
+	});
+});
+
 // User profile update
 Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	var username =request.params.username;
@@ -17,24 +67,36 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 	var productQuery =new Parse.Query("Product");
 	promises.push(productQuery.find({useMasterKey:true}));
 
+	var bookQuery =new Parse.Query("PublishedBook");
+	bookQuery.equalTo("AuthorName",username);
+	promises.push(bookQuery.find({useMasterKey:true}));
+
+	var books;
 	Parse.Promise.when(promises).then( function(results) {
 //       console.log("user:"+user.toJSON());
 	       var user = results[0][0];
 	       var userProfile = results[1][0];
 		   var products = results[2];
-		   console.log("found products:" + products);
+			books = results[3];
+		   if(!user){
+			   response.error("User doesn't exist! "+ username);
+		   }
 
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
-		 		return Parse.Promise.as(createUserProfileHolder(userProfile, products));
+		 		return Parse.Promise.as(createUserProfileHolder(user, userProfile, products));
 			}else{
-				return createUserProfile(user, request.params, products);
+				return createUserProfileInHolder(user, request.params, products);
 			}
 	    }, function(error){
 	    	console.log("error:"+error);
 	      	response.error("failed to query UserProfile:"+error);
 		}).then( function (userProfileHolder){
+			return refreshUserStats(userProfileHolder, books);
+		}).then( function (userProfileHolder){
 			return applyDailyReward(userProfileHolder);
+		}).then( function (userProfileHolder){
+			return applyLevelUpReward(userProfileHolder);
 	    }).then( function (userProfileHolder){
 				var responseString = JSON.stringify(userProfileHolder);
 				response.success(responseString);
@@ -58,7 +120,20 @@ function applyDailyReward (userProfileHolder) {
 	}
 }
 
-function createUserProfile(user, params, products){
+//return a promise contains updated userProfileHolder
+function applyLevelUpReward (userProfileHolder) {
+	var userProfile = userProfileHolder.userProfile;
+	var currentUserLevel = userProfileHolder.user.get("user_level")
+	var lastUserLevel = userProfile.get("last_user_level") ||  1;
+	if(currentUserLevel > lastUserLevel) {
+		userProfile.set("last_user_level", currentUserLevel);
+		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward"), currentUserLevel - lastUserLevel);
+	}else{
+		return Parse.Promise.as(userProfileHolder);
+	}
+}
+
+function createUserProfileInHolder(user, params, products){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
 	userProfile = new UserProfileClass();
 	userProfile.set("username", user.get("username"));
@@ -66,11 +141,12 @@ function createUserProfile(user, params, products){
 	console.log("creating new userProfile:" + userProfile);
 	//apply inital register rewards
 	var initialReward = findProductByName(products, "register_reward");
-	return applyProductToUser(createUserProfileHolder(userProfile, products), initialReward);
+	return applyProductToUser(createUserProfileHolder(user, userProfile, products), initialReward);
 }
 
-function createUserProfileHolder(userProfile, products){
+function createUserProfileHolder(user, userProfile, products){
 	return {
+		user: user,
 		userProfile: userProfile, //parse object
 		products: products,
 		purchaseHistories: [] //array of purchaseHistory parse object
@@ -84,6 +160,38 @@ function findProductByName(products, name){
 		}
 	}
 	console.log("error: could not find product:" + name);
+	throw new Error("no_such_product:"+name);
+}
+
+
+function applyProductChange(userProfile, product,  amount) {
+	console.log("applying product to user:"+product.get("name")+" - "+ userProfile.get("username"));
+
+	var coinsChange = - product.get("price")* amount;
+	if((userProfile.get("coins")+ coinsChange) <0){
+		throw new Error("error_not_enough_coin");
+	}
+	userProfile.increment("coins", coinsChange);
+
+	switch (product.get("name")) {
+		case "max_book_pages":
+			var current = userProfile.get("max_page_number") || 60; //default max page number
+			userProfile.set("max_page_number", current + amount);
+			break;
+		case "max_avatars":
+			var current = userProfile.get("max_avatar_number") || 3; //default max avatar number
+			userProfile.set("max_avatar_number", current + amount);
+			break;
+		case "max_record_secs":
+			var current = userProfile.get("max_recording_length") || 10; //default max recording length
+			userProfile.set("max_recording_length", current + amount);
+			break;
+		case "max_custom_assets":
+			var current = userProfile.get("max_custom_asset_number") || 40; //default max custom asset number
+			userProfile.set("max_custom_asset_number", current + amount);
+			break;
+	}
+	return coinsChange;
 }
 
 //return a promise contains userProfileHolder
@@ -91,24 +199,25 @@ function applyProductToUser(userProfileHolder, product, amount){
 	amount = amount || 1;
 
 	var userProfile = userProfileHolder.userProfile;
-	console.log("apply product to user:"+product.get("name")+" - "+ userProfile.get("username"));
+	try{
+		var coinsChange = applyProductChange(userProfile, product,  amount);
 
-	var coinsChange = - product.get("price")* amount;
-	userProfile.increment("coins", coinsChange);
+		var promises = [];
+		promises.push(userProfile.save(null, {useMasterKey: true}));
+		promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
 
-	var promises = [];
-	promises.push(userProfile.save(null, { useMasterKey: true }));
-	promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
-
-	return Parse.Promise.when(promises).then( function(results) {
-		userProfileHolder.userProfile = results[0];
-		var purchaseHistory = results[1];
-		purchaseHistory.set("description", product.get("description"));
-		purchaseHistory.set("description_cn", product.get("description_cn"));
-		userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
-		console.log("updated userProfileHolder:" + JSON.stringify(userProfileHolder));
-		return Parse.Promise.as(userProfileHolder);
-	});
+		return Parse.Promise.when(promises).then(function (results) {
+			userProfileHolder.userProfile = results[0];
+			var purchaseHistory = results[1];
+			purchaseHistory.set("description", product.get("description"));
+			purchaseHistory.set("description_cn", product.get("description_cn"));
+			userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
+			console.log("updated userProfileHolder:" + userProfileHolder);
+			return Parse.Promise.as(userProfileHolder);
+		});
+	}catch (e) {
+		return Parse.Promise.error(e.message);
+	}
 }
 
 // return a promise contains userPurchaseHistory
@@ -122,6 +231,73 @@ function recordUserPurchaseHistory(userProfile, product, amount, coinsChange){
 	console.log("creating new userPurchaseHistory:" + userPurchaseHistory);
 
 	return userPurchaseHistory.save(null, { useMasterKey: true });
+}
+
+//return a promise contains updated user with stats
+function refreshUserStats(userProfileHolder, books){
+	var user = userProfileHolder.user;
+	var totalReads = 0;
+	var totalLikes = 0;
+	var totalFeatured = 0;
+	var totalBannedBook = 0;
+	var totalCheats = 0;
+	var totalAppUseTimeScore = user.get("timePlayedTotal")/10 || 0;
+	if(totalAppUseTimeScore > 500) {
+		totalAppUseTimeScore = 500 + (totalAppUseTimeScore - 500)/10;
+	}
+	for (i=0; i < books.length; i++) {
+		var book = books[i];
+		var isBookActive = book.get("active") || (book.get("active")=== undefined);
+		if(isBookActive){
+			var bookReads = book.get("playedTimes") || 0;
+			var bookLikes = book.get("likedTimes") || 0;
+			if (bookReads >= bookLikes) {
+				totalReads += bookReads;
+				totalLikes += bookLikes;
+			}else{
+				totalCheats ++;
+			}
+			totalFeatured += book.get("featuredAccepted") || 0;
+		}else{
+			totalBannedBook ++;
+		}
+	}
+	var totalScore = totalReads * 10 + totalLikes * 50 + totalFeatured * 250 + totalAppUseTimeScore - totalBannedBook * 250 - totalCheats * 250;
+	user.set("totalReadsByOthers", totalReads);
+	user.set("totalLikesByOthers", totalLikes);
+	user.set("totalScore", totalScore );
+	user.set("totalFeatured", totalFeatured );
+	user.set("totalBanned", totalBannedBook );
+	user.set("totalCheats", totalCheats );
+
+	updateUserLevelInfo(user);
+
+	var userRankQuery = new Parse.Query(Parse.User);
+	userRankQuery.greaterThan("totalScore", totalScore);
+	return userRankQuery.count({
+				useMasterKey:true
+			}).then(function (rank){
+				user.set("rank", rank+1)
+				return user.save(null, { useMasterKey: true });
+			}).then( function (user){
+				return Parse.Promise.as(userProfileHolder);
+			});
+}
+
+function updateUserLevelInfo(user){
+	var score = user.get("totalScore");
+	var userlevel;
+	var percentToNextLevel;
+	if(score >= 10){
+		userlevel = Math.floor((Math.log(Math.floor(score/10))/Math.log(2)) + 2);
+		var levelLowerScore = Math.pow(2,userlevel - 2) * 10;
+		percentToNextLevel = (score - levelLowerScore)/levelLowerScore;
+	}else{
+		userlevel = 1;
+		percentToNextLevel = 0;
+	}
+	user.set("user_level", userlevel);
+	user.set("percent_to_next_level", percentToNextLevel);
 }
 
 //deprecated, but need to keep it for backward compatible
@@ -148,15 +324,15 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
 				bookQuery.equalTo("owner",user);
 				bookQuery.find({
 						useMasterKey:true,
-						success: function(results) {
+						success: function(books) {
 							var totalReads = 0;
 							var totalLikes = 0;
 							var totalFeatured = 0;
 							var totalBannedBook = 0;
 							var totalCheats = 0;
 
-							for (i=0; i < results.length; i++) {
-								var book = results[i];
+							for (i=0; i < books.length; i++) {
+								var book = books[i];
 								var isBookActive = book.get("active") || (book.get("active")=== undefined);
 								if(isBookActive){
 									var bookReads = book.get("playedTimes") || 0;
