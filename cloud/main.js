@@ -6,6 +6,8 @@ Parse.Cloud.define("addCanonicalHandles", function(request, response) {
       for (var i = 0; i < results.length; ++i) {
         handle = results[i].get("handle");
         results[i].set("canonicalHandle", handle.toLowerCase())
+        results[i].save
+        console.info("Canonical handle saved for " + handle)
       }
       response.success("added canonical handles");
     },
