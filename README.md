@@ -18,7 +18,12 @@ If you want to setup specific configuration for your app, add it to `config.js` 
 
 ### Updating Dependencies
 
-If you want to upgrade to a newer version of parse-server, parse-dashboard, or other modules, you can run `npm install <package>@<version>` from [kudu console](https://blogs.msdn.microsoft.com/benjaminperkins/2014/03/24/using-kudu-with-windows-azure-web-sites/).  We recommend testing these upgrades on a development instance or locally before modifying your production site.  If you want to move to the next major version of parse-server or parse-dashboard you'll need to modify your site package.json, as `^major.minor.patch` versioning only allows installing a package of the same major version.
+If you want to upgrade to a newer version of parse-server, parse-dashboard, or other modules, there are a few steps:
+- set an appsetting WEBSITE_NODE_DEFAULT_VERSION to 4.4.0
+- set an appsetting WEBSITE_NPM_DEFAULT_VERSION to 3.8.3
+- use [kudu console](https://blogs.msdn.microsoft.com/benjaminperkins/2014/03/24/using-kudu-with-windows-azure-web-sites/) to run `npm install <package>@<version>`.  
+
+We recommend testing these upgrades on a development instance or locally before modifying your production site.  If you want to move to the next major version of parse-server or parse-dashboard you'll need to modify your site package.json, as `^major.minor.patch` versioning only allows installing a package of the same major version.
 
 To change the version of node or npm used on the web app, modify the `engines` property in package.json.
 
