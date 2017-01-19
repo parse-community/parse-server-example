@@ -1,5 +1,6 @@
 Parse.Cloud.define("addCanonicalHandles", function(request, response) {
   var query = new Parse.Query("Profile");
+  query.limit(1000);
   query.find({
     success: function(results) {
       console.log("addCanonicalHandles number of results: " + results.length)
