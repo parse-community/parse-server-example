@@ -2,12 +2,13 @@ Parse.Cloud.define("addCanonicalHandles", function(request, response) {
   var query = new Parse.Query("Profile");
   query.find({
     success: function(results) {
+      console.log("addCanonicalHandles number of results: " + results.length)
       var sum = 0;
       for (var i = 0; i < results.length; ++i) {
         handle = results[i].get("handle");
         results[i].set("canonicalHandle", handle.toLowerCase())
         results[i].save
-        console.info("Canonical handle saved for " + handle)
+        console.log("Canonical handle saved for " + handle)
       }
       response.success("added canonical handles");
     },
