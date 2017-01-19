@@ -19,6 +19,19 @@ Parse.Cloud.define("addCanonicalHandles", function(request, response) {
   });
 });
 
+Parse.Cloud.afterSave("Profile", function(request, response) {
+   var handle = request.object.get("handle");
+   request.object.set("canonicalHandle", handle.toLowerCase())
+   request.object.save({
+    success: function(object) {
+      response.success("New Profile's canonical handle set to: " + handle.toLowerCase())
+    },
+    error: function() {
+     response.error("Error settings canonical handle for profile: " + handle);
+    }
+   });
+});
+
 Parse.Cloud.define("testPush", function(request, response) {
    var query = new Parse.Query("Installation");
    query.equalTo("profileId", "xdIy97hRiC");
