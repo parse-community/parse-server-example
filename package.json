@@ -20,7 +20,6 @@
     "postinstall": "git update-index --skip-worktree local.js & exit 0"
   },
   "engines": {
-    "node": "4.4",
-    "npm": "3.8.3"
+    "node": "6.9.4"
   }
 }
