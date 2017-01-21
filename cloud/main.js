@@ -1470,3 +1470,62 @@ function conditionalLog(logText)
         console.log(logText);
     }
 }
+
+
+///////////////////////////////////////
+//
+// Twilio Functions
+//
+///////////////////////////////////////
+
+// Non Parse functions can be found in twilio.js
+
+///////////////////////////////////////
+//
+// sendVerificationCodeToUserWithPhoneNumberEmailAddress
+//
+///////////////////////////////////////
+Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', function(request, response)
+{
+	var theUser		= request.user;
+
+	if ( theUser == null )
+	{
+		var emailAddress 	= request.params.emailAddress;
+		var phoneNumber  	= request.params.phoneNumber;
+
+		console.log('emailAddress [' + emailAddress + ']');
+		console.log('phoneNumber [' + phoneNumber + ']');
+
+		var User = Parse.Object.extend('_User');
+		var query = new Parse.Query(User);
+
+		query.equalTo('username',phoneNumber);
+		query.equalTo('emailAddress',emailAddress);
+
+		query.find(
+		{
+			useMasterKey: true,
+			success: function(results)
+			{
+				var qUser		= results[0];
+				var password	= qUser.get('password');
+				var code		= password.substring(-5);
+				sendVerificationBySmsToPhoneNumber(code, phoneNumber);
+				response.success(true);
+			},
+			error: function(queryError)
+			{
+				response.error(queryError);
+			}
+		});
+	}
+	else
+	{
+		var password	= theUser.get('password');
+		var code		= password.substring(-5);
+		sendVerificationBySmsToPhoneNumber(code, phoneNumber);
+		response.success(true);
+	}
+});
+
