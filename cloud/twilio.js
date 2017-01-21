@@ -66,9 +66,23 @@ function sendVerificationCodeBySmsToPhoneNumber(verificationCode,phoneNumber)
 
 	var message	= 'Your Verification Code for the Barbershop Deluxe App is ' + verificationCode + '.';
 
+	var toNumber = '';
+	if ( phoneNumber.length == 10 )
+	{
+		toNumber = '+1' + phoneNumber;
+	}
+	else if ( phoneNumber.length == 11 )
+	{
+		toNumber = '+' + phoneNumber;
+	}
+	else
+	{
+		toNumber = phoneNumber;
+	}
+
     twilio.sendMessage(
     {
-        to: phoneNumber,
+        to: toNumber,
         from: twilioSendingNumber,
         body: message
 
