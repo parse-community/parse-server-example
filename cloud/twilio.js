@@ -8,12 +8,16 @@ var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
 Parse.Cloud.define('sendSMS', function(request, response)
 {
-	Parse.Cloud.useMasterKey();
+	//Parse.Cloud.useMasterKey();
+
 	console.log('sendSMS with:');
-    console.log(request);
+    console.log('toNumber: ' + request.params.toNumber);
+    console.log('message: ' + request.params.message);
+	console.log('from: ' + twilioSendingNumber);
 
 	var tas = twilioAccountSid.substring(1,5);
 	var tat = twilioAccountToken.substring(1,5);
+
 	console.log('account sid starts ' + tas);
 	console.log('account token starts ' + tat);
 
@@ -31,10 +35,14 @@ Parse.Cloud.define('sendSMS', function(request, response)
     {
         if (error)
         {
+        	console.log('error with sendSMS:');
+        	console.log(error);
             response.error(error);
         }
         else
         {
+        	console.log('success with sendSMS:')
+        	console.log(responseData);
             response.success(responseData);
         }
     });
