@@ -87,7 +87,7 @@ Parse.Cloud.define("barberIdForBarberFirstNameLastName", function(request, respo
 {
     //Parse.Cloud.useMasterKey();
     var pFirstName = request.params.firstName;
-    var pLastName  = request.params.lastName
+    var pLastName  = request.params.lastName;
 
     var query = new Parse.Query("Barbers");
     query.equalTo("firstName", pFirstName);
@@ -1099,7 +1099,7 @@ Parse.Cloud.define("convertUsernameToPhoneNumber", function(request, response)
 
                 var random  = randomNumberWithNumberOfDigits(5);
 
-                firstUser.set("gbAssist","CONVERTED")
+                firstUser.set("gbAssist","CONVERTED");
                 firstUser.save(null,
                 {
                     useMasterKey: true,
@@ -1112,7 +1112,7 @@ Parse.Cloud.define("convertUsernameToPhoneNumber", function(request, response)
                                           "', 'lastName'     : '" + lastName         +
                                           "', 'staffId'      : '" + staffId          +
                                           "', 'username'     : '" + username         +
-                                          "', 'confirmation' : '" + verification     +
+                                          "', 'confirmation' : '" + random           +
                                           "', 'transaction'  : '" + userServiceToken +
                                           "', 'description'  : 'confirmed' }";
 
@@ -1151,7 +1151,7 @@ Parse.Cloud.define("resetUserToVersionOne", function(request, response)
     console.log("Starting resetUserToVersionOne");
 
     var emailAddress     = request.params.emailAddress;
-    var hashed			 = request.params.hashed
+    var hashed			 = request.params.hashed;
     var phoneNumber      = request.params.phoneNumber;
 
     console.log("emailAddress [" + emailAddress + "]");
@@ -1214,7 +1214,7 @@ Parse.Cloud.define("resetUserToVersionOne", function(request, response)
 
                 var random  = randomNumberWithNumberOfDigits(5);
 
-                firstUser.set("gbAssist","CONVERTED")
+                firstUser.set("gbAssist","CONVERTED");
                 firstUser.save(null,
                 {
                     useMasterKey: true,
@@ -1227,7 +1227,7 @@ Parse.Cloud.define("resetUserToVersionOne", function(request, response)
                                           "', 'lastName'     : '" + lastName         +
                                           "', 'staffId'      : '" + staffId          +
                                           "', 'username'     : '" + username         +
-                                          "', 'confirmation' : '" + verification     +
+                                          "', 'confirmation' : '" + random            +
                                           "', 'transaction'  : '" + userServiceToken +
                                           "', 'description'  : 'confirmed' }";
 
@@ -1292,7 +1292,7 @@ Parse.Cloud.define("createMessageForUser", function(request, response)
 
     console.log('createMessageForUser called');
     console.log('with params:');
-    console.log('senderID [' + msgSenderId + '], receiverID [' + msgReceiverID + '], title [' + msgTitle + '], subtitle [' + msgSubtitle + '], body [' + msgBody + ']');
+    console.log('senderID [' + msgSenderID + '], receiverID [' + msgReceiverID + '], title [' + msgTitle + '], subtitle [' + msgSubtitle + '], body [' + msgBody + ']');
 
     Parse.Cloud.run("userWithUserIdExists",
     {
@@ -1351,7 +1351,7 @@ Parse.Cloud.define("saveMessageForUserThenNotify", function(request, response)
 
     console.log('saveMessageForUserThenNotify called');
     console.log('with params:');
-    console.log('senderID [' + pSenderId + '], receiverID [' + pReceiverID + '], title [' + pMsgTitle + '], subtitle [' + pMsgSubtitle + '], body [' + pMsgBody + ']');
+    console.log('senderID [' + pSenderID + '], receiverID [' + pReceiverID + '], title [' + pMsgTitle + '], subtitle [' + pMsgSubtitle + '], body [' + pMsgBody + ']');
 
     Parse.Cloud.run("createMessageForUser",
     {
@@ -1370,7 +1370,7 @@ Parse.Cloud.define("saveMessageForUserThenNotify", function(request, response)
                 // Create User Query
                 var User            = Parse.Object.extend("_User");
                 var userQuery        = new Parse.Query(User);
-                userQuery.equalTo("objectId", receiverId);
+                userQuery.equalTo("objectId", pReceiverID);
 
                 //maybe:var pushQuery = new Parse.Query(Parse.Installation);
                 var Installation    = Parse.Object.extend("_Installation");
@@ -1393,9 +1393,9 @@ Parse.Cloud.define("saveMessageForUserThenNotify", function(request, response)
                         category : categoryId,
                         alert:
                         {
-                            title:        msgTitle,
-                            subtitle:    msgSubtitle,
-                            body:        msgBody
+                            title:        pMsgTitle,
+                            subtitle:    pMsgSubtitle,
+                            body:        pMsgBody
                         },
                         badge: badgeNumber,
                         sound : soundName
@@ -1466,9 +1466,9 @@ function randomNumberWithNumberOfDigits(numDigits)
 ///////////////////////////////////////
 function conditionalLog(logText)
 {
-    var doLog = True; //env.process.DEBUG_LOG || True;
+    var doLog = env.process.DEBUG_LOG || True;
 
-    if ( doLog == True || doLog == "True" )
+    if ( doLog == true || doLog == "True" )
     {
         console.log(logText);
     }
