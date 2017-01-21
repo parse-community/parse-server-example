@@ -53,7 +53,7 @@
 // Twilio Code
 //require("./twilio.js");
 
-require(__dirname + 'cloud/twilio/twilio.js');
+require('cloud/twilio/twilio.js');
 
 
 //////////////////////////////////////
