@@ -55,6 +55,12 @@
 
 //imported from require('twilio.js');
 
+var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+var twilioPort			= process.env.TWILIO_PORT || 1338;
+var twilioURL			= process.env.TWILIO_URL || '127.0.0.1';
+var twilioMount			= process.env.TWILIO_MOUNT || '/';
+var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
 
 //////////////////////////////////////
 //
