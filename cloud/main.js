@@ -53,7 +53,7 @@
 // Twilio Code
 //require("./twilio.js");
 
-require('twilio.js');
+//imported from require('twilio.js');
 
 
 //////////////////////////////////////
@@ -1477,6 +1477,65 @@ function conditionalLog(logText)
 
 ///////////////////////////////////////
 //
+// sendVerificationCodeBySmsToPhoneNumber
+//
+///////////////////////////////////////
+function sendVerificationCodeBySmsToPhoneNumber(verificationCode,phoneNumber)
+{
+	console.log('sendVerificationCodeBySmsToPhoneNumber()');
+	console.log('phoneNumber: ' + phoneNumber + ' vCode [' + verificationCode + ']');
+
+	var tAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+	var tAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+	var tSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
+	var twilio	= require('twilio')(tAccountSid,tAccountToken);
+
+	var tas = tAccountSid.substring(1,5);
+	var tat = tAccountToken.substring(1,5);
+
+	console.log('account sid starts ' + tas);
+	console.log('account token starts ' + tat);
+	console.log('from phone ' + tSendingNumber);
+
+	var message	= 'Your Verification Code for the Barbershop Deluxe App is ' + verificationCode + '.';
+
+	var toNumber = '';
+	if ( phoneNumber.length == 10 )
+	{
+		toNumber = '+1' + phoneNumber;
+	}
+	else if ( phoneNumber.length == 11 )
+	{
+		toNumber = '+' + phoneNumber;
+	}
+	else
+	{
+		toNumber = phoneNumber;
+	}
+	console.log('about to send');
+
+    twilio.sendMessage(
+    {
+        to: toNumber,
+        from: tSendingNumber,
+        body: message
+
+    }, function(error, responseData)
+    {
+        if (error)
+        {
+        	console.log('error sending twilio message:');
+            console.log(error);
+        }
+        else
+        {
+            response.success(responseData);
+        }
+    });
+}
+
+///////////////////////////////////////
+//
 // Twilio Functions
 //
 ///////////////////////////////////////
@@ -1535,5 +1594,53 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 		sendVerificationBySmsToPhoneNumber(code, phoneNumber);
 		response.success(true);
 	}
+});
+
+
+///////////////////////////////////////
+//
+// sendSMS
+//
+///////////////////////////////////////
+Parse.Cloud.define('sendSMS', function(request, response)
+{
+	//Parse.Cloud.useMasterKey();
+
+	console.log('sendSMS with:');
+    console.log('toNumber: ' + request.params.toNumber);
+    console.log('message: ' + request.params.message);
+	console.log('from: ' + twilioSendingNumber);
+
+	var tas = twilioAccountSid.substring(1,5);
+	var tat = twilioAccountToken.substring(1,5);
+
+	console.log('account sid starts ' + tas);
+	console.log('account token starts ' + tat);
+
+    var twilio	= require('twilio')(twilioAccountSid,twilioAccountToken);
+	var to 		= request.params.toNumber;
+	var message	= request.params.message;
+
+    twilio.sendMessage(
+    {
+        to: to,
+        from: twilioSendingNumber,
+        body: message
+
+    }, function(error, responseData)
+    {
+        if (error)
+        {
+        	console.log('error with sendSMS:');
+        	console.log(error);
+            response.error(error);
+        }
+        else
+        {
+        	console.log('success with sendSMS:');
+        	console.log(responseData);
+            response.success(responseData);
+        }
+    });
 });
 
