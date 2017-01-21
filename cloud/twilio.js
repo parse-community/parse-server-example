@@ -41,7 +41,7 @@ Parse.Cloud.define('sendSMS', function(request, response)
         }
         else
         {
-        	console.log('success with sendSMS:')
+        	console.log('success with sendSMS:');
         	console.log(responseData);
             response.success(responseData);
         }
