@@ -1,4 +1,4 @@
-var jwt = require('jwt-simple');
+var jwt = require('jsonwebtoken');
 var deprecate = require('deprecate');
 var _ = require('underscore')
 require('string.prototype.startswith');
@@ -176,8 +176,8 @@ TaskRouterCapability.prototype._generate = function(ttl, extraAttributes) {
         friendly_name: this.channelId,
         policies: this.policies,
     };
-    _.extend(payload, extraAttributes) 
-    return jwt.encode(payload, this.authToken);
+    _.extend(payload, extraAttributes);
+    return jwt.sign(payload, this.authToken);
 }
 
 module.exports = TaskRouterCapability;

@@ -1,4 +1,4 @@
-var jwt = require('jwt-simple'),
+var jwt = require('jsonwebtoken'),
     qs = require('querystring'),
     utils = require('./utils');
 
@@ -71,7 +71,7 @@ Capability.prototype.generate = function(timeout) {
         exp: Math.floor(new Date() / 1000) + expires
     };
 
-    return jwt.encode(payload, this.authToken);
+    return jwt.sign(payload, this.authToken);
 };
 
 module.exports = Capability;

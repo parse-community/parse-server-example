@@ -1508,20 +1508,25 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 			useMasterKey: true,
 			success: function(results)
 			{
+				console.log('I have a user');
 				var qUser		= results[0];
 				var password	= qUser.get('password');
 				var code		= password.substring(-5);
+				console.log('I have a code ' + code );
 				sendVerificationBySmsToPhoneNumber(code, phoneNumber);
 				response.success(true);
 			},
 			error: function(queryError)
 			{
+				console.log('error with query:');
+				console.log(queryError);
 				response.error(queryError);
 			}
 		});
 	}
 	else
 	{
+		console.log('user was in request');
 		var password	= theUser.get('password');
 		var code		= password.substring(-5);
 		sendVerificationBySmsToPhoneNumber(code, phoneNumber);
