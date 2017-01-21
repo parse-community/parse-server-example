@@ -84,7 +84,7 @@ function sendVerificationCodeBySmsToPhoneNumber(verificationCode,phoneNumber)
             response.success(responseData);
         }
     });
-});
+}
 
 
 /*
