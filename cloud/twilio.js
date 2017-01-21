@@ -41,6 +41,52 @@ Parse.Cloud.define('sendSMS', function(request, response)
 });
 
 
+///////////////////////////////////////
+//
+// sendVerificationCodeBySmsToPhoneNumber
+//
+///////////////////////////////////////
+function sendVerificationCodeBySmsToPhoneNumber(verificationCode,phoneNumber)
+{
+	console.log('sendSMS to ' + phoneNumber + ' with [' + verificationCode + ']');
+
+	var twilio	= require('twilio')(twilioAccountSid,twilioAccountToken);
+
+
+	//var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
+	//var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
+	//var twilioSendingNumber	= process.env.TWILIO_PHONE_NUMBER;
+
+	var tas = twilioAccountSid.substring(1,5);
+	var tat = twilioAccountToken.substring(1,5);
+
+	console.log('account sid starts ' + tas);
+	console.log('account token starts ' + tat);
+	console.log('from phone ' + twilioSendingNumber);
+
+	var message	= 'Your Verification Code for the Barbershop Deluxe App is ' + verificationCode + '.';
+
+    twilio.sendMessage(
+    {
+        to: phoneNumber,
+        from: twilioSendingNumber,
+        body: message
+
+    }, function(error, responseData)
+    {
+        if (error)
+        {
+        	console.log('error sending twilio message:');
+            console.log(error);
+        }
+        else
+        {
+            response.success(responseData);
+        }
+    });
+});
+
+
 /*
 
 //const express = require('express');
