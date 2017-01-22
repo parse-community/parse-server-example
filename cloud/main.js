@@ -1576,14 +1576,24 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 			useMasterKey: true,
 			success: function(results)
 			{
-				console.log('I have a user');
-				var qUser		= results[0];
-				var password	= qUser.get('password');
-				var code		= password.substring(-5);
-				console.log('I have a code ');
-				conditionalLog(code);
-				sendVerificationCodeBySmsToPhoneNumber(code, phoneNumber);
-				response.success(true);
+				if ( results.count > 0 )
+				{
+					console.log('I have a user');
+					var qUser		= results[0];
+					var password	= qUser.get('password');
+					console.log('pass length is ');
+					console.log(password.length.toString);
+					conditionalLog('pass length is ' + password.length.toString);
+					var code		= password.substring(-5);
+					console.log('I have a code ');
+					conditionalLog(code);
+					sendVerificationCodeBySmsToPhoneNumber(code, phoneNumber);
+					response.success(true);
+				}
+				else
+				{
+					response.success(false);
+				}
 			},
 			error: function(queryError)
 			{
