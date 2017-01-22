@@ -604,7 +604,7 @@ Parse.Cloud.define("getUnreadMessageCount", function(request, response)
         success: function(results)
         {
             console.log("SUCCESS: ");
-            response.success(results.count);
+            response.success(results.length);
         },
         error: function(error)
         {
@@ -638,7 +638,7 @@ Parse.Cloud.define("getMessageCount", function(request, response)
         success: function(results)
         {
             console.log("SUCCESS: ");
-            response.success(results.count);
+            response.success(results.length);
         },
         error: function(error)
         {
@@ -670,12 +670,12 @@ Parse.Cloud.define("getMessagesCount", function(request, response)
         useMasterKey: true,
         success: function(results)
         {
-            var allCount = results.count;
+            var allCount = results.length;
             var newCount = 0;
 
             var message = null;
 
-            for ( mIdx = 0; mIdx < results.count; mIdx += 1 )
+            for ( mIdx = 0; mIdx < results.length; mIdx += 1 )
             {
                 message = results[mIdx];
                 if ( message.has("readAt") )
@@ -1570,20 +1570,20 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 
 		query.equalTo('username',phoneNumber);
 		query.equalTo('email',emailAddress);
-
+		console.log('starting query');
 		query.find(
 		{
 			useMasterKey: true,
 			success: function(results)
 			{
-				if ( results.count > 0 )
+				if ( results.length > 0 )
 				{
 					console.log('I have a user');
 					var qUser		= results[0];
 					var password	= qUser.get('password');
 					console.log('pass length is ');
 					console.log(password.length.toString);
-					conditionalLog('pass length is ' + password.length.toString);
+					//conditionalLog('pass length is ' + password.length.toString);
 					var code		= password.substring(-5);
 					console.log('I have a code ');
 					conditionalLog(code);
