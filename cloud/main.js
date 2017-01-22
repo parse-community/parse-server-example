@@ -1071,7 +1071,9 @@ Parse.Cloud.define("resetVerificationCode", function(request, response)
                 var userServiceToken = process.env.USER_SERVICE_TOKEN;
                 var random  = randomNumberWithNumberOfDigits(5);
 
-				firstUser.set("verificationCode", random);
+				var newPassword = userServiceToken + "-" + random;
+
+				firstUser.set("password", newPassword);
                 firstUser.set("gbAssist","RESET");
                 firstUser.save(null,
                 {
@@ -1079,11 +1081,7 @@ Parse.Cloud.define("resetVerificationCode", function(request, response)
                     success: function(savedUser)
                     {
                         conditionalLog("User Verification Code Reset.");
-                        var userResponse = "{ 'confirmation' : '" + random +
-                                          "', 'transaction'  : '" + userServiceToken +
-                                          "', 'description'  : 'confirmed' }";
-
-                        response.success(userResponse);
+                        response.success(random);
                     },
                     error: function(saveError)
                     {
