@@ -711,35 +711,35 @@ Parse.Cloud.define("getMessagesCount", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("loginUser", function(request, response)
 {
-    // Phone Number
-    var phoneNumber        = request.params.phoneNumber;
-    phoneNumber        = phoneNumber.replace(/\D/g, "");
+	// Phone Number
+	var phoneNumber			= request.params.phoneNumber;
+	phoneNumber				= phoneNumber.replace(/\D/g, "");
 
-    // Verification Code
-    var verificationCode     = request.params.verificationCode;
-    verificationCode     = verificationCode.replace(/\D/g, "");
+	// Verification Code
+	var verificationCode	= request.params.verificationCode;
+	verificationCode		= verificationCode.replace(/\D/g, "");
 
-    // User Service Token
-    var userServiceToken    = process.env.USER_SERVICE_TOKEN;
+	// User Service Token
+	var userServiceToken    = process.env.USER_SERVICE_TOKEN;
 
-    if (!phoneNumber || phoneNumber.length != 10)
-    {
-        return response.error("Phone Number missing or invalid length");
-    }
+	if ( !phoneNumber || phoneNumber.length != 10 )
+	{
+		return response.error("Phone Number missing or invalid length");
+	}
 
-    if (!verificationCode || verificationCode.length < 4 || verificationCode.length > 6)
-    {
-        return response.error("Verification Code missing or invalid length");
-    }
+	if ( !verificationCode || verificationCode.length < 4 || verificationCode.length > 6 )
+	{
+		return response.error("Verification Code missing or invalid length");
+	}
 
-    Parse.User.logIn(phoneNumber, userServiceToken + "-" + verificationCode).then(function (user)
-    {
-        response.success(user.getSessionToken());
-    }
-    ,function (loginError)
-    {
-        response.error(loginError);
-    });
+	Parse.User.logIn(phoneNumber, userServiceToken + "-" + verificationCode).then(function (user)
+	{
+		response.success(user.getSessionToken());
+	}
+	,function (loginError)
+	{
+	response.error(loginError);
+	});
 });
 
 
@@ -1031,6 +1031,80 @@ Parse.Cloud.define("convertProductsCartToUserId", function(request, response)
 
 ///////////////////////////////////////
 //
+// resetVerificationCode
+//
+///////////////////////////////////////
+Parse.Cloud.define("resetVerificationCode", function(request, response)
+{
+    conditionalLog("Starting resetVerificationCode");
+
+    var emailAddress     = request.params.emailAddress;
+    var phoneNumber      = request.params.phoneNumber;
+
+    conditionalLog("emailAddress [" + emailAddress + "]");
+    conditionalLog("phoneNumber [" + phoneNumber + "]");
+
+    var User  = Parse.Object.extend("_User");
+    var query = new Parse.Query(User);
+
+    query.equalTo("username", phoneNumber);
+    query.equalTo("email", emailAddress);
+    query.find(
+    {
+        useMasterKey: true,
+        success: function(results)
+        {
+            conditionalLog("query successful.");
+            conditionalLog(results.length + " users found");
+
+            if ( results.length == 0 )
+            {
+                conditionalLog("No users found to reset");
+                response.success( "{ 'description' : 'No users found to reset' }" );
+            }
+            else
+            {
+                conditionalLog("reset first user");
+
+                var firstUser = results[0];
+
+                var userServiceToken = process.env.USER_SERVICE_TOKEN;
+                var random  = randomNumberWithNumberOfDigits(5);
+
+				firstUser.set("verificationCode", random);
+                firstUser.set("gbAssist","RESET");
+                firstUser.save(null,
+                {
+                    useMasterKey: true,
+                    success: function(savedUser)
+                    {
+                        conditionalLog("User Verification Code Reset.");
+                        var userResponse = "{ 'confirmation' : '" + random +
+                                          "', 'transaction'  : '" + userServiceToken +
+                                          "', 'description'  : 'confirmed' }";
+
+                        response.success(userResponse);
+                    },
+                    error: function(saveError)
+                    {
+                        conditionalLog("unable to save user");
+                        conditionalLog(saveError);
+                        response.error("Save was not successful: " + saveError);
+                    }
+                });
+            }
+        },
+        error: function(queryError)
+        {
+            conditionalLog("Query find not successful! " + queryError);
+            response.error("Query find not successful: " + queryError);
+        }
+    });
+});
+
+
+///////////////////////////////////////
+//
 // convertUsernameToPhoneNumber
 //
 ///////////////////////////////////////
@@ -1105,6 +1179,7 @@ Parse.Cloud.define("convertUsernameToPhoneNumber", function(request, response)
 
                 var random  = randomNumberWithNumberOfDigits(5);
 
+				firstUser.set("verificationCode", random);
                 firstUser.set("gbAssist","CONVERTED");
                 firstUser.save(null,
                 {
@@ -1264,9 +1339,9 @@ Parse.Cloud.define("resetUserToVersionOne", function(request, response)
 ///////////////////////////////////////
 Parse.Cloud.define("getVerificationCode", function(request, response)
 {
-    var verification     = randomNumberWithNumberOfDigits(5);
-    var token         = process.env.USER_SERVICE_TOKEN;
-    var newPassword        = token + "-" + verification;
+    var verification		= randomNumberWithNumberOfDigits(5);
+    var token         		= process.env.USER_SERVICE_TOKEN;
+    var newPassword			= token + "-" + verification;
 
     response.success(newPassword);
 });
