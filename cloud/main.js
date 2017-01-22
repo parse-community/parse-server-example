@@ -1580,8 +1580,9 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 				var qUser		= results[0];
 				var password	= qUser.get('password');
 				var code		= password.substring(-5);
-				console.log('I have a code ' + code );
-				sendVerificationBySmsToPhoneNumber(code, phoneNumber);
+				console.log('I have a code ');
+				conditionalLog(code);
+				sendVerificationCodeBySmsToPhoneNumber(code, phoneNumber);
 				response.success(true);
 			},
 			error: function(queryError)
@@ -1597,7 +1598,7 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 		console.log('user was in request');
 		var password	= theUser.get('password');
 		var code		= password.substring(-5);
-		sendVerificationBySmsToPhoneNumber(code, phoneNumber);
+		sendVerificationCodeBySmsToPhoneNumber(code, phoneNumber);
 		response.success(true);
 	}
 });
