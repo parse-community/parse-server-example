@@ -1569,7 +1569,7 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 		var query = new Parse.Query(User);
 
 		query.equalTo('username',phoneNumber);
-		query.equalTo('emailAddress',emailAddress);
+		query.equalTo('email',emailAddress);
 
 		query.find(
 		{
@@ -1592,6 +1592,7 @@ Parse.Cloud.define('sendVerificationCodeToUserWithPhoneNumberEmailAddress', func
 				}
 				else
 				{
+					conditionalLog('I do not have a user');
 					response.success(false);
 				}
 			},
