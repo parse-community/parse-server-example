@@ -1545,7 +1545,7 @@ function randomNumberWithNumberOfDigits(numDigits)
 ///////////////////////////////////////
 function conditionalLog(logText)
 {
-    var doLog = env.process.DEBUG_LOG || True;
+    var doLog = process.env.DEBUG_LOG || True;
 
     if ( doLog == true || doLog == "True" )
     {
