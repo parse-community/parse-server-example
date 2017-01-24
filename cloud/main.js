@@ -48,12 +48,13 @@
  */
 
 //do I need to require app.js?
+// include the ./ before cloud!!!
 //require("./cloud/app.js");
 
 // Twilio Code
 //require("./twilio.js");
 
-//imported from require('twilio.js');
+//imported from require('./cloud/twilio.js');
 
 var twilioAccountSid 	= process.env.TWILIO_ACCOUNT_SID;
 var twilioAccountToken  = process.env.TWILIO_ACCOUNT_TOKEN;
@@ -168,6 +169,69 @@ Parse.Cloud.define("barberIdForBarberName", function(request, response)
 
 ///////////////////////////////////////
 //
+// checkForUserWithEmailAddress
+//
+///////////////////////////////////////
+Parse.Cloud.define("checkForUserWithEmailAddress", function(request, response)
+{
+    var emailAddress = request.params.emailAddress;
+
+    conditionalLog('checkForUserWithEmailAddress called');
+    conditionalLog('with params:');
+    conditionalLog('emailAddress [' + emailAddress + ']');
+
+    if (emailAddress == null)
+    {
+    	emailAddress = "";
+    }
+
+    if ( emailAddress.length == 0 )
+    {
+        response.error("Must provide email Address");
+    }
+	else
+	{
+    	console.log('continuing...');
+
+		var User         = Parse.Object.extend("_User");
+		var userQuery    = new Parse.Query(User);
+		userQuery.equalTo("email", emailAddress);
+		userQuery.find(
+		{
+			useMasterKey: true,
+			success: function(result)
+			{
+				var returnJson		= "{}";
+
+				if ( result.length > 0 )
+				{
+					var foundUser 	= result[0];
+					var email 		= foundUser.email;
+					var phoneNumber	= foundUser.valueOf("phoneNumer");
+					var username	= foundUser.valueOf("username");
+
+					returnJson 		= "{ 'email': '" + email + "'," +
+										"'phoneNumber': '" + phoneNumber + "'," +
+										"'username': '" + username + "'," +
+										"'exists': " + true + " }";
+				}
+				else
+				{
+					returnJson		= "{ 'exists': " + false + " }";
+				}
+				response.success(returnJson);
+			},
+			error: function(queryError)
+			{
+				response.error(queryError);
+			}
+		});
+	}
+});
+
+
+///////////////////////////////////////
+//
 // userWithUserIdExists
 //
 ///////////////////////////////////////
@@ -179,36 +243,42 @@ Parse.Cloud.define("userWithUserIdExists", function(request, response)
     console.log('with params:');
     console.log('userId [' + userId + ']');
 
-    if (userId != null && userId !== "")
+	if ( userId == null )
+	{
+		userId = "";
+	}
+
+    if ( userId.length == 0 )
     {
-        response.error("Must provide userId");
-        return;
+        response.error("Must provide a userID");
     }
+	else
+	{
+    	console.log('continuing...');
 
-    console.log('continuing...');
-
-    var User         = Parse.Object.extend("_User");
-    var userQuery    = new Parse.Query(User);
-    userQuery.equalTo("objectId", userId);
-    userQuery.count(
-    {
-        useMasterKey: true,
-        success: function(countResult)
-        {
-            if ( countResult > 0 )
-            {
-                response.success("true");
-            }
-            else
-            {
-                response.success("false");
-            }
-        },
-        error: function(countError)
-        {
-            response.error(countError);
-        }
-    });
+		var User         = Parse.Object.extend("_User");
+		var userQuery    = new Parse.Query(User);
+		userQuery.equalTo("objectId", userId);
+		userQuery.count(
+		{
+			useMasterKey: true,
+			success: function(countResult)
+			{
+				if ( countResult > 0 )
+				{
+					response.success("true");
+				}
+				else
+				{
+					response.success("false");
+				}
+			},
+			error: function(countError)
+			{
+				response.error(countError);
+			}
+		});
+	}
 });
 
 
@@ -1047,57 +1117,64 @@ Parse.Cloud.define("resetVerificationCode", function(request, response)
     var User  = Parse.Object.extend("_User");
     var query = new Parse.Query(User);
 
-    query.equalTo("username", phoneNumber);
-    query.equalTo("email", emailAddress);
-    query.find(
-    {
-        useMasterKey: true,
-        success: function(results)
-        {
-            conditionalLog("query successful.");
-            conditionalLog(results.length + " users found");
+	if ( emailAddress.length == 0 || phoneNumber.length < 10 )
+	{
+		response.error("Invalid email address or phone number");
+	}
+	else
+	{
+		query.equalTo("username", phoneNumber);
+		query.equalTo("email", emailAddress);
+		query.find(
+		{
+			useMasterKey: true,
+			success: function(results)
+			{
+				conditionalLog("query successful.");
+				conditionalLog(results.length + " users found");
 
-            if ( results.length == 0 )
-            {
-                conditionalLog("No users found to reset");
-                response.success( "{ 'description' : 'No users found to reset' }" );
-            }
-            else
-            {
-                conditionalLog("reset first user");
+				if ( results.length == 0 )
+				{
+					conditionalLog("No users found to reset");
+					response.success( "{ 'description' : 'No users found to reset' }" );
+				}
+				else
+				{
+					conditionalLog("reset first user");
 
-                var firstUser = results[0];
+					var firstUser = results[0];
 
-                var userServiceToken = process.env.USER_SERVICE_TOKEN;
-                var random  = randomNumberWithNumberOfDigits(5);
+					var userServiceToken = process.env.USER_SERVICE_TOKEN;
+					var random  = randomNumberWithNumberOfDigits(5);
 
-				var newPassword = userServiceToken + "-" + random;
+					var newPassword = userServiceToken + "-" + random;
 
-				firstUser.set("password", newPassword);
-                firstUser.set("gbAssist","RESET");
-                firstUser.save(null,
-                {
-                    useMasterKey: true,
-                    success: function(savedUser)
-                    {
-                        conditionalLog("User Verification Code Reset.");
-                        response.success(random);
-                    },
-                    error: function(saveError)
-                    {
-                        conditionalLog("unable to save user");
-                        conditionalLog(saveError);
-                        response.error("Save was not successful: " + saveError);
-                    }
-                });
-            }
-        },
-        error: function(queryError)
-        {
-            conditionalLog("Query find not successful! " + queryError);
-            response.error("Query find not successful: " + queryError);
-        }
-    });
+					firstUser.set("password", newPassword);
+					firstUser.set("gbAssist","RESET");
+					firstUser.save(null,
+					{
+						useMasterKey: true,
+						success: function(savedUser)
+						{
+							conditionalLog("User Verification Code Reset.");
+							response.success(random);
+						},
+						error: function(saveError)
+						{
+							conditionalLog("unable to save user");
+							conditionalLog(saveError);
+							response.error("Save was not successful: " + saveError);
+						}
+					});
+				}
+			},
+			error: function(queryError)
+			{
+				conditionalLog("Query find not successful! " + queryError);
+				response.error("Query find not successful: " + queryError);
+			}
+		});
+	}
 });
 
 
