@@ -94,9 +94,13 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 		}).then( function (userProfileHolder){
 			return refreshUserStats(userProfileHolder, books);
 		}).then( function (userProfileHolder){
-			return applyDailyReward(userProfileHolder);
-		}).then( function (userProfileHolder){
-			return applyLevelUpReward(userProfileHolder);
+			var rewards_promises = [];
+			rewards_promises.push(applyDailyReward(userProfileHolder));
+			rewards_promises.push(applyLevelUpReward(userProfileHolder));
+            rewards_promises.push(applyBookLikesByOthersReward(userProfileHolder));
+            return Parse.Promise.when(rewards_promises).then(function (results) {
+            			return Parse.Promise.as(userProfileHolder);
+            		});
 	    }).then( function (userProfileHolder){
 				var responseString = JSON.stringify(userProfileHolder);
 				response.success(responseString);
@@ -132,6 +136,30 @@ function applyLevelUpReward (userProfileHolder) {
 		return Parse.Promise.as(userProfileHolder);
 	}
 }
+
+function applyBookLikesByOthersReward (userProfileHolder) {
+	var userProfile = userProfileHolder.userProfile;
+	var current = userProfileHolder.user.get("totalLikesByOthers")
+	var last = userProfile.get("last_totalLikesByOthers") ||  0;
+	if(current > last) {
+		userProfile.set("last_totalLikesByOthers", current);
+		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "like_by_other_reward"), current - last);
+	}else{
+		return Parse.Promise.as(userProfileHolder);
+	}
+}
+
+//function applyBookReadsByOthersReward (userProfileHolder) {
+//	var userProfile = userProfileHolder.userProfile;
+//	var current = userProfileHolder.user.get("totalReadsByOthers")
+//	var last = userProfile.get("last_totalReadsByOthers") ||  0;
+//	if(current > last) {
+//		userProfile.set("last_totalReadsByOthers", current);
+//		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "read_by_other_reward"), current - last);
+//	}else{
+//		return Parse.Promise.as(userProfileHolder);
+//	}
+//}
 
 function createUserProfileInHolder(user, params, products){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
