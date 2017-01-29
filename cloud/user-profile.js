@@ -38,7 +38,7 @@ Parse.Cloud.define("UserPurchase", function(request, response) {
 		if(product.get("type") == "rewards" && (product.get("name") != "read_book_reward" || amount != 1)){
 			return Parse.Promise.error("error_could_not_buy_rewards:"+productName);
 		}
-        return applyProductToUser(userProfileHolder, product, amount);
+        return applyProductToUser(userProfileHolder, product, amount, request.params.transactionData);
 	}).then( function (userProfileHolder){
 		var responseString = JSON.stringify(userProfileHolder);
 		response.success(responseString);
@@ -223,7 +223,7 @@ function applyProductChange(userProfile, product,  amount) {
 }
 
 //return a promise contains userProfileHolder
-function applyProductToUser(userProfileHolder, product, amount){
+function applyProductToUser(userProfileHolder, product, amount, transactionData){
 	amount = amount || 1;
 
 	var userProfile = userProfileHolder.userProfile;
@@ -232,7 +232,7 @@ function applyProductToUser(userProfileHolder, product, amount){
 
 		var promises = [];
 		promises.push(userProfile.save(null, {useMasterKey: true}));
-		promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
+		promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange, transactionData));
 
 		return Parse.Promise.when(promises).then(function (results) {
 			userProfileHolder.userProfile = results[0];
@@ -249,13 +249,16 @@ function applyProductToUser(userProfileHolder, product, amount){
 }
 
 // return a promise contains userPurchaseHistory
-function recordUserPurchaseHistory(userProfile, product, amount, coinsChange){
+function recordUserPurchaseHistory(userProfile, product, amount, coinsChange, transactionData){
 	var UserPurchaseHistoryClass = Parse.Object.extend("UserPurchaseHistory");
 	userPurchaseHistory = new UserPurchaseHistoryClass();
 	userPurchaseHistory.set("username", userProfile.get("username"));
 	userPurchaseHistory.set("product_name", product.get("name"));
 	userPurchaseHistory.set("amount", amount);
 	userPurchaseHistory.set("coins_change", coinsChange);
+	if(transactionData){
+		userPurchaseHistory.set("transactionData", transactionData);
+	}
 	console.log("creating new userPurchaseHistory:" + userPurchaseHistory);
 
 	return userPurchaseHistory.save(null, { useMasterKey: true });
