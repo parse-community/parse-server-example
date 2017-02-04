@@ -217,6 +217,9 @@ function applyProductChange(userProfile, product,  amount) {
 		case "max_custom_assets":
 			var current = userProfile.get("max_custom_asset_number") || 40; //default max custom asset number
 			userProfile.set("max_custom_asset_number", current + amount);
+		case "max_custom_scenes":
+			var current = userProfile.get("max_custom_scenes_number") || 3; //default max custom scene number
+			userProfile.set("max_custom_scenes_number", current + amount);
 			break;
 	}
 	return coinsChange;
