@@ -389,3 +389,29 @@ Parse.Cloud.afterSave("FollowRequests", function(request, response) {
     }
   });
 });
+
+// Return error if two profiles are already friends
+Parse.Cloud.beforeSave("Friend", function(request, response) {
+   var query1 = new Parse.Query("Friend");
+   query.equalTo("profile1", request.object.get("profile1"));
+   query.equalTo("profile2", request.object.get("profile2"));
+
+   var query2 = new Parse.Query("Friend");
+   query.equalTo("profile2", request.object.get("profile1"));
+   query.equalTo("profile1", request.object.get("profile2"));
+
+   var compoundQuery = Parse.Query.or(query1, query2)
+
+   compoundQuery.first({
+       success: function(object) {
+       if (object) {
+          response.error("A Friend object with the two profileIds already exists.");
+       } else {
+          response.success();
+       }
+     },
+     error: function(error) {
+        response.error("Could not validate uniqueness for this Friend object: " + error.message);
+     }
+  });
+});
