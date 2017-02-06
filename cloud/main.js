@@ -393,12 +393,12 @@ Parse.Cloud.afterSave("FollowRequests", function(request, response) {
 // Return error if two profiles are already friends
 Parse.Cloud.beforeSave("Friend", function(request, response) {
    var query1 = new Parse.Query("Friend");
-   query.equalTo("profile1", request.object.get("profile1"));
-   query.equalTo("profile2", request.object.get("profile2"));
+   query1.equalTo("profile1", request.object.get("profile1"));
+   query1.equalTo("profile2", request.object.get("profile2"));
 
    var query2 = new Parse.Query("Friend");
-   query.equalTo("profile2", request.object.get("profile1"));
-   query.equalTo("profile1", request.object.get("profile2"));
+   query2.equalTo("profile2", request.object.get("profile1"));
+   query2.equalTo("profile1", request.object.get("profile2"));
 
    var compoundQuery = Parse.Query.or(query1, query2)
 
