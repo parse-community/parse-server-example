@@ -131,7 +131,12 @@ function applyLevelUpReward (userProfileHolder) {
 	var lastUserLevel = userProfile.get("last_user_level") ||  1;
 	if(currentUserLevel > lastUserLevel) {
 		userProfile.set("last_user_level", currentUserLevel);
-		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward"), currentUserLevel - lastUserLevel);
+		if(currentUserLevel<=10){
+			return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward_low"), currentUserLevel - lastUserLevel);
+		}else{
+			return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward"), currentUserLevel - lastUserLevel);
+		}
+
 	}else{
 		return Parse.Promise.as(userProfileHolder);
 	}
