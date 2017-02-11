@@ -203,7 +203,7 @@ function applyProductChange(userProfile, product,  amount) {
 
 	switch (product.get("name")) {
 		case "max_book_pages":
-			var current = userProfile.get("max_page_number") || 60; //default max page number
+			var current = userProfile.get("max_page_number") || 50; //default max page number
 			userProfile.set("max_page_number", current + amount);
 			break;
 		case "max_avatars":
