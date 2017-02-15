@@ -228,8 +228,8 @@ function applyProductChange(userProfile, product,  amount, params) {
 			userProfile.set("max_custom_scenes_number", current + amount);
 			break;
 		case "unlock_item":
-			var current = userProfile.get("unlock_items") || ""; //default max custom scene number
-			userProfile.set("unlock_items", current + unlockedItem+";");
+			var current = userProfile.get("unlock_items") || ""; //default unlocked item name
+			userProfile.set("unlock_items", current + params.itemName+";");
 			break;
 	}
 	return coinsChange;
