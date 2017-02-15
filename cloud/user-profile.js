@@ -252,6 +252,9 @@ function applyProductToUser(userProfileHolder, product, amount, params){
 			var purchaseHistory = results[1];
 			purchaseHistory.set("description", product.get("description"));
 			purchaseHistory.set("description_cn", product.get("description_cn"));
+			if(params.itemName){
+				purchaseHistory.set("item_name", params.itemName);
+			}
 			userProfileHolder.purchaseHistories.push(purchaseHistory); // add new purchaseHistory
 			console.log("updated userProfileHolder:" + userProfileHolder);
 			return Parse.Promise.as(userProfileHolder);
