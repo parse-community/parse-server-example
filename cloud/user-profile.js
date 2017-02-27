@@ -119,7 +119,7 @@ function updateSuperAnitaler (userProfileHolder, params) {
 	var userProfile = userProfileHolder.userProfile;
 	if(userProfile.get("super_anitaler_status") == 'invited' && (params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
 			userProfile.set("super_anitaler_status", params.super_anitaler_status);
-			console.log(username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
+			console.log(params.username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
 		}
 	if(userProfile.get("super_anitaler_status") == 'accepted' && params.accepted_feature_book){
 		var yesterday = new Date(); // Today!
@@ -133,7 +133,7 @@ function updateSuperAnitaler (userProfileHolder, params) {
 		}else{
 			userProfile.set("allowSaAcceptFeatureBook", false);
 		}
-		console.log(username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
+		console.log(params.username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
 	}
 	return Parse.Promise.as(userProfileHolder);
 }
