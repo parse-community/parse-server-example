@@ -94,6 +94,8 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 		}).then( function (userProfileHolder){
 			return refreshUserStats(userProfileHolder, books);
 		}).then( function (userProfileHolder){
+			return updateSuperAnitaler(userProfileHolder, request.params);
+		}).then( function (userProfileHolder){
 			var rewards_promises = [];
 			rewards_promises.push(applyDailyReward(userProfileHolder));
 			rewards_promises.push(applyLevelUpReward(userProfileHolder));
@@ -111,6 +113,31 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 
 	console.log("search with username:"+username);
 });
+
+//return a promise contains updated userProfileHolder
+function updateSuperAnitaler (userProfileHolder, params) {
+	var userProfile = userProfileHolder.userProfile;
+	if(userProfile.get("super_anitaler_status") == 'invited' && params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
+			userProfile.set("super_anitaler_status", params.super_anitaler_status);
+			console.log(username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
+		}
+	if(userProfile.get("super_anitaler_status") == 'accepted' && params.accepted_feature_book){
+		var yesterday = new Date(); // Today!
+        yesterday.setDate(d.getDate() - 1); // Yesterday!
+        if(params.accepted_feature_book){
+        	userProfile.set("last_sa_featured_time", new Date());
+        }
+		var lastFeaturedDate = userProfile.get("last_sa_featured_time") || yesterday;
+		if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
+			userProfile.set("allowSaAcceptFeatureBook", true);
+		}else{
+			userProfile.set("allowSaAcceptFeatureBook", false);
+		}
+		console.log(username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
+	}
+	return Parse.Promise.as(userProfileHolder);
+}
+
 
 //return a promise contains updated userProfileHolder
 function applyDailyReward (userProfileHolder) {
