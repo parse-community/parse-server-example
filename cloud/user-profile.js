@@ -117,7 +117,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 //return a promise contains updated userProfileHolder
 function updateSuperAnitaler (userProfileHolder, params) {
 	var userProfile = userProfileHolder.userProfile;
-	if(userProfile.get("super_anitaler_status") == 'invited' && params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
+	if(userProfile.get("super_anitaler_status") == 'invited' && (params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
 			userProfile.set("super_anitaler_status", params.super_anitaler_status);
 			console.log(username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
 		}
