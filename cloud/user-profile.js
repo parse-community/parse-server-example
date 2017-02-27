@@ -134,8 +134,9 @@ function updateSuperAnitaler (userProfileHolder, params) {
 			userProfile.set("allowSaAcceptFeatureBook", false);
 		}
 		console.log(params.username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
+
 	}
-	return Parse.Promise.as(userProfileHolder);
+	return userProfile.save(null, {useMasterKey: true})
 }
 
 
