@@ -138,7 +138,7 @@ function updateSuperAnitaler (userProfileHolder, params) {
 
 		}
 		return userProfile.save(null, {useMasterKey: true})
-				.then(function (results) {
+				.then(function (results)) {
 					return Parse.Promise.as(userProfileHolder);
 				};
 	}else{
