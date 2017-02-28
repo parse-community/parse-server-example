@@ -123,7 +123,7 @@ function updateSuperAnitaler (userProfileHolder, params) {
 		}
 	if(userProfile.get("super_anitaler_status") == 'accepted' && params.accepted_feature_book){
 		var yesterday = new Date(); // Today!
-        yesterday.setDate(d.getDate() - 1); // Yesterday!
+        yesterday.setDate(yesterday.getDate() - 1); // Yesterday!
         if(params.accepted_feature_book){
         	userProfile.set("last_sa_featured_time", new Date());
         }
