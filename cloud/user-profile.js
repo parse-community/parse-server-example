@@ -309,7 +309,7 @@ function recordUserPurchaseHistory(userProfile, product, amount, coinsChange, pa
 	if(params && params.transactionData){
 		userPurchaseHistory.set("transactionData", params.transactionData);
 	}
-	if(params.itemName){
+	if(params && params.itemName){
 		userPurchaseHistory.set("item_name", params.itemName);
 	}
 	console.log("creating new userPurchaseHistory:" + userPurchaseHistory);
