@@ -117,29 +117,33 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 //return a promise contains updated userProfileHolder
 function updateSuperAnitaler (userProfileHolder, params) {
 	var userProfile = userProfileHolder.userProfile;
-	if(userProfile.get("super_anitaler_status") == 'invited' && (params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
-			userProfile.set("super_anitaler_status", params.super_anitaler_status);
-			console.log(params.username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
-		}
-	if(userProfile.get("super_anitaler_status") == 'accepted' && params.accepted_feature_book){
-		var yesterday = new Date(); // Today!
-        yesterday.setDate(yesterday.getDate() - 1); // Yesterday!
-        if(params.accepted_feature_book){
-        	userProfile.set("last_sa_featured_time", new Date());
-        }
-		var lastFeaturedDate = userProfile.get("last_sa_featured_time") || yesterday;
-		if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
-			userProfile.set("allowSaAcceptFeatureBook", true);
-		}else{
-			userProfile.set("allowSaAcceptFeatureBook", false);
-		}
-		console.log(params.username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
+	if(userProfile.get("super_anitaler_status")){
+		if(userProfile.get("super_anitaler_status") == 'invited' && (params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
+				userProfile.set("super_anitaler_status", params.super_anitaler_status);
+				console.log(params.username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
+			}
+		if(userProfile.get("super_anitaler_status") == 'accepted' && params.accepted_feature_book){
+			var yesterday = new Date(); // Today!
+			yesterday.setDate(yesterday.getDate() - 1); // Yesterday!
+			if(params.accepted_feature_book){
+				userProfile.set("last_sa_featured_time", new Date());
+			}
+			var lastFeaturedDate = userProfile.get("last_sa_featured_time") || yesterday;
+			if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
+				userProfile.set("allowSaAcceptFeatureBook", true);
+			}else{
+				userProfile.set("allowSaAcceptFeatureBook", false);
+			}
+			console.log(params.username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
 
+		}
+		return userProfile.save(null, {useMasterKey: true}).
+				.then(function (results) {
+					return Parse.Promise.as(userProfileHolder);
+				};
+	}else{
+		return Parse.Promise.as(userProfileHolder);
 	}
-	return userProfile.save(null, {useMasterKey: true}).
-			.then(function (results) {
-				return Parse.Promise.as(userProfileHolder);
-			};
 }
 
 
