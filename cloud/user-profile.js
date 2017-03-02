@@ -122,17 +122,17 @@ function updateSuperAnitaler (userProfileHolder, params) {
 				userProfile.set("super_anitaler_status", params.super_anitaler_status);
 				console.log(params.username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
 			}
-		if(userProfile.get("super_anitaler_status") == 'accepted' && params.accepted_feature_book){
+		if(userProfile.get("super_anitaler_status") == 'accepted' ){
 			var yesterday = new Date(); // Today!
 			yesterday.setDate(yesterday.getDate() - 1); // Yesterday!
-			if(params.accepted_feature_book){
+			if(params && params.accepted_feature_book){
 				userProfile.set("last_sa_featured_time", new Date());
 			}
 			var lastFeaturedDate = userProfile.get("last_sa_featured_time") || yesterday;
 			if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
-				userProfile.set("allowSaAcceptFeatureBook", true);
-			}else{
 				userProfile.set("allowSaAcceptFeatureBook", false);
+			}else{
+				userProfile.set("allowSaAcceptFeatureBook", true);
 			}
 			console.log(params.username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
 
