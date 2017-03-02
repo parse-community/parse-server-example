@@ -129,7 +129,7 @@ function updateSuperAnitaler (userProfileHolder, params) {
 				userProfile.set("last_sa_featured_time", new Date());
 			}
 			var lastFeaturedDate = userProfile.get("last_sa_featured_time") || yesterday;
-			if(lastDailyRewardDate.toDateString() === new Date().toDateString()) {
+			if(lastFeaturedDate.toDateString() === new Date().toDateString()) {
 				userProfile.set("allowSaAcceptFeatureBook", false);
 			}else{
 				userProfile.set("allowSaAcceptFeatureBook", true);
