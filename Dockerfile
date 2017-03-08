@@ -10,7 +10,7 @@ ENV APP_ID setYourAppId
 ENV MASTER_KEY setYourMasterKey
 ENV DATABASE_URI setMongoDBURI
 
-# Optional (default : 'parse/cloud/main.js')
+# Optional (default : '/parse/cloud/main.js')
 # ENV CLOUD_CODE_MAIN cloudCodePath
 
 # Optional (default : '/parse')
