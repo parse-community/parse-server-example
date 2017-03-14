@@ -17,6 +17,7 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'gl26845',
   masterKey: process.env.MASTER_KEY || 'gorillaTactics26845', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'https://gasparandlola.herokuapp.com/parse',  // Don't forget to change to https if needed
+  javascriptKey: process.env.JAVASCRIPT_KEY || 'jvkey',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
