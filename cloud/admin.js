@@ -76,16 +76,20 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 	var bookGuId =request.params.bookGuId;
 	var accept = request.params.accept;
 	bookQuery.equalTo("guid",bookGuId);
-	bookQuery.limit(1);
 	bookQuery.find({
 			useMasterKey:true,
 			success: function(results) {
-    		  	var book = results[0];
-    		  	book.set("featuredAccepted", accept);
-    		  	if(accept){
-    		  		book.set("featuredActive", true);
-    		  	}
-    			book.save(null, { useMasterKey: true });
+			for (i=0; i < results.length; i++) {
+					if(i>0){
+						accept = false;
+					}
+					var book = results[i];
+					book.set("featuredAccepted", accept);
+					if(accept){
+						book.set("featuredActive", true);
+					}
+					book.save(null, { useMasterKey: true });
+    			}
 				response.success("accept FeaturedBook: "+ accept+ " - " + book.get("title"));
     		},
     		error: function() {

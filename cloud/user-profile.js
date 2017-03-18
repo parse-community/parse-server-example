@@ -262,6 +262,10 @@ function applyProductChange(userProfile, product,  amount, params) {
 			var current = userProfile.get("max_custom_scenes_number") || 3; //default max custom scene number
 			userProfile.set("max_custom_scenes_number", current + amount);
 			break;
+		case "max_custom_musics":
+			var current = userProfile.get("max_custom_musics_number") || 2; //default max custom music number
+			userProfile.set("max_custom_musics_number", current + amount);
+			break;
 		case "unlock_item":
 			if(params){
 				var current = userProfile.get("unlock_items") || ""; //default unlocked item name
