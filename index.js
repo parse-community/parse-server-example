@@ -20,7 +20,7 @@ var oneSignalPushAdapter = new OneSignalPushAdapter({
 });
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://heroku_jn9hpbng:dcmgihs76ud07kdppo31t6ibbq@ds139560-a0.mlab.com:39560,ds139560-a1.mlab.com:39560/heroku_jn9hpbng?replicaSet=rs-ds139560',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'HamrD3OpwqZ7rpqNYCVCvWiFkhy8LpQGrrdcxTvE',
   fileKey: process.env.FILE_KEY || '4a9cb07d-450b-4323-aaee-3d60319a5695',
