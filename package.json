@@ -16,6 +16,7 @@
     "parse-dashboard": "~1.0.25",
     "underscore": "~1.8.3",
     "ipware": "~0.0.8"
+
   },
   "scripts": {
     "start": "node index.js"
