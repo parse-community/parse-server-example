@@ -10,3 +10,4 @@ env_variables:
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse
   # CLOUD_CODE_MAIN:  
+  # LIVE_QUERY_CLASS_NAMES: Posts,Comments

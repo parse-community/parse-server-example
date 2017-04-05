@@ -16,6 +16,10 @@
       "description": "A key that overrides all permissions. Keep this secret.",
       "value": ""
     },
+    "LIVE_QUERY_CLASS_NAMES": {
+      "description": "Comma-separated list of classes for query subscriptions",
+      "value": "Posts,Comments"
+    },
     "DATABASE_URI": {
       "description": "Connection string for your database.",
       "value": "$SCALINGO_MONGO_URL"

@@ -17,6 +17,10 @@
       "description": "A key that overrides all permissions. Keep this secret.",
       "value": "myMasterKey"
     },
+    "LIVE_QUERY_CLASS_NAMES": {
+      "description": "Comma-separated list of classes for query subscriptions",
+      "value": "Posts,Comments"
+    },
     "SERVER_URL": {
       "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
       "value": "http://yourappname.herokuapp.com/parse"

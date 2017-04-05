@@ -39,6 +39,11 @@
       "minLength": 1,
       "defaultValue": "myAppId"
     },
+    "parseLiveQueryClassNames": {
+      "type": "string",
+      "minLength": 0,
+      "defaultValue": "Posts,Comments"
+    },
     "parseMasterKey": {
       "type": "string",
       "minLength": 1,
@@ -109,6 +114,10 @@
             {
             "name": "APP_ID",
             "value": "[parameters('parseAppId')]"
+            },
+            {
+            "name": "LIVE_QUERY_CLASS_NAMES",
+            "value": "[parameters('parseLiveQueryClassNames')]"
             },
             {
             "name": "MASTER_KEY",
