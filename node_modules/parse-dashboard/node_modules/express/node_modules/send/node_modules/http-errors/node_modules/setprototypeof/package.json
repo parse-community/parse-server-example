@@ -1,0 +1,30 @@
+{
+  "name": "setprototypeof",
+  "version": "1.0.1",
+  "description": "A small polyfill for Object.setprototypeof",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wesleytodd/setprototypeof.git"
+  },
+  "keywords": [
+    "polyfill",
+    "object",
+    "setprototypeof"
+  ],
+  "author": {
+    "name": "Wes Todd"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wesleytodd/setprototypeof/issues"
+  },
+  "homepage": "https://github.com/wesleytodd/setprototypeof",
+  "readme": "# Polyfill for `Object.setPrototypeOf`\n\nA simple cross platform implementation to set the prototype of an instianted object.  Supports all modern browsers and at least back to IE8.\n\n## Usage:\n\n```\n$ npm install --save setprototypeof\n```\n\n```javascript\nvar setPrototypeOf = require('setprototypeof');\n\nvar obj = {};\nsetPrototypeOf(obj, {\n\tfoo: function() {\n\t\treturn 'bar';\n\t}\n});\nobj.foo(); // bar\n```\n",
+  "readmeFilename": "README.md",
+  "_id": "setprototypeof@1.0.1",
+  "_from": "setprototypeof@1.0.1"
+}

@@ -1,0 +1,10 @@
+{
+  "apps": [{
+    "serverURL": "",
+    "appId": "",
+    "masterKey": "",
+    "appName": "",
+    "iconName": ""
+  }],
+  "iconsFolder": "icons"
+}
