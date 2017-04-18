@@ -12,7 +12,12 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "*"
+    "parse-server": "~2.3.1",
+    "fbgraph": "1.2.0",
+    "moment": "~2.10.6",
+    "moment-timezone": "~0.4.0",
+    "underscore": "*",
+    "kue": "0.11.5"
   },
   "scripts": {
     "start": "node index.js"
