@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sample App</title>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100%; width: 80%; float: left }
+      #uploaded { height: 100%; width: 20% ; float: left }
+    </style>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script type="text/javascript" src="https://parse.com/downloads/javascript/parse-1.2.18.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV9_LYgLcQfO4ssw_0cIIBXD5j3mDNMcQ&sensor=SET_TO_TRUE_OR_FALSE"></script>
+    <script type="text/javascript">
+      Parse.initialize("WsUm1i8wVx37JEQKYFtK8YGEKCcP87gxMmf23G9b", "RSNsfPT06k29Fqd9ow20HIo0nieCCY55jKIyunLi");
+
+      var nearMe = {
+        markers: new Array(),
+        circle: new google.maps.Circle()
+      };
+
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(37.7879331,-122.4074981),
+          zoom: 17
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        google.maps.event.addListener(map, 'click', function(e) {
+
+          while (nearMe.markers.length > 0) {
+            nearMe.markers.pop().setMap(null);
+          };
+          nearMe.circle.setMap(null);
+
+          var lat = e.latLng.lat();
+          var lng = e.latLng.lng();
+
+          Parse.Cloud.run("photoMix", {"latitude":lat, "longitude": lng, "deviceId" : "123"}, {
+            success: function(resultarr) {
+              resultarr.map(function(uploadedImg) {
+                var img = (uploadedImg.get("file") == null) ? "" : uploadedImg.get("file").url();
+                var mLat = uploadedImg.get("location").latitude;
+                var mLng = uploadedImg.get("location").longitude;
+                var gLatLng = new google.maps.LatLng(mLat, mLng);
+                var imgMrk = new google.maps.Marker({
+                  position: gLatLng,
+                  map: map
+                });
+                var contentString = "<img src='" + img + "' width='20' height='20'>";
+                var infoWindow = new google.maps.InfoWindow({
+                  content: contentString
+                });
+                google.maps.event.addListener(imgMrk, 'click', function() {
+                  infoWindow.open(map, imgMrk);
+                })
+                nearMe.markers.push(imgMrk);
+
+              });
+              var circleOptions = {
+                clickable: false,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.5,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.25,
+                map: map,
+                center: e.latLng,
+                radius: 3500
+              };
+              nearMe.circle.setOptions(circleOptions);
+            }
+          });
+
+        });
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <h1>Nearby</h1>
+    <ol>
+      <li>Click on the map.</li>
+      <li>A circle will be drawn around your click indicating the area we'll search for uploads</li>
+      <li>A marker will be dropped on the map to indicate the uploads in the target area.</li>
+      <li>Clicking on the marker will give a thumbnail view of the image uploaded.</li>
+      <li>Repeat as desired.</li>
+    </ol>
+      <div id="map-canvas"></div>
+      <div id="uploaded">
+      </div>
+    <a href="/logout">Logout</a>
+  </body>
+</html>
