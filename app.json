@@ -22,6 +22,5 @@
       "value": "http://yourappname.herokuapp.com/parse"
     }
   },
-  "image": "heroku/nodejs",
-  "addons": ["mongolab"]
+  "image": "heroku/nodejs"
 }
