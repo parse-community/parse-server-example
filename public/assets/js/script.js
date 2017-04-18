@@ -91,7 +91,7 @@ ParseRequest.postCloudCodeData = function() {
     // open third step
     Steps.showWorkingMessage();
   });
-  XHR.POST('/parse/functions/hello');
+  XHR.POST('/parse/functions/index');
 }
 
 

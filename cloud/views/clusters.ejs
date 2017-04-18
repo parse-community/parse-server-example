@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sample App</title>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100%; width: 80%; float: left }
+      #uploaded { height: 100%; width: 20% ; float: left }
+    </style>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script type="text/javascript" src="https://parse.com/downloads/javascript/parse-1.2.18.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV9_LYgLcQfO4ssw_0cIIBXD5j3mDNMcQ&sensor=SET_TO_TRUE_OR_FALSE"></script>
+    <script type="text/javascript">
+      Parse.initialize("WsUm1i8wVx37JEQKYFtK8YGEKCcP87gxMmf23G9b", "RSNsfPT06k29Fqd9ow20HIo0nieCCY55jKIyunLi");
+
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(37.7879331,-122.4074981),
+          zoom: 17
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        var className = "MediaCluster";
+        var ClusterObject = Parse.Object.extend(className);
+        var clusterQuery = new Parse.Query(ClusterObject);
+
+        clusterQuery.find().then(function(results) {
+          results.map(function(cluster) {
+            var mLat = cluster.get("location").latitude;
+            var mLng = cluster.get("location").longitude;
+            var gLatLng = new google.maps.LatLng(mLat, mLng);
+            var circleOptions = {
+              clickable: false,
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.5,
+              strokeWeight: 2,
+              fillColor: '#FF0000',
+              fillOpacity: 0.25,
+              map: map,
+              center: gLatLng,
+              radius: 2500
+            };
+
+            var clusterCircle = new google.maps.Circle(circleOptions);
+            clusterCircle.setMap(map);
+            var clusterMarker = new google.maps.Marker({
+              position: gLatLng,
+              title: cluster.id,
+              visible: true
+            });
+            google.maps.event.addListener(clusterMarker, 'click', function(evt) {
+              console.log(cluster.id);
+            });
+            clusterMarker.setMap(map);
+
+          });
+        });
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <h1>Clusters</h1>
+    <ol>
+    </ol>
+      <div id="map-canvas"></div>
+      <div id="uploaded">
+      </div>
+    <a href="/logout">Logout</a>
+  </body>
+</html>

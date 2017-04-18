@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sample App</title>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100%; width: 80%; float: left }
+      #map-upload { height: 100%; width: 20% ; float: left }
+    </style>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/3.8.4/css/dropzone.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.url.parser/2.3.1/purl.js"></script>
+    <script type="text/javascript" src="https://parse.com/downloads/javascript/parse-1.2.18.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dropzone/3.8.4/dropzone.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV9_LYgLcQfO4ssw_0cIIBXD5j3mDNMcQ&sensor=SET_TO_TRUE_OR_FALSE"></script>
+    <script type="text/javascript">
+      Parse.initialize("WsUm1i8wVx37JEQKYFtK8YGEKCcP87gxMmf23G9b", "RSNsfPT06k29Fqd9ow20HIo0nieCCY55jKIyunLi");
+      if ($.url().param("succ")) {
+        Parse.User.become($.url().param("succ"));
+      }
+
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(37.7879331,-122.4074981),
+          zoom: 17
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        google.maps.event.addListener(map, 'click', function(e) {
+
+          var latitude = e.latLng.lat();
+          var longitude= e.latLng.lng();
+
+          $("#lat").val(latitude);
+          $("#lng").val(longitude);
+
+        });
+
+        Dropzone.instances[0].options.autoProcessQueue = false;
+      }
+      function uploadImage() {
+        var PhotoUploadObject = Parse.Object.extend("ImageMedia");
+
+        var latitude = Number.parseFloat($("#lat").val());
+        var longitude= Number.parseFloat($("#lng").val());
+
+        var clickGP = new Parse.GeoPoint(latitude, longitude);
+
+        var dzFile = Dropzone.instances[0].files[0];
+        var img = new Parse.File(dzFile.name, dzFile);
+
+        var photoUpload = new PhotoUploadObject();
+        photoUpload.set("location", clickGP);
+        photoUpload.set("user", Parse.User.current());
+        photoUpload.set("deviceImageId", new String(Math.floor(Math.random() * 10)).valueOf() );
+        photoUpload.set("deviceId", $("#deviceId").val());
+        photoUpload.set("file", img);
+        photoUpload.save().then(function(savedUpload) {
+          Dropzone.instances[0].removeFile(dzFile);
+          $("#lat").val("");
+          $("#lng").val("");
+        });
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <h1>Upload</h1>
+    <ol>
+      <li>Drag an image from your local disk to the grey area to the right of the map</li>
+      <li>Click on the location in the map where you would like the image to be uploaded "from".</li>
+      <li>Click upload.</li>
+      <li>Repeat as desired.</li>
+      <li><a href="/nearby">Click here to view your uploads</a></li>
+    </ol>
+
+      <div id="map-canvas"></div>
+      <div id="map-upload">
+        <form action="https://api.parse.com/1/files" class="dropzone dz-clickable" id="img-upload" autoProcessQueue="false">
+          <div class="dz-message">
+            <span>Drop or click here to upload</span>
+          </div>
+          <br />
+        </form>
+        Lat: <input type="text" contenteditable="false" name="latitude" id="lat">
+        <br />
+        Lng: <input type="text" contenteditable="false" name="longitude" id="lng">
+        <br />
+        DeviceId: <input type="text" contenteditable="false" name="deviceNumber" id="deviceId">
+        <br />
+        <input type="button" onclick="uploadImage()" value="Upload">
+      </div>
+    <a href="/logout">Logout</a>
+  </body>
+</html>
