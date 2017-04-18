@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Goobzy Sample App</title>
+    <!-- styles adapted from http://stackoverflow.com/questions/27620564/bootstrap-row-of-images-that-scroll-horizontally -->
+    <style type="text/css">
+      .goobzy-container {
+        height: 180px;
+        width: 100%;
+        white-space: nowrap;
+        overflow-x: scroll;
+        overflow-y: hidden;
+      }
+
+      .goobzy-item {
+        position: relative;
+        display: inline-block;
+        margin: 8px 8px;
+        box-shadow: 2px 2px 4px #bbb;
+        border-top-right-radius: 4px;
+        width: 116px;
+        height: 158px;
+        vertical-align: bottom;
+        background-position: top left;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+    </style>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="https://parse.com/downloads/javascript/parse-1.2.18.js"></script>
+    <script type="text/javascript">
+      Parse.initialize("WsUm1i8wVx37JEQKYFtK8YGEKCcP87gxMmf23G9b", "RSNsfPT06k29Fqd9ow20HIo0nieCCY55jKIyunLi");
+    </script>
+
+    <!-- begin bootstrap includes -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- end bootstrap includes -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+  <script>
+    window.fbAsyncInit = function() {
+      Parse.FacebookUtils.init({
+        appId      : '1433037453621234',
+        status     : true,
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v2.3'
+      });
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  </script>
+  <!--    div.container-fluid>(div.row>div.col-xs-4>h1)*6 -->
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-4" id="gbzhead"><h1>Goobzy</h1></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><h1>Recent</h1></div>
+      <div id="recent-stream" class="goobzy-container"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><h1>Near Me</h1></div>
+      <div id="near-stream" class="goobzy-container"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><h1>Photo Mix</h1></div>
+      <div id="mix-stream" class="goobzy-container"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><h1>Albums</h1></div>
+      <div id="album-stream" class="goobzy-container"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"><h1>Selfies</h1></div>
+      <div id="selfie-stream" class="goobzy-container"></div>
+    </div>
+  </div>
+
+  <script>
+
+    _.templateSettings = {
+      interpolate: /\{\{(.+?)\}\}/g
+    };
+    var compiledTemplate = _.template("<div class='goobzy-item' style='background-image:url(\'http://collectionsonline.nmsi.ac.uk/mobiusicons/no_image.jpg\')'>{{objectId}}</div>");
+
+    function addPhotoCell(divId, imgObject) {
+      $(divId).append(compiledTemplate({"objectId": imgObject.id}));
+    }
+
+    function loadStreams() {
+      Parse.Cloud.run("recent", {"deviceId": "f14d5a3fb07331ab"}, function(response) {
+        _.each(response, function(img) {
+          addPhotoCell("#recent-stream", img);
+        });
+      });
+      Parse.Cloud.run("photoMix", {"deviceId": "f14d5a3fb07331ab"}, function(response) {
+        _.each(response, function(img) {
+          addPhotoCell("#mix-stream", img);
+        });
+      });
+
+    }
+
+    $(function() {
+      loadStreams();
+      $("#gbzhead").on("click", function() {
+        Parse.FacebookUtils.logIn(null, {
+          success: function(user) {
+            if (!user.existed()) {
+              alert("User signed up and logged in through Facebook!");
+            } else {
+              alert("User logged in through Facebook!");
+            }
+          },
+          error: function(user, error) {
+            alert("User cancelled the Facebook login or did not fully authorize.");
+          }
+        });
+      });
+    });
+  </script>
+
+  </body>
+</html>
