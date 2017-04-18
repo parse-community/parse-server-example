@@ -20,6 +20,18 @@
     "SERVER_URL": {
       "description": "URL to connect to your Heroku instance (update with your app's name + PARSE_MOUNT)",
       "value": "http://yourappname.herokuapp.com/parse"
+    },
+    "DASHBOARD_ALLOWED_IP": {
+      "description": "IP that is allowed to enter the dashboard",
+      "value":""
+    },
+    "DASHBOARD_USER": {
+      "description": "Parse Dashboard User",
+      "value":"admin"
+    },
+    "DASHBOARD_PASSWORD": {
+      "description": "Parse Dashboard Password",
+      "value":"123456!@#"
     }
   },
   "image": "heroku/nodejs",
