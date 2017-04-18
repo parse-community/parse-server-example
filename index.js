@@ -11,11 +11,31 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+var filesAdapter = null;  // enable Gridstore to be the default
+if (process.env.S3_ENABLE) {
+    var S3Adapter = require('parse-server').S3Adapter;
+
+    filesAdapter = new S3Adapter(
+        process.env.S3_ACCESS_KEY,
+        process.env.S3_SECRET_KEY,
+        {bucket: process.env.S3_BUCKET, bucketPrefix: "" , directAccess: true}
+    );
+}
+
+var pushConfig = {};
+
+if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
+    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
+                              apiKey: process.env.GCM_API_KEY || ''};
+}
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  push: pushConfig, 
+  filesAdapter: filesAdapter,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
