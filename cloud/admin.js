@@ -136,7 +136,7 @@ function createAninews(type, book, ownerUsername, relatedUsername){
 	var AninewsClass = Parse.Object.extend("Aninews");
 	var aninews = new AninewsClass();
 
-	if( book && book.guid){
+	if( book && book.get("guid")){
 		aninews.set("relatedBookGuid", book.get("guid"));
 		aninews.set("relatedBookName", book.get("title"));
 		aninews.set("ownerUsername", book.get("AuthorName"));
