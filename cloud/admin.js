@@ -54,15 +54,24 @@ Parse.Cloud.define("acceptFeaturedBooks", function(request, response) {
 	bookQuery.find({
 			useMasterKey:true,
 			success: function(results) {
+				var promises = [];
 				for (i=0; i < results.length; i++) {
 					var book = results[i];
 					book.set("featuredAccepted", accept);
 					if(accept){
 						book.set("featuredActive", true);
+						//add aninews
+						Aninew aninews = createAninews("book_featured", book);
+						promises.push(aninews.save(null, { useMasterKey: true }));
 					}
-					book.save(null, { useMasterKey: true });
+					promises.push(book.save(null, { useMasterKey: true }));
 				}
-				response.success("accept FeaturedBooks: "+ results.length);
+				Parse.Promise.when(promises).then( function() {
+					response.success("accept FeaturedBooks: "+ results.length);
+				}, function(error){
+                 		console.log("error:"+error);
+                 		response.error(error);
+                 	});
     		},
     		error: function() {
     			response.error("bookGuId doesn't exist!"+request.params.bookGuId);
@@ -79,21 +88,78 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 	bookQuery.find({
 			useMasterKey:true,
 			success: function(results) {
+			var promises = [];
 			for (i=0; i < results.length; i++) {
+					var book = results[i];
 					if(i>0){
 						accept = false;
+						Aninew aninews = createAninews("book_featured", book);
+                        promises.push(aninews.save(null, { useMasterKey: true }));
 					}
-					var book = results[i];
 					book.set("featuredAccepted", accept);
 					if(accept){
 						book.set("featuredActive", true);
 					}
-					book.save(null, { useMasterKey: true });
+					promises.push(book.save(null, { useMasterKey: true }));
     			}
-				response.success("accept FeaturedBook: "+ accept+ " - " + book.get("title"));
+			Parse.Promise.when(promises).then( function() {
+				response.success("accept FeaturedBooks: "+ results.length);
+			}, function(error){
+					console.log("error:"+error);
+					response.error(error);
+				});
     		},
     		error: function() {
     			response.error("bookGuId doesn't exist!"+request.params.bookGuId);
     		}
 	});
 });
+
+
+
+//Aninews Field:
+//		type
+//    	message
+//		ownerUsername
+//		relatedUsername
+//		relatedBookGuid
+//		relatedBookName
+//
+//Aninews Type:
+//    publish_book,
+//    book_featured,
+//    like_book,
+//    made_friend,
+//    status_update,
+//
+function createAninews(type, book, ownerUsername, relatedUsername){
+	var AninewsClass = Parse.Object.extend("Aninews");
+	var aninews = new AninewsClass();
+
+	if( book && book.guid){
+		aninews.set("relatedBookGuid", book.guid);
+		aninews.set("relatedBookName", book.title);
+		aninews.set("ownerUsername", book.AuthorName);
+	}
+	if(ownerUsername){
+			aninews.set("ownerUsername", ownerUsername);
+		}
+
+	if(relatedUsername){
+    		aninews.set("relatedUsername", relatedUsername);
+    }
+	if(type){
+        aninews.set("type", type);
+     }
+	var message;
+	switch (type) {
+			case "book_featured":
+				message = book.AuthorName + "'s story '" + book.title + "' has been featured!"
+				break;
+			}
+	if(message){
+			aninews.set("message", message);
+		 }
+	console.log("creating new aninews:" + aninews);
+	return aninews;
+}
