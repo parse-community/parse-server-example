@@ -137,9 +137,9 @@ function createAninews(type, book, ownerUsername, relatedUsername){
 	var aninews = new AninewsClass();
 
 	if( book && book.guid){
-		aninews.set("relatedBookGuid", book.guid);
-		aninews.set("relatedBookName", book.title);
-		aninews.set("ownerUsername", book.AuthorName);
+		aninews.set("relatedBookGuid", book.get("guid"));
+		aninews.set("relatedBookName", book.get("title"));
+		aninews.set("ownerUsername", book.get("AuthorName"));
 	}
 	if(ownerUsername){
 			aninews.set("ownerUsername", ownerUsername);
@@ -154,7 +154,7 @@ function createAninews(type, book, ownerUsername, relatedUsername){
 	var message;
 	switch (type) {
 			case "book_featured":
-				message = book.AuthorName + "'s story '" + book.title + "' has been featured!"
+				message =  book.get("AuthorName") + "'s story '" + book.get("title") + "' has been featured!"
 				break;
 			}
 	if(message){
