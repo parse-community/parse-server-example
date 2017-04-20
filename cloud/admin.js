@@ -93,12 +93,12 @@ Parse.Cloud.define("acceptFeaturedBook", function(request, response) {
 					var book = results[i];
 					if(i>0){
 						accept = false;
-						var aninews = createAninews("book_featured", book);
-                        promises.push(aninews.save(null, { useMasterKey: true }));
 					}
 					book.set("featuredAccepted", accept);
 					if(accept){
 						book.set("featuredActive", true);
+						var aninews = createAninews("book_featured", book);
+                        promises.push(aninews.save(null, { useMasterKey: true }));
 					}
 					promises.push(book.save(null, { useMasterKey: true }));
     			}
