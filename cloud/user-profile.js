@@ -267,9 +267,9 @@ function applyProductChange(userProfile, product,  amount, params) {
 			userProfile.set("max_custom_musics_number", current + amount);
 			break;
 		case "max_custom_soundeffect":
-        			var current = userProfile.get("max_custom_soundeffect_number") || 3; //default max custom music number
-        			userProfile.set("max_custom_soundeffect_number", current + amount);
-        			break;
+			var current = userProfile.get("max_custom_soundeffect_number") || 3; //default max custom music number
+			userProfile.set("max_custom_soundeffect_number", current + amount);
+			break;
 		case "unlock_item":
 			if(params){
 				var current = userProfile.get("unlock_items") || ""; //default unlocked item name
