@@ -5,6 +5,9 @@ require ('newrelic');
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var S3Adapter = require('parse-server').S3Adapter;
+var OSSAdapter = require('parse-server-oss-adapter');
+
+var OssS3Adapter = require('./lib/oss_s3_adapter');
 
 var path = require('path');
 
@@ -13,6 +16,22 @@ var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
+
+
+
+var s3Adapter = new S3Adapter(
+                      process.env.AWS_ACCESS_KEY_ID ||"AWS_ACCESS_KEY_ID",
+                      process.env.AWS_SECRET_ACCESS_KEY ||"AWS_SECRET_ACCESS_KEY",
+                      process.env.AWS_S3_BUCKET_NAME || 'BUCKET_NAME',
+                      { directAccess: true }
+                    );
+
+var ossAdapter = new OSSAdapter(
+                      process.env.OOS_ACCESS_KEY ||"OSS_ACCESS_KEY_ID",
+                      process.env.OOS_SECRET_KEY ||"OSS_SECRET_ACCESS_KEY",
+                      process.env.OOS_BUCKET || 'OSS_BUCKET_NAME',
+                      { directAccess: true }
+                    );
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
@@ -24,12 +43,7 @@ var api = new ParseServer({
 //  liveQuery: {
 //    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
 //  },
-  filesAdapter: new S3Adapter(
-      process.env.AWS_ACCESS_KEY_ID ||"AWS_ACCESS_KEY_ID",
-      process.env.AWS_SECRET_ACCESS_KEY ||"AWS_SECRET_ACCESS_KEY",
-      process.env.AWS_S3_BUCKET_NAME || 'BUCKET_NAME',
-      { directAccess: true }
-    )
+  filesAdapter: new OssS3Adapter(s3Adapter, ossAdapter)
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
