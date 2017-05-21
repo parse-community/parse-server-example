@@ -38,7 +38,7 @@ Parse.Cloud.define("UserPurchase", function(request, response) {
 		if(product.get("type") == "rewards" && (product.get("name") != "read_book_reward" || amount != 1)){
 			return Parse.Promise.error("error_could_not_buy_rewards:"+productName);
 		}
-        return applyProductToUser(userProfileHolder, product, amount);
+        return applyProductToUser(userProfileHolder, product, amount, request.params);
 	}).then( function (userProfileHolder){
 		var responseString = JSON.stringify(userProfileHolder);
 		response.success(responseString);
@@ -81,7 +81,7 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 		   if(!user){
 			   response.error("User doesn't exist! "+ username);
 		   }
-		
+
 	       if(userProfile){
 			 	console.log("found existing userProfile:" + userProfile);
 		 		return Parse.Promise.as(createUserProfileHolder(user, userProfile, products));
@@ -94,9 +94,15 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 		}).then( function (userProfileHolder){
 			return refreshUserStats(userProfileHolder, books);
 		}).then( function (userProfileHolder){
-			return applyDailyReward(userProfileHolder);
+			return updateSuperAnitaler(userProfileHolder, request.params);
 		}).then( function (userProfileHolder){
-			return applyLevelUpReward(userProfileHolder);
+			var rewards_promises = [];
+			rewards_promises.push(applyDailyReward(userProfileHolder));
+			rewards_promises.push(applyLevelUpReward(userProfileHolder));
+            rewards_promises.push(applyBookLikesByOthersReward(userProfileHolder));
+            return Parse.Promise.when(rewards_promises).then(function (results) {
+            			return Parse.Promise.as(userProfileHolder);
+            		});
 	    }).then( function (userProfileHolder){
 				var responseString = JSON.stringify(userProfileHolder);
 				response.success(responseString);
@@ -107,6 +113,39 @@ Parse.Cloud.define("UpdateUserProfile", function(request, response) {
 
 	console.log("search with username:"+username);
 });
+
+//return a promise contains updated userProfileHolder
+function updateSuperAnitaler (userProfileHolder, params) {
+	var userProfile = userProfileHolder.userProfile;
+	if(userProfile.get("super_anitaler_status")){
+		if(userProfile.get("super_anitaler_status") == 'invited' && (params.super_anitaler_status == 'accepted' || params.super_anitaler_status == 'rejected')){
+				userProfile.set("super_anitaler_status", params.super_anitaler_status);
+				console.log(params.username + " super_anitaler_status updated to :"+userProfile.get("super_anitaler_status") );
+			}
+		if(userProfile.get("super_anitaler_status") == 'accepted' ){
+			var yesterday = new Date(); // Today!
+			yesterday.setDate(yesterday.getDate() - 1); // Yesterday!
+			if(params && params.accepted_feature_book){
+				userProfile.set("last_sa_featured_time", new Date());
+			}
+			var lastFeaturedDate = userProfile.get("last_sa_featured_time") || yesterday;
+			if(lastFeaturedDate.toDateString() === new Date().toDateString()) {
+				userProfile.set("allowSaAcceptFeatureBook", false);
+			}else{
+				userProfile.set("allowSaAcceptFeatureBook", true);
+			}
+			console.log(params.username + " allowSaAcceptFeatureBook to :"+userProfile.get("last_sa_featured_time"));
+
+		}
+		return userProfile.save(null, {useMasterKey: true})
+				.then(function (results) {
+					return Parse.Promise.as(userProfileHolder);
+				});
+	}else{
+		return Parse.Promise.as(userProfileHolder);
+	}
+}
+
 
 //return a promise contains updated userProfileHolder
 function applyDailyReward (userProfileHolder) {
@@ -127,11 +166,40 @@ function applyLevelUpReward (userProfileHolder) {
 	var lastUserLevel = userProfile.get("last_user_level") ||  1;
 	if(currentUserLevel > lastUserLevel) {
 		userProfile.set("last_user_level", currentUserLevel);
-		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward"), currentUserLevel - lastUserLevel);
+		if(currentUserLevel<=10){
+			return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward_low"), currentUserLevel - lastUserLevel);
+		}else{
+			return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "level_up_reward"), currentUserLevel - lastUserLevel);
+		}
+
 	}else{
 		return Parse.Promise.as(userProfileHolder);
 	}
 }
+
+function applyBookLikesByOthersReward (userProfileHolder) {
+	var userProfile = userProfileHolder.userProfile;
+	var current = userProfileHolder.user.get("totalLikesByOthers")
+	var last = userProfile.get("last_totalLikesByOthers") ||  0;
+	if(current > last) {
+		userProfile.set("last_totalLikesByOthers", current);
+		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "like_by_other_reward"), current - last);
+	}else{
+		return Parse.Promise.as(userProfileHolder);
+	}
+}
+
+//function applyBookReadsByOthersReward (userProfileHolder) {
+//	var userProfile = userProfileHolder.userProfile;
+//	var current = userProfileHolder.user.get("totalReadsByOthers")
+//	var last = userProfile.get("last_totalReadsByOthers") ||  0;
+//	if(current > last) {
+//		userProfile.set("last_totalReadsByOthers", current);
+//		return applyProductToUser(userProfileHolder, findProductByName(userProfileHolder.products, "read_by_other_reward"), current - last);
+//	}else{
+//		return Parse.Promise.as(userProfileHolder);
+//	}
+//}
 
 function createUserProfileInHolder(user, params, products){
 	var UserProfileClass = Parse.Object.extend("UserProfile");
@@ -164,7 +232,7 @@ function findProductByName(products, name){
 }
 
 
-function applyProductChange(userProfile, product,  amount) {
+function applyProductChange(userProfile, product,  amount, params) {
 	console.log("applying product to user:"+product.get("name")+" - "+ userProfile.get("username"));
 
 	var coinsChange = - product.get("price")* amount;
@@ -175,7 +243,7 @@ function applyProductChange(userProfile, product,  amount) {
 
 	switch (product.get("name")) {
 		case "max_book_pages":
-			var current = userProfile.get("max_page_number") || 60; //default max page number
+			var current = userProfile.get("max_page_number") || 50; //default max page number
 			userProfile.set("max_page_number", current + amount);
 			break;
 		case "max_avatars":
@@ -187,24 +255,42 @@ function applyProductChange(userProfile, product,  amount) {
 			userProfile.set("max_recording_length", current + amount);
 			break;
 		case "max_custom_assets":
-			var current = userProfile.get("max_custom_asset_number") || 40; //default max custom asset number
+			var current = userProfile.get("max_custom_asset_number") || 20; //default max custom asset number
 			userProfile.set("max_custom_asset_number", current + amount);
+			break;
+		case "max_custom_scenes":
+			var current = userProfile.get("max_custom_scenes_number") || 3; //default max custom scene number
+			userProfile.set("max_custom_scenes_number", current + amount);
+			break;
+		case "max_custom_musics":
+			var current = userProfile.get("max_custom_musics_number") || 2; //default max custom music number
+			userProfile.set("max_custom_musics_number", current + amount);
+			break;
+		case "max_custom_soundeffect":
+			var current = userProfile.get("max_custom_soundeffect_number") || 3; //default max custom music number
+			userProfile.set("max_custom_soundeffect_number", current + amount);
+			break;
+		case "unlock_item":
+			if(params){
+				var current = userProfile.get("unlock_items") || ""; //default unlocked item name
+            	userProfile.set("unlock_items", current + params.itemName+";");
+			}
 			break;
 	}
 	return coinsChange;
 }
 
 //return a promise contains userProfileHolder
-function applyProductToUser(userProfileHolder, product, amount){
+function applyProductToUser(userProfileHolder, product, amount, params){
 	amount = amount || 1;
 
 	var userProfile = userProfileHolder.userProfile;
 	try{
-		var coinsChange = applyProductChange(userProfile, product,  amount);
-		
+		var coinsChange = applyProductChange(userProfile, product,  amount, params);
+
 		var promises = [];
 		promises.push(userProfile.save(null, {useMasterKey: true}));
-		promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange));
+		promises.push(recordUserPurchaseHistory(userProfile, product, amount, coinsChange, params));
 
 		return Parse.Promise.when(promises).then(function (results) {
 			userProfileHolder.userProfile = results[0];
@@ -221,13 +307,19 @@ function applyProductToUser(userProfileHolder, product, amount){
 }
 
 // return a promise contains userPurchaseHistory
-function recordUserPurchaseHistory(userProfile, product, amount, coinsChange){
+function recordUserPurchaseHistory(userProfile, product, amount, coinsChange, params){
 	var UserPurchaseHistoryClass = Parse.Object.extend("UserPurchaseHistory");
 	userPurchaseHistory = new UserPurchaseHistoryClass();
 	userPurchaseHistory.set("username", userProfile.get("username"));
 	userPurchaseHistory.set("product_name", product.get("name"));
 	userPurchaseHistory.set("amount", amount);
 	userPurchaseHistory.set("coins_change", coinsChange);
+	if(params && params.transactionData){
+		userPurchaseHistory.set("transactionData", params.transactionData);
+	}
+	if(params && params.itemName){
+		userPurchaseHistory.set("item_name", params.itemName);
+	}
 	console.log("creating new userPurchaseHistory:" + userPurchaseHistory);
 
 	return userPurchaseHistory.save(null, { useMasterKey: true });
