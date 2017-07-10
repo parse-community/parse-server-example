@@ -484,3 +484,25 @@ Parse.Cloud.define("updateUserStats", function(request, response) {
     		}
     	});
 });
+
+Parse.Cloud.define("updatePortfolioStatus", function(request, response) {
+        var UserProfileQuery =new Parse.Query("UserProfile");
+        var username =request.params.username;
+        var hasNewContent=request.params.hasNewContent;
+        console.log("search with username:"+username);
+        UserProfileQuery.equalTo("username",username);
+        UserProfileQuery.limit(1);
+        UserProfileQuery.find({
+                        useMasterKey:true,
+                        success: function(results) {
+                        var userProfile = results[0];
+                        userProfile.set("hasNewContent",hasNewContent )
+                        userProfile.save(null, { useMasterKey: true });
+                                response.success("userProfile updated to "+ book.get("userProfile"));
+                },
+                error: function() {
+                        response.error("userProfile doesn't exist!"+request.params.username);
+                }
+        });
+});
+
