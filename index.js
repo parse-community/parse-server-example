@@ -30,10 +30,8 @@ var api = new ParseServer({
   }),
    // Optional only if you want to provide you own pages hosted on your web server
   customPages: {
-    invalidLink: 'http://yourdomain.com/invalid_link.html',
-    verifyEmailSuccess: 'http://yourdomain.com/verify_email_success.html',
-    choosePassword: 'http://localhost:1337/choose_password',
-    passwordResetSuccess: 'http://localhost:1337/password_reset_success'
+    choosePassword: 'https://parse-server-mood-meter.herokuapp.com/choose_password',
+    passwordResetSuccess: 'https://parse-server-mood-meter.herokuapp.com/password_reset_success'
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
@@ -51,17 +49,13 @@ app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
+  res.status(200).send('Welcome to the MoodMeter Parse Server! This app is used in our mobile apps. Please visit http://moodmeterapp.com/');
 });
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
-app.get('/test', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
-});
-
-// app.get('/choose_password', function(req, res) {
-//   res.sendFile(path.join(__dirname, '/node_modules/parse-server/views/choose_password'));
+// app.get('/test', function(req, res) {
+//   res.sendFile(path.join(__dirname, '/public/test.html'));
 // });
 
 app.get('/choose_password', function(req, res) {
