@@ -62,7 +62,7 @@ A detailed tutorial is available here:
 1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
 1. Setup a MongoDB server.  You have a few options:
   1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
-  1. Use [MongoLab](https://mongolab.com/google/) to create a free MongoDB deployment on Google Cloud Platform.
+  1. Use [mLab](https://mlab.com/google/) to create a free MongoDB deployment on Google Cloud Platform (only US-central).
 1. Modify `app.yaml` to update your environment variables.
 1. Delete `Dockerfile`
 1. Deploy it with `gcloud preview app deploy`
