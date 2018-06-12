@@ -96,6 +96,10 @@ A detailed tutorial is available here:
   1. Scroll down and select **NodeJS > Parse Server**
   1. (Optionally) Update the Parse Server settings (parameters)
   1. Click **Create**
+  
+###Deploy with Myrskyt
+
+<a href="https://myrskyt.com/container/deploy/https://github.com/myrskyt/python-sample"><img src="https://myrskyt.com/static/img/button.jpg" height="40" width="155"></a>
 
 A detailed tutorial is available here:
 [Running Parse Server on OpenShift Online (Next Gen)](https://blog.openshift.com/parse-server/)
