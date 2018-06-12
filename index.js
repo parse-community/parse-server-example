@@ -16,6 +16,28 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  push: {
+    android: {
+      senderId: process.env.PUSH_ANDROID_SENDER_ID || '', // The Sender ID of GCM
+      apiKey: process.env.PUSH_ANDROID_API_KEY || '' // The Server API Key of GCM
+    },
+    ios: [
+      {
+        pfx: process.env.PUSH_IOS_SANDBOX_PFX || '', // The filename of private key and certificate in PFX or PKCS12 format from disk  
+        cert: process.env.PUSH_IOS_SANDBOX_CERT || '', // If not using the .p12 format, the path to the certificate PEM to load from disk
+        key: process.env.PUSH_IOS_SANDBOX_KEY || '', // If not using the .p12 format, the path to the private key PEM to load from disk
+        bundleId: process.env.PUSH_IOS_SANDBOX_BUNDLE_ID || '', // The bundle identifier associate with your app
+        production: false // Specifies which environment to connect to: Sandbox
+      },
+      {
+        pfx: process.env.PUSH_IOS_PRODUCTION_PFX || '', // The filename of private key and certificate in PFX or PKCS12 format from disk  
+        cert: process.env.PUSH_IOS_PRODUCTION_CERT || '', // If not using the .p12 format, the path to the certificate PEM to load from disk
+        key: process.env.PUSH_IOS_PRODUCTION_KEY || '', // If not using the .p12 format, the path to the private key PEM to load from disk
+        bundleId: process.env.PUSH_IOS_PRODUCTION_BUNDLE_ID || '', // The bundle identifier associate with your app
+        production: true // Specifies which environment to connect to: Production
+      }
+    ]
+  }
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
