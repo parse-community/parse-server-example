@@ -1,0 +1,24 @@
+{
+  "apps" : [{
+    "name"        : "parse-wrapper",
+    "script"      : "node index.js",
+    "watch"       : true,
+    "merge_logs"  : true,
+    "cwd"         : "/home/parse",
+    "env": {
+      "PARSE_SERVER_CLOUD_CODE_MAIN": "/home/parse/cloud/main.js",
+      "PARSE_SERVER_DATABASE_URI": "mongodb://parse:YOUR_PASSWORD@YOUR_DOMAIN_NAME:27017/YOUR_DATABASE_NAME?ssl=true",
+      "PARSE_SERVER_APPLICATION_ID": "YOUR_APP_ID",
+      "PARSE_SERVER_MASTER_KEY": "YOUR_MASTER_KEY",
+      "PARSE_SERVER_CLIENT_KEY": "YOUR_CLIENT_KEY",
+      "PARSE_SERVER_FACEBOOK_APP_IDS": "YOUR_FACEBOOK_APP_ID",
+      "PARSE_SERVER_REST_API_KEY": "YOUR_REST_API_KEY",
+      "PARSE_SERVER_JAVASCRIPT_KEY":"YOUR_JAVASCRIPT_KEY",
+      "PARSE_SERVER_FILE_KEY":"YOUR_FILE_KEY"
+    }
+  },{
+	"name" : "parse-express",
+	"":""
+  
+  }]
+}
