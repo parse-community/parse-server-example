@@ -46,12 +46,11 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 #### With the Deploy to Azure Button
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.ParseServer)
 
-#### Without It
-
-A detailed tutorial is available here:
-[Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
+Detailed information is available here:
+* [Parse Server with Azure Managed Services](https://azure.microsoft.com/en-us/marketplace/partners/microsoft/parseserver/)
+* [Parse Server Azure Blog Post](https://azure.microsoft.com/en-us/blog/announcing-the-publication-of-parse-server-with-azure-managed-services/)
 
 
 ### Getting Started With Google App Engine
