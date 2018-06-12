@@ -19,6 +19,9 @@
 
       <p class="up-and-running">Looks like our local Parse Serve is running under <span id="parse-url">...</span>. Let’s test it? </p>
 
+      <p>We'll use an app id of "myAppId" to connect to Parse Server.  Or, you can 
+        <a href="javascript: var newAppId = prompt('What app id should we use to talk to Parse Server?');  if (newAppId) { $('#appId').val(newAppId); }">change it</a>.
+
       <p>We have an express server with Parse server running on top of it connected to a MongoDB.</p>
 
       <p>The following steps will try to save some data on parse server and then fetch it back. Hey ho?</p>
@@ -100,5 +103,6 @@
     </div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="/public/assets/js/script.js"></script>
+    <input type="hidden" id="appId" value="myAppId" />
   </body>
 </html>
