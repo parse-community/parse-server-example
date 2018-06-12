@@ -18,12 +18,6 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 ### Getting Started With Heroku + mLab Development
 
-#### With the Heroku Button
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
-#### Without It
-
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
 * Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
@@ -32,11 +26,6 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 ### Getting Started With AWS Elastic Beanstalk
 
-#### With the Deploy to AWS Button
-
-<a title="Deploy to AWS" href="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/eb-parse-server-sample/parse-server-example.zip" target="_blank"><img src="http://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png" height="40"></a>
-
-#### Without It
 
 * Clone the repo and change directory to it
 * Log in with the [AWS Elastic Beanstalk CLI](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), select a region, and create an app: `eb init`
@@ -44,15 +33,8 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 ### Getting Started With Microsoft Azure App Service
 
-#### With the Deploy to Azure Button
-
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
-
-#### Without It
-
 A detailed tutorial is available here:
 [Azure welcomes Parse developers](https://azure.microsoft.com/en-us/blog/azure-welcomes-parse-developers/)
-
 
 ### Getting Started With Google App Engine
 
@@ -71,12 +53,6 @@ A detailed tutorial is available here:
 [Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
 
 ### Getting Started With Scalingo
-
-#### With the Scalingo button
-
-[![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy)
-
-#### Without it
 
 * Clone the repo and change directory to it
 * Log in with the [Scalingo CLI](http://cli.scalingo.com/) and create an app: `scalingo create my-parse`
