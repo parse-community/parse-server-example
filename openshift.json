@@ -83,7 +83,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "namespace": "${NAMESPACE}",
-              "name": "nodejs:4"
+              "name": "nodejs:10"
             },
             "env":  [
               {
@@ -308,7 +308,7 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "namespace": "${NAMESPACE}",
-                "name": "mongodb:3.2"
+                "name": "mongodb:3.6"
               }
             }
           },
