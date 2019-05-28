@@ -30,16 +30,16 @@ Parse.Cloud.define("retrieveAllObjects", function(request, status) {
     };
     process(false);
 });
-Parse.Cloud.define("sumSales", function(request, response){
-  var query = new Parse.Query("sale");
-  //TODO: query constraints here
-  query.equalTo("saleUser",request.params.saleUser);
-query.equalTo("status", "S");
- const results = await query.find();
-  let sum = 0;
-  for (let i = 0; i < results.length; ++i) {
-    sum += results[i].get("saleamount");
-  }
-  return sum;
+Parse.Cloud.define("sumSales", async (request) => {
+    const query = new Parse.Query("sale");
+    query.equalTo("saleUser", request.params.saleUser);
+    query.equalTo("status", "S");
+    const results = await query.find();
+    let sum = 0;
+    for (let i = 0; i < results.length; ++i) {
+        sum += results[i].get("saleamount");
+        }
+    return sum;
 });
+
 
