@@ -30,16 +30,22 @@ Parse.Cloud.define("retrieveAllObjects", function(request, status) {
     };
     process(false);
 });
-Parse.Cloud.define("sumSales", async (request) => {
-    const query = new Parse.Query("sale");
-    query.equalTo("saleUser", request.params.saleUser);
-    query.equalTo("status", "S");
-    const results = await query.find();
-    let sum = 0;
-    for (let i = 0; i < results.length; ++i) {
+Parse.Cloud.define("sumSales", function(request, response) {
+  //Query class appointments
+  var query = new Parse.Query("sale");
+  //Query column trainer in appointments pass trainerid object
+  query.equalTo("saleUser", request.params.saleUser);
+  query.find({
+    success: function(results) {
+      var sum = 0;
+      for (var i = 0; i < results.length; ++i) {
+        //Get the sum of the field rate for the trainer
         sum += results[i].get("saleamount");
-        }
-    return sum;
+      }
+      response.success(sum);
+    },
+    error: function() {
+      response.error("Calculating ratings failed");
+    }
+  });
 });
-
-
