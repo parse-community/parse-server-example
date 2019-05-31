@@ -51,3 +51,23 @@ Parse.Cloud.define("sumSales", function(request, response) {
     }
   });
 });
+Parse.Cloud.define("sumBalances", function(request, response) {
+  //Query token balances
+  var query = new Parse.Query("balance");
+    query.limit(10000);
+  //Query balances with tokenid for the organization_event prefix
+  query.startsWith("tokenid", request.params.tokenPrefix);
+  query.find({
+    success: function(results) {
+      var sum = 0;
+      for (var i = 0; i < results.length; ++i) {
+        //Get the sum of the token balances
+        sum += results[i].get("amount");
+      }
+      response.success(sum);
+    },
+    error: function() {
+      response.error("Calculating ratings failed");
+    }
+  });
+});
