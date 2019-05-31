@@ -43,8 +43,8 @@ Parse.Cloud.define("sumSales", function(request, response) {
         //Get the sum of the field rate for the trainer
         sum += results[i].get("saleamount");
       }
-      //response.success(sum);
-      response.success(results.length);  
+      response.success({value1 : sum, value2 : results.lenght);
+      //response.success(results.length);  
     },
     error: function() {
       response.error("Calculating ratings failed");
