@@ -33,6 +33,7 @@ Parse.Cloud.define("retrieveAllObjects", function(request, status) {
 Parse.Cloud.define("sumSales", function(request, response) {
   //Query class appointments
   var query = new Parse.Query("sale");
+    query.limit(10000);
   //Query column trainer in appointments pass trainerid object
   query.equalTo("saleUser", request.params.saleUser);
   query.find({
