@@ -53,7 +53,7 @@ Parse.Cloud.define("sumSales", function(request, response) {
 });
 Parse.Cloud.define("sumBalances", function(request, response) {
   //Query token balances
-  var query = new Parse.Query("balance2");
+  var query = new Parse.Query("sale");
     query.limit(10000);
   //Query balances with tokenid for the organization_event prefix
   query.startsWith("tokenid", request.params.tokenPrefix);
@@ -62,7 +62,7 @@ Parse.Cloud.define("sumBalances", function(request, response) {
       var sum = 0;
       for (var i = 0; i < results.length; ++i) {
         //Get the sum of the token balances
-        sum += results[i].get("amount");
+        sum += results[i].get("saleamount");
       }
       response.success(sum);
     },
