@@ -56,7 +56,7 @@ Parse.Cloud.define("sumBalances", function(request, response) {
   var query = new Parse.Query("balance");
     query.limit(10000);
   //Query balances with tokenid for the organization_event prefix
-  query.startsWith("tokenid", "TAC_HC2019");
+  query.equalTo("tokenid", "TAC_HC2019");
   query.find({
     success: function(results) {
       var sum = 0;
