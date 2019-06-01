@@ -53,7 +53,7 @@ Parse.Cloud.define("sumSales", function(request, response) {
 });
 Parse.Cloud.define("sumBalances", function(request, response) {
   //Query token balances
-  var query = new Parse.Query("balance2");
+  var query = new Parse.Query("balance");
     query.limit(10000);
   //Query balances with tokenid for the organization_event prefix
   query.startsWith("tokenid", request.params.tokenPrefix);
