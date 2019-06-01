@@ -2,7 +2,7 @@
  *  Steps handler
  */
 
-var Steps = {}
+var Steps = {};
 
 Steps.init = function() {
   this.buildParseUrl();
@@ -18,7 +18,7 @@ Steps.buildParseUrl = function() {
 }
 
 Steps.bindBtn = function(id, callback) {
-  $(id).click(callback)
+  $(id).click(callback);
 }
 
 Steps.closeStep = function(id) {
@@ -32,6 +32,11 @@ Steps.openStep  = function(id) {
 Steps.fillStepOutput  = function(id, data) {
   $(id).html('Output: ' + data).slideDown();
 }
+
+Steps.fillStepError  = function(id, errorMsg) {
+  $(id).html(errorMsg).slideDown();
+}
+
 
 Steps.fillBtn  = function(id, message) {
   $(id).addClass('success').html('✓  ' + message);
@@ -54,7 +59,7 @@ ParseRequest.postData = function() {
     Store.objectId = JSON.parse(data).objectId;
     // close first step
     Steps.closeStep('#step-1');
-    Steps.fillStepOutput('#step-1-output', data)
+    Steps.fillStepOutput('#step-1-output', data);
     Steps.fillBtn('#step-1-btn', 'Posted');
     // open second step
     Steps.openStep('#step-2');
@@ -62,35 +67,44 @@ ParseRequest.postData = function() {
       ParseRequest.getData();
       e.preventDefault();
     });
-  });
+  },
+  function(error) {
+       Steps.fillStepError('#step-1-error', 'There was a failure: ' + error);
+   });
   XHR.POST('/parse/classes/GameScore');
-}
+};
 
 ParseRequest.getData = function() {
   XHR.setCallback(function(data){
     // close second step
     Steps.closeStep('#step-2');
-    Steps.fillStepOutput('#step-2-output', data)
+    Steps.fillStepOutput('#step-2-output', data);
     Steps.fillBtn('#step-2-btn', 'Fetched');
     // open third step
     Steps.openStep('#step-3');
     Steps.bindBtn('#step-3-btn', function(e){
       ParseRequest.postCloudCodeData();
       e.preventDefault();
-    })
-  });
+      });
+    },
+    function(error) {
+    	Steps.fillStepError('#step-2-error', 'There was a failure: ' + error);
+  });  
   XHR.GET('/parse/classes/GameScore');
-}
+};
 
 ParseRequest.postCloudCodeData = function() {
   XHR.setCallback(function(data){
     // close second step
     Steps.closeStep('#step-3');
-    Steps.fillStepOutput('#step-3-output', data)
+    Steps.fillStepOutput('#step-3-output', data);
     Steps.fillBtn('#step-3-btn', 'Tested');
     // open third step
     Steps.showWorkingMessage();
-  });
+    },
+    function(error) {
+    	Steps.fillStepError('#step-3-error', 'There was a failure: ' + error);
+    });  
   XHR.POST('/parse/functions/hello');
 }
 
@@ -103,7 +117,7 @@ var Store = {
   objectId: ""
 };
 
-var Config = {}
+var Config = {};
 
 Config.getUrl = function() {
   if (url) return url;
@@ -118,14 +132,18 @@ Config.getUrl = function() {
  * XHR object
  */
 
-var XHR = {}
+var XHR = {};
 
-XHR.setCallback = function(callback) {
+XHR.setCallback = function(callback, failureCallback) {
   this.xhttp = new XMLHttpRequest();
   var _self = this;
   this.xhttp.onreadystatechange = function() {
-    if (_self.xhttp.readyState == 4 && _self.xhttp.status >= 200 && _self.xhttp.status <= 299) {
-      callback(_self.xhttp.responseText);
+    if (_self.xhttp.readyState == 4) {
+      if (_self.xhttp.status >= 200 && _self.xhttp.status <= 299) {
+        callback(_self.xhttp.responseText);
+      } else {
+        failureCallback(_self.xhttp.responseText);
+      }
     }
   };
 }
@@ -133,14 +151,14 @@ XHR.setCallback = function(callback) {
 XHR.POST = function(path, callback) {
   var seed = {"score":1337,"playerName":"Sean Plott","cheatMode":false}
   this.xhttp.open("POST", Config.getUrl() + path, true);
-  this.xhttp.setRequestHeader("X-Parse-Application-Id", "myAppId");
+  this.xhttp.setRequestHeader("X-Parse-Application-Id", $('#appId').val());
   this.xhttp.setRequestHeader("Content-type", "application/json");
   this.xhttp.send(JSON.stringify(seed));
 }
 
 XHR.GET = function(path, callback) {
   this.xhttp.open("GET", Config.getUrl() + path + '/' + Store.objectId, true);
-  this.xhttp.setRequestHeader("X-Parse-Application-Id", "myAppId");
+  this.xhttp.setRequestHeader("X-Parse-Application-Id", $('#appId').val());
   this.xhttp.setRequestHeader("Content-type", "application/json");
   this.xhttp.send(null);
 }
