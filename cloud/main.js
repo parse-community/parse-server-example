@@ -56,7 +56,8 @@ Parse.Cloud.define("sumBalances", function(request, response) {
   var query = new Parse.Query("balance");
     query.limit(10000);
   //Query balances with tokenid for the organization_event prefix
-  query.equalTo("tokenid", request.params.tokenPrefix);
+  //query.equalTo("tokenid", request.params.tokenPrefix);
+  query.equalTo("tokenid", {"$regex":"^TAC"});
   query.find({
     success: function(results) {
       var sum = 0;
