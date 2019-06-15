@@ -71,7 +71,7 @@ Parse.Cloud.define("sumBalances", function(request, response) {
     }
   });
 });
-Parse.Cloud.define("sumBalances2”, function(request, response) {
+Parse.Cloud.define("sumBalances2", function(request, response) {
   //Query token balances for TechnoPay arcade using events
   var query = new Parse.Query("balance");
     query.limit(10000);
