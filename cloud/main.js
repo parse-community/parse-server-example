@@ -80,7 +80,6 @@ Parse.Cloud.define("test", async (request) => {
     sum += results[i].get("saleamount");
   }
   return sum; // results.length;
- });
 });
 Parse.Cloud.define("hello", function(req, res) {
   return "Hi";
