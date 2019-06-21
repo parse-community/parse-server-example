@@ -79,8 +79,7 @@ Parse.Cloud.define("test", function(request, response) {
   query.equalTo("saleUser", request.params.saleUser);
   query.find({
     success: function(results) {
-      var sum = 15;
-      response.success(sum);  
+      response.success("15");  
     },
     error: function() {
       response.error("Calculating ratings failed");
