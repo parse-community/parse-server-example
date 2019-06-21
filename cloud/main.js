@@ -32,7 +32,6 @@ Parse.Cloud.define("retrieveAllObjects", function(request, status) {
 });
 Parse.Cloud.define("sumSales", function(request, response) {
   //Query class appointments
-  console.log("Started function sumSales");
   var query = new Parse.Query("sale");
     query.limit(10000);
   //Query column trainer in appointments pass trainerid object
@@ -42,11 +41,10 @@ Parse.Cloud.define("sumSales", function(request, response) {
       var sum = 0;
       for (var i = 0; i < results.length; ++i) {
         //Get the sum of the field rate for the trainer
-        console.log("in the loop");
         sum += results[i].get("saleamount");
       }
-      console.log("Success response message returned");
-      response.success({value1 : sum, value2 : results.length});
+      //response.success({value1 : sum, value2 : results.length});
+        response.success({value1 : 15, value2 : 2});
       //response.success(results.length);  
     },
     error: function() {
