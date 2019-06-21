@@ -38,7 +38,7 @@ Parse.Cloud.define("sumSales", function(request, response) {
   query.equalTo("saleUser", request.params.saleUser);
   query.find({
     success: function(results) {
-      var sum = 15;
+      var sum = 0;
       for (var i = 0; i < results.length; ++i) {
         //Get the sum of the field rate for the trainer
         sum += results[i].get("saleamount");
