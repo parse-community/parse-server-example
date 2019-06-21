@@ -46,7 +46,7 @@ Parse.Cloud.define("sumSales", function(request, response) {
       response.success({value1 : sum, value2 : results.length});
       //response.success(results.length);  
     },
-    error: function() {
+    error: function(error) {
       response.error("Calculating ratings failed");
     }
   });
