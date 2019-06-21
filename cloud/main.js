@@ -71,20 +71,16 @@ Parse.Cloud.define("sumBalances", function(request, response) {
     }
   });
 });
-Parse.Cloud.define("test", function(request, response) {
-  //Query class appointments
-  var query = new Parse.Query("sale");
-    query.limit(10000);
-  //Query column trainer in appointments pass trainerid object
+Parse.Cloud.define("test", async (request) => {
+  const query = new Parse.Query("sale");
   query.equalTo("saleUser", request.params.saleUser);
-  query.find({
-    success: function(results) {
-      response.success("15");  
-    },
-    error: function() {
-      response.error("Calculating ratings failed");
-    }
-  });
+  const results = await query.find();
+  let sum = 0;
+  for (let i = 0; i < results.length; ++i) {
+    sum += results[i].get("saleamount");
+  }
+  return sum; // results.length;
+ });
 });
 Parse.Cloud.define("hello", function(req, res) {
   return "Hi";
