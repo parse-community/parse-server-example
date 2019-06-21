@@ -35,7 +35,8 @@ Parse.Cloud.define("sumSales", function(request, response) {
   var query = new Parse.Query("sale");
     query.limit(10000);
   //Query column trainer in appointments pass trainerid object
-  query.equalTo("saleUser", request.params.saleUser);
+  //query.equalTo("saleUser", request.params.saleUser);
+  query.equalTo("saleUser", "aalptekin_PR");
   query.find({
     success: function(results) {
       var sum = 0;
