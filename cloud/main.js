@@ -41,36 +41,14 @@ Parse.Cloud.define("sumSales", async (request) => {
   }
   return sum; // results.length;
 });
-Parse.Cloud.define("sumBalances", function(request, response) {
-  //Query token balances
-  var query = new Parse.Query("balance");
-    query.limit(10000);
-  //Query balances with tokenid for the organization_event prefix
+Parse.Cloud.define("sumBalances", async (request) => {
+  const query = new Parse.Query("balance");
+  query.limit(10000);
   query.startsWith("tokenid", request.params.tokenPrefix);
-  query.find({
-    success: function(results) {
-      var sum = 0;
-      for (var i = 0; i < results.length; ++i) {
-        //Get the sum of the token balances
-        sum += results[i].get("amount");
-      }
-      response.success(sum);
-    },
-    error: function() {
-      response.error("Calculating ratings failed");
-    }
-  });
-});
-Parse.Cloud.define("test", async (request) => {
-  const query = new Parse.Query("sale");
-  query.equalTo("saleUser", request.params.saleUser);
   const results = await query.find();
   let sum = 0;
   for (let i = 0; i < results.length; ++i) {
-    sum += results[i].get("saleamount");
+    sum += results[i].get("amount");
   }
-  return sum; // results.length;
-});
-Parse.Cloud.define("hello", function(req, res) {
-  return "Hi";
+  return sum;
 });
