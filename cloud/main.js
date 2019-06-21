@@ -87,3 +87,6 @@ Parse.Cloud.define("test", function(request, response) {
     }
   });
 });
+Parse.Cloud.define("hello", function(req, res) {
+  return "Hi";
+});
