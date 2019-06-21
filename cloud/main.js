@@ -71,3 +71,6 @@ Parse.Cloud.define("sumBalances", function(request, response) {
     }
   });
 });
+Parse.Cloud.define(“test”, function(request, response) {
+response(“Test Success”);
+});
