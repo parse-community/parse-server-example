@@ -42,7 +42,7 @@ Parse.Cloud.define("sumSales", async (request) => {
   return sum; // results.length;
 });
 Parse.Cloud.define("sumTransactions", function(request, response) {
-   var query = Parse.Object.extend("test");
+   var queryObject = Parse.Object.extend("test");
    var query = new Parse.Query("sale");
    query.limit(10000);
    query.equalTo("saleUser", request.params.saleUser);
