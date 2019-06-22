@@ -41,10 +41,38 @@ Parse.Cloud.define("sumSales", async (request) => {
   }
   return sum; // results.length;
 });
+Parse.Cloud.define("sumTransactions", function(request, response) {
+   var query = Parse.Object.extend("test");
+   var query = new Parse.Query("sale");
+   query.limit(10000);
+   query.equalTo("saleUser", request.params.saleUser);
+   query.count({
+         success: function(number) {
+           // There are number instances of MyClass.
+           console.log("count number retrieved");
+           response.success(number);
+         },
+         error: function(error) {
+         // error is an instance of Parse.Error.
+             console.log("error on count number");
+             response.error("error");
+     }
+   });
 Parse.Cloud.define("sumBalances", async (request) => {
   const query = new Parse.Query("balance");
   query.limit(10000);
   query.startsWith("tokenid", request.params.tokenPrefix);
+  const results = await query.find();
+  let sum = 0;
+  for (let i = 0; i < results.length; ++i) {
+    sum += results[i].get("amount");
+  }
+  return sum;
+});
+Parse.Cloud.define("sumBalances2", async (request) => {
+  const query = new Parse.Query("balance");
+  query.limit(10000);
+  query.startsWith("oe", request.params.tokenPrefix);
   const results = await query.find();
   let sum = 0;
   for (let i = 0; i < results.length; ++i) {
