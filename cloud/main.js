@@ -41,7 +41,7 @@ Parse.Cloud.define("sumSales", async (request) => {
   }
   return sum; // results.length;
 });
-Parse.Cloud.define("sumTransactions", function(request, response) {
+Parse.Cloud.define("tempsumTransactions", function(request, response) {
    var queryObject = Parse.Object.extend("test");
    var query = new Parse.Query("sale");
    query.limit(10000);
@@ -58,6 +58,13 @@ Parse.Cloud.define("sumTransactions", function(request, response) {
              response.error("error");
      }
    });
+});
+Parse.Cloud.define("sumTransactions", async (request) => {
+  const query = new Parse.Query("sale");
+  query.limit(10000);
+  query.equalTo("saleUser", request.params.saleUser);
+  const results = await query.find();
+  return results.length;
 });
 Parse.Cloud.define("sumBalances", async (request) => {
   const query = new Parse.Query("balance");
