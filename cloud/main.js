@@ -58,6 +58,7 @@ Parse.Cloud.define("sumTransactions", function(request, response) {
              response.error("error");
      }
    });
+});
 Parse.Cloud.define("sumBalances", async (request) => {
   const query = new Parse.Query("balance");
   query.limit(10000);
