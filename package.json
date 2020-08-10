@@ -12,7 +12,9 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "*"
+    "parse-dashboard": "^2.1.0",
+    "parse-server": "*",
+    "parse-server-jobs-scheduler": "^1.1.1"
   },
   "scripts": {
     "start": "node index.js"
