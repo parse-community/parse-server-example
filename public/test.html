@@ -19,13 +19,16 @@
 
       <p class="up-and-running">Looks like our local Parse Serve is running under <span id="parse-url">...</span>. Let’s test it? </p>
 
+      <p>We'll use an app id of "myAppId" to connect to Parse Server.  Or, you can 
+        <a href="javascript: var newAppId = prompt('What app id should we use to talk to Parse Server?');  if (newAppId) { $('#appId').val(newAppId); }">change it</a>.
+
       <p>We have an express server with Parse server running on top of it connected to a MongoDB.</p>
 
       <p>The following steps will try to save some data on parse server and then fetch it back. Hey ho?</p>
 
       <div id="step-1" class="pure-g step--container">
         <div class="pure-u-1-5 align-center">
-          <span class="step--number">1</a>
+          <span class="step--number">1</span>
         </div>
         <div class="pure-u-4-5">
           <p class="step--info">Post data to local parse server:</p>
@@ -39,11 +42,12 @@
             </div>
           </div>
         </div>
+        <div id="step-1-error" class="hidden pure-u-4-5 step--error"></div>
       </div>
 
       <div id="step-2" class="pure-g step--container step--disabled">
         <div class="pure-u-1-5  align-center">
-          <span class="step--number">2</a>
+          <span class="step--number">2</span>
         </div>
         <div class="pure-u-4-5">
           <p class="step--info">Fetch data from local parse server:</p>
@@ -56,11 +60,12 @@
             </div>
           </div>
         </div>
+        <div id="step-2-error" class="hidden pure-u-4-5 step--error"></div>
       </div>
 
       <div id="step-3" class="pure-g step--container step--disabled">
         <div class="pure-u-1-5  align-center">
-          <span class="step--number">3</a>
+          <span class="step--number">3</span>
         </div>
         <div class="pure-u-4-5">
           <p class="step--info">Test Cloud Code function from ./cloud/main.js:</p>
@@ -73,11 +78,12 @@
             </div>
           </div>
         </div>
+        <div id="step-3-error" class="hidden pure-u-4-5 step--error"></div>
       </div>
 
        <div id="step-4" class="pure-g step--container hidden">
         <div class="pure-u-1-5  align-center">
-          <span class="step--number">✓</a>
+          <span class="step--number">✓</span>
         </div>
         <div class="pure-u-4-5">
           <p id="local-parse-working">
@@ -97,5 +103,6 @@
     </div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="/public/assets/js/script.js"></script>
+    <input type="hidden" id="appId" value="myAppId" />
   </body>
 </html>
