@@ -11,18 +11,18 @@ var secrets = {};
 
 secrets.sesAPIKey = process.env['sesAPIKey'];
 secrets.APISecret = process.env['APISecret'];
-secrets.mongoDatabaseURI = process.env['mongoDatabaseURI'];
+secrets.mongoDatabaseURI = process.env['exmongoDatabaseURI'];
 secrets.appId = process.env['appId'];
 secrets.masterKey = process.env['sesAPIKey'];
 secrets.bucketName = process.env['bucketName'];
 
 var config = {
-    port: 1340,
+    port: 1343,
     client: process.env['clientId'],
     appName: process.env['appName']
 };
-var baseServerUrl = 'http://localhost:' + port + '/' + client;
-var publicBaseServerUrl = 'https://test-parse.aamgeocloud.com/' + client;
+var baseServerUrl = 'http://localhost:' + config.port + '/' + config.client;
+var publicBaseServerUrl = 'https://test-parse.aamgeocloud.com/' + config.client;
 
 var test = new ParseServer({
     databaseURI: secrets.mongoDatabaseURI,
@@ -50,7 +50,7 @@ var test = new ParseServer({
             "bucket": secrets.bucketName,
             // optional:
             "region": 'us-east-1', // default value
-            "bucketPrefix": client + '/', // default value
+            "bucketPrefix": config.client + '/', // default value
             "directAccess": false, // default value
             "fileAcl": null, // default value
             "baseUrl": null, // default value
