@@ -10,10 +10,10 @@ var app = express();
 var secrets = {};
 
 secrets.sesAPIKey = process.env['sesAPIKey'];
-secrets.APISecret = process.env['APISecret'];
+secrets.sesAPISecret = process.env['sesAPISecret'];
 secrets.mongoDatabaseURI = process.env['exmongoDatabaseURI'];
 secrets.appId = process.env['appId'];
-secrets.masterKey = process.env['sesAPIKey'];
+secrets.masterKey = process.env['masterKey'];
 secrets.bucketName = process.env['bucketName'];
 
 var config = {
@@ -26,7 +26,7 @@ var publicBaseServerUrl = 'https://test-parse.aamgeocloud.com/' + config.client;
 
 var test = new ParseServer({
     databaseURI: secrets.mongoDatabaseURI,
-    cloud: 'cloud/testCloud.js',
+    cloud: 'cloud/main.js',
     appId: secrets.appId,
     masterKey: secrets.masterKey,
     serverURL: baseServerUrl + '/parse',
@@ -39,7 +39,7 @@ var test = new ParseServer({
         options: {
             fromAddress: 'no-reply@geocirrus.com',
             apiKey: secrets.sesAPIKey,
-            apiSecret: secrets.APISecret,
+            apiSecret: secrets.sesAPISecret,
             domain: 'geocirrus.com',
             amazon: 'https://email.ap-southeast-2.amazonaws.com'
         }
@@ -77,7 +77,7 @@ app.use('/' + config.client + '/parse', test);
 
 app.get('/' + config.client + '/hello', function (req, res)
 {
-    res.status(200).send("TEST (" + client + '):' + Date.now());
+    res.status(200).send("TEST (" + config.client + '):' + Date.now());
 });
 
 app.use('/' + config.client + '/templates', express.static(path.join(__dirname, '/templates')));
