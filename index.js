@@ -18,8 +18,8 @@ secrets.bucketName = process.env['bucketName'];
 
 var config = {
     port: 1340,
-    client: 'test-public',
-    appName: 'Geocirrus Cities TEST'
+    client: process.env['clientId'],
+    appName: process.env['appName']
 };
 var baseServerUrl = 'http://localhost:' + port + '/' + client;
 var publicBaseServerUrl = 'https://test-parse.aamgeocloud.com/' + client;
