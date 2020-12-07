@@ -17,7 +17,8 @@
     "parse-server-s3-adapter": "github:aam3d/parse-server-s3-adapter"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "deploy": "./deploy.sh"
   },
   "engines": {
     "node": ">=4.3"
