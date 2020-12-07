@@ -5,51 +5,84 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 
-var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
-
-if (!databaseUri) {
-  console.log('DATABASE_URI not specified, falling back to localhost.');
-}
-
-var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
-  liveQuery: {
-    classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
-  }
-});
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
-
 var app = express();
 
-// Serve static assets from the /public folder
-app.use('/public', express.static(path.join(__dirname, '/public')));
+var secrets = {};
 
-// Serve the Parse API on the /parse URL prefix
-var mountPath = process.env.PARSE_MOUNT || '/parse';
-app.use(mountPath, api);
+secrets.sesAPIKey = process.env['sesAPIKey'];
+secrets.APISecret = process.env['APISecret'];
+secrets.mongoDatabaseURI = process.env['mongoDatabaseURI'];
+secrets.appId = process.env['appId'];
+secrets.masterKey = process.env['sesAPIKey'];
+secrets.bucketName = process.env['bucketName'];
 
-// Parse Server plays nicely with the rest of your web routes
-app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
+var config = {
+    port: 1340,
+    client: 'test-public',
+    appName: 'Geocirrus Cities TEST'
+};
+var baseServerUrl = 'http://localhost:' + port + '/' + client;
+var publicBaseServerUrl = 'https://test-parse.aamgeocloud.com/' + client;
+
+var test = new ParseServer({
+    databaseURI: secrets.mongoDatabaseURI,
+    cloud: 'cloud/testCloud.js',
+    appId: secrets.appId,
+    masterKey: secrets.masterKey,
+    serverURL: baseServerUrl + '/parse',
+    appName: config.appName,
+    publicServerURL: publicBaseServerUrl + '/parse',
+    verifyUserEmails: true,
+    preventLoginWithUnverifiedEmail: true,
+    emailAdapter: {
+        module: 'parse-server-simple-ses-adapter-with-template',
+        options: {
+            fromAddress: 'no-reply@geocirrus.com',
+            apiKey: secrets.sesAPIKey,
+            apiSecret: secrets.APISecret,
+            domain: 'geocirrus.com',
+            amazon: 'https://email.ap-southeast-2.amazonaws.com'
+        }
+    },
+    filesAdapter: {
+        "module": "parse-server-s3-adapter",
+        "options": {
+            "bucket": secrets.bucketName,
+            // optional:
+            "region": 'us-east-1', // default value
+            "bucketPrefix": client + '/', // default value
+            "directAccess": false, // default value
+            "fileAcl": null, // default value
+            "baseUrl": null, // default value
+            "baseUrlDirect": false, // default value
+            "signatureVersion": 'v4', // default value
+            "globalCacheControl": null, // default value. Or 'public, max-age=86400' for 24 hrs Cache-Control
+            "ServerSideEncryption": 'AES256|aws:kms', //AES256 or aws:kms, or if you do not pass this, encryption won't be done
+            "validateFilename": null, // Default to parse-server FilesAdapter::validateFilename.
+            "generateKey": null // Will default to Parse.FilesController.preserveFileName
+        }
+    },
+    customPages: {
+        passwordResetSuccess: publicBaseServerUrl + "/templates/password_reset_success.html",
+        verifyEmailSuccess: publicBaseServerUrl + "/templates/verify_email_success.html",
+        linkSendSuccess: publicBaseServerUrl + "/templates/link_send_success.html",
+        linkSendFail: publicBaseServerUrl + "/templates/link_send_fail.html",
+        invalidLink: publicBaseServerUrl + "/templates/invalid_link.html",
+        invalidVerificationLink: publicBaseServerUrl + "/templates/invalid_verification_link",
+        choosePassword: publicBaseServerUrl + "/templates/choose_password.html"
+        // parseFrameURL: "./templates/parseFrameURL",
+    }
+});
+app.use('/' + config.client + '/parse', test);
+
+app.get('/' + config.client + '/hello', function (req, res)
+{
+    res.status(200).send("TEST (" + client + '):' + Date.now());
 });
 
-// There will be a test page available on the /test path of your server url
-// Remove this before launching your app
-app.get('/test', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
-});
+app.use('/' + config.client + '/templates', express.static(path.join(__dirname, '/templates')));
 
-var port = process.env.PORT || 1337;
-var httpServer = require('http').createServer(app);
-httpServer.listen(port, function() {
-    console.log('parse-server-example running on port ' + port + '.');
+app.listen(config.port, function ()
+{
+    console.log('parse-server (' + config.client + ') running on port ' + config.port);
 });
-
-// This will enable the Live Query real-time server
-ParseServer.createLiveQueryServer(httpServer);

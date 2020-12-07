@@ -12,7 +12,9 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "*"
+    "parse-server": "github:aam3d/parse-server#aam-4.3.0",
+    "parse-server-simple-ses-adapter-with-template": "github:aam3d/parse-server-simple-ses-adapter#template",
+    "parse-server-s3-adapter": "github:aam3d/parse-server-s3-adapter"
   },
   "scripts": {
     "start": "node index.js"
