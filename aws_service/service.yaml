@@ -118,6 +118,12 @@ Resources:
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appName}}' ]]
         - Name: clientDomain
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientDomain}}' ]]
+        - Name: portalUrl
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalUrl}}' ]]
+        - Name: portalUser
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalUser}}' ]]
+        - Name: portalPass
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalPass}}' ]]
         # LogConfiguration:
         #   LogDriver: awslogs
         #   Options:
