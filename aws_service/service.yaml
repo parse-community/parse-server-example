@@ -34,6 +34,7 @@ Mappings:
 
     dev:
       test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
+      docker-test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-docker-test-dev-brG3qo
 
 Resources: 
 
@@ -48,8 +49,7 @@ Resources:
       - Field: host-header
         HostHeaderConfig:
           Values:
-          - testparser.aamgeocloud.com
-          #- !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
+          - !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
       ListenerArn: 
         Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
       Priority: 1 #TODO: CHANGE
