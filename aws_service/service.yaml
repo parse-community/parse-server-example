@@ -51,7 +51,7 @@ Mappings:
       priority: 3
 
     moreland: 
-      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-moreland-dev-APK8fW
+      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-moreland-dev-tvZdJn
       domainName: morelandtest.aamgeocloud.com
       priority: 4
 
