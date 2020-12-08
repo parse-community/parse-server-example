@@ -35,21 +35,6 @@ Mappings:
     dev:
       test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
 
-  ParameterMap:
-
-    Secrets:
-      sesAPIKey: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPIKey}}' ]]
-      sesAPISecret: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPISecret}}' ]]
-      mongoDatabaseURI: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:mongoDatabaseURI}}' ]]
-      appId: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appId}}' ]]
-      masterKey: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:masterKey}}' ]]
-
-    Variables:
-      AppName: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appName}}' ]]
-      ClientId: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientId}}' ]]
-      DomainName: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ]]
-      ALBPriority: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:albPriority}}' ]]
-
 Resources: 
 
   ListenerRule:
@@ -63,9 +48,10 @@ Resources:
       - Field: host-header
         HostHeaderConfig:
           Values:
-          - !FindInMap [ ParameterMap, Variables, DomainName ]
-      ListenerArn: Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
-      Priority: !FindInMap [ ParameterMap, Variables, ALBPriority ]
+          - !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
+      ListenerArn: 
+        Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
+      Priority: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:albPriority}}' ] ]
 
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -86,7 +72,8 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: ListenerRule
     Properties: 
-      Cluster: Fn::ImportValue: !Join ["", [ ECSCluster, !Ref Environment ] ]
+      Cluster: 
+        Fn::ImportValue: !Join ["", [ ECSCluster, !Ref Environment ] ]
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       DesiredCount: 2
       TaskDefinition: !Ref TaskDefinition
@@ -122,11 +109,9 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId: Z12GWCNKT39Y1B
-      Name: !FindInMap [ ParameterMap, Variables, DomainName ]
+      Name:  !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ]]
       ResourceRecords:
-      - Fn::ImportValue: !Join ["", [ ParseServerAlbEndpoint, !Ref Environment ] ]
+      - Fn::ImportValue: 
+          !Join ["", [ ParseServerAlbEndpoint, !Ref Environment ] ]
       TTL: 300
       Type: CNAME
-
-
-Outputs:
