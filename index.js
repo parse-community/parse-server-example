@@ -21,6 +21,7 @@ var config = {
     client: process.env['clientId'],
     appName: process.env['appName']
 };
+
 var baseServerUrl = 'http://localhost:' + config.port + '/' + config.client;
 var publicBaseServerUrl = 'https://test-parse.aamgeocloud.com/' + config.client;
 
