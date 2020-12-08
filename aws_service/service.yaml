@@ -48,7 +48,8 @@ Resources:
       - Field: host-header
         HostHeaderConfig:
           Values:
-          - !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
+          - testparser.aamgeocloud.com
+          #- !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
       ListenerArn: 
         Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
       Priority: 1 #TODO: CHANGE
@@ -61,10 +62,10 @@ Resources:
       Protocol: HTTP
       Matcher:
         HttpCode: 200-499
-      HealthCheckIntervalSeconds: 300
+      HealthCheckIntervalSeconds: 60
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
-      HealthCheckTimeoutSeconds: 60
+      HealthCheckTimeoutSeconds: 30
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
 
@@ -95,7 +96,7 @@ Resources:
       ContainerDefinitions:
       - Name: !Sub aam-ecs-service-parse-${Client}-${Environment}
         Image: !Ref DockerImage
-        MemoryReservation: 256
+        MemoryReservation: 128
         PortMappings:
         - ContainerPort: 1343
           Protocol: tcp
@@ -124,6 +125,8 @@ Resources:
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalUser}}' ]]
         - Name: portalPass
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalPass}}' ]]
+        - Name: appColour
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appColour}}' ]]
         # LogConfiguration:
         #   LogDriver: awslogs
         #   Options:
