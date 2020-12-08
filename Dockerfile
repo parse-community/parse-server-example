@@ -19,7 +19,7 @@ ADD . /usr/src/app/
 RUN npm install
 
 # Expose port
-EXPOSE 1340
+EXPOSE 1343
 
 # Start
 CMD ["npm", "start"]

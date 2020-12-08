@@ -57,7 +57,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       VpcId: vpc-d920c5bc
-      Port: 8080
+      Port: 1343
       Protocol: HTTP
       Matcher:
         HttpCode: 200-499
