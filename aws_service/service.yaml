@@ -116,6 +116,8 @@ Resources:
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientId}}' ]]
         - Name: appName
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appName}}' ]]
+        - Name: clientDomain
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientDomain}}' ]]
         # LogConfiguration:
         #   LogDriver: awslogs
         #   Options:
