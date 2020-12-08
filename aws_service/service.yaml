@@ -57,7 +57,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       VpcId: vpc-d920c5bc
-      Port: 1343
+      Port: 8080
       Protocol: HTTP
       Matcher:
         HttpCode: 200-499
@@ -85,7 +85,7 @@ Resources:
         Field: instanceId
       LoadBalancers: 
       - ContainerName: !Sub aam-ecs-service-parse-${Client}-${Environment}
-        ContainerPort: 8080
+        ContainerPort: 1343
         TargetGroupArn: !Ref TargetGroup
 
   TaskDefinition:
@@ -97,7 +97,7 @@ Resources:
         Image: !Ref DockerImage
         MemoryReservation: 256
         PortMappings:
-        - ContainerPort: 8080
+        - ContainerPort: 1343
           Protocol: tcp
         Environment:
         - Name: sesAPIKey
