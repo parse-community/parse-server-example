@@ -11,7 +11,7 @@ var secrets = {};
 
 secrets.sesAPIKey = process.env['sesAPIKey'];
 secrets.sesAPISecret = process.env['sesAPISecret'];
-secrets.mongoDatabaseURI = process.env['exmongoDatabaseURI'];
+secrets.mongoDatabaseURI = process.env['mongoDatabaseURI'];
 secrets.appId = process.env['appId'];
 secrets.masterKey = process.env['masterKey'];
 secrets.bucketName = process.env['bucketName'];

@@ -51,7 +51,7 @@ Resources:
           - !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
       ListenerArn: 
         Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
-      Priority: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:albPriority}}' ] ]
+      Priority: 1 #TODO: CHANGE
 
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -61,7 +61,7 @@ Resources:
       Protocol: HTTP
       Matcher:
         HttpCode: 200-499
-      HealthCheckIntervalSeconds: 60
+      HealthCheckIntervalSeconds: 300
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 60
@@ -84,7 +84,7 @@ Resources:
       - Type: spread
         Field: instanceId
       LoadBalancers: 
-      - ContainerName: !Sub aam-ecs-service-${Client}-${Environment}
+      - ContainerName: !Sub aam-ecs-service-parse-${Client}-${Environment}
         ContainerPort: 8080
         TargetGroupArn: !Ref TargetGroup
 
@@ -99,17 +99,35 @@ Resources:
         PortMappings:
         - ContainerPort: 8080
           Protocol: tcp
-        LogConfiguration:
-          LogDriver: awslogs
-          Options:
-            awslogs-group: !Ref AWS::StackName
-            awslogs-region: !Ref AWS::Region
+        Environment:
+        - Name: sesAPIKey
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPIKey}}' ]]
+        - Name: sesAPISecret
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPISecret}}' ]]
+        - Name: mongoDatabaseURI
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:mongoDatabaseURI}}' ]]
+        - Name: appId
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appId}}' ]]
+        - Name: masterKey
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:masterKey}}' ]]
+        - Name: bucketName
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:bucketName}}' ]]
+        - Name: clientId
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientId}}' ]]
+        - Name: appName
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appName}}' ]]
+        # LogConfiguration:
+        #   LogDriver: awslogs
+        #   Options:
+        #     awslogs-group: !Ref AWS::StackName
+        #     awslogs-region: !Ref AWS::Region
 
   RecordSet:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId: Z12GWCNKT39Y1B
-      Name:  !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ]]
+      Name: testparser.aamgeocloud.com
+      #Name: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ]]
       ResourceRecords:
       - Fn::ImportValue: 
           !Join ["", [ ParseServerAlbEndpoint, !Ref Environment ] ]

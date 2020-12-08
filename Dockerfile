@@ -6,13 +6,17 @@ RUN apk add --update && apk upgrade
 
 # Install system packages
 RUN apk add nodejs \
-    npm
+    npm \
+    git
 
 # Set app directory
 WORKDIR /usr/src/app
 
 # Copy files to application
 ADD . /usr/src/app/
+
+# Install dependancies
+RUN npm install
 
 # Expose port
 EXPOSE 1340
