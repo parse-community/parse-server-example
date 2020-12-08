@@ -27,14 +27,21 @@ Parameters:
 
 Mappings:
 
-  GlobalMap:
+  prd:
 
-    prd:
-      test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
+    dockertest:
+      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
+      domainName: dockertestprd.aamgeocloud
 
-    dev:
-      test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
-      docker-test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-docker-test-dev-brG3qo
+  dev:
+    
+    test:
+      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
+      domainName: test123.aamgeocloud.com
+
+    dockertest:
+      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-dockertest-dev-OBWF7H
+      domainName: dockertest.aamgeocloud.com
 
 Resources: 
 
@@ -49,7 +56,7 @@ Resources:
       - Field: host-header
         HostHeaderConfig:
           Values:
-          - !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ] ]
+          - !FindInMap [ !Ref Environment, !Ref Client, domainName]
       ListenerArn: 
         Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
       Priority: 1 #TODO: CHANGE
@@ -102,31 +109,31 @@ Resources:
           Protocol: tcp
         Environment:
         - Name: sesAPIKey
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPIKey}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:sesAPIKey}}' ]]
         - Name: sesAPISecret
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPISecret}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:sesAPISecret}}' ]]
         - Name: mongoDatabaseURI
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:mongoDatabaseURI}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:mongoDatabaseURI}}' ]]
         - Name: appId
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appId}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:appId}}' ]]
         - Name: masterKey
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:masterKey}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:masterKey}}' ]]
         - Name: bucketName
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:bucketName}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:bucketName}}' ]]
         - Name: clientId
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientId}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:clientId}}' ]]
         - Name: appName
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appName}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:appName}}' ]]
         - Name: clientDomain
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientDomain}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:clientDomain}}' ]]
         - Name: portalUrl
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalUrl}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:portalUrl}}' ]]
         - Name: portalUser
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalUser}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:portalUser}}' ]]
         - Name: portalPass
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:portalPass}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:portalPass}}' ]]
         - Name: appColour
-          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appColour}}' ]]
+          Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:appColour}}' ]]
         # LogConfiguration:
         #   LogDriver: awslogs
         #   Options:
@@ -137,8 +144,7 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       HostedZoneId: Z12GWCNKT39Y1B
-      Name: testparser.aamgeocloud.com
-      #Name: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ]]
+      Name:  !FindInMap [ !Ref Environment, !Ref Client, domainName]
       ResourceRecords:
       - Fn::ImportValue: 
           !Join ["", [ ParseServerAlbEndpoint, !Ref Environment ] ]
