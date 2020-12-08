@@ -5,8 +5,14 @@ Description: >
     --- environment
 
   In order for the deployment to work a secrets manager document must exist 
-  following the structure; 
-    --- aam-ssm-secret-parse-server-[client]-[env]
+  and its mapping must be addedd below under the correct environment and client name. 
+  Mappings must include the parameters; 
+    --- secrets [The ARN of the secrets manager document created]
+    --- domainName [The unique name to point too in browser]
+    --- priority [A environment-unique integer that the load balancer will use to check host-header rules]
+
+  If you add new parameters in the secrets manager document, they must be added to the environment within the 
+  task definition below, so that they show up as environment variables.
 
 Parameters:
 
@@ -32,6 +38,7 @@ Mappings:
     dockertest:
       secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
       domainName: dockertestprd.aamgeocloud
+      priority: 1
 
   dev:
     
@@ -146,11 +153,17 @@ Resources:
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:portalPass}}' ]]
         - Name: appColour
           Value: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ !Ref Environment, !Ref Client, secrets ], ':SecretString:appColour}}' ]]
-        # LogConfiguration:
-        #   LogDriver: awslogs
-        #   Options:
-        #     awslogs-group: !Ref AWS::StackName
-        #     awslogs-region: !Ref AWS::Region
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref AWS::StackName
+            awslogs-region: !Ref AWS::Region
+
+  CloudWatchLogsGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Ref AWS::StackName
+      RetentionInDays: 7 
 
   RecordSet:
     Type: AWS::Route53::RecordSet
