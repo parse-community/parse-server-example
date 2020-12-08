@@ -1,0 +1,132 @@
+Description: > 
+
+  This deploys the service on the infrastrucure based off the required parameters;
+    --- client name
+    --- environment
+
+  In order for the deployment to work a secrets manager document must exist 
+  following the structure; 
+    --- aam-ssm-secret-parse-server-[client]-[env]
+
+Parameters:
+
+  Client:
+    Description: The name of the client, generally in lowercase
+    Type: String
+
+  Environment:
+    Description: The name of the environment to deploy to
+    AllowedValues: 
+    - dev
+    - prd
+    Type: String
+
+  DockerImage:
+    Description: The docker image to deploy to the cluster
+    Type: String
+
+Mappings:
+
+  GlobalMap:
+
+    prd:
+      test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
+
+    dev:
+      test: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
+
+  ParameterMap:
+
+    Secrets:
+      sesAPIKey: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPIKey}}' ]]
+      sesAPISecret: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:sesAPISecret}}' ]]
+      mongoDatabaseURI: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:mongoDatabaseURI}}' ]]
+      appId: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appId}}' ]]
+      masterKey: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:masterKey}}' ]]
+
+    Variables:
+      AppName: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:appName}}' ]]
+      ClientId: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:clientId}}' ]]
+      DomainName: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:domainName}}' ]]
+      ALBPriority: !Join ['', ['{{resolve:secretsmanager:', !FindInMap [ GlobalMap, !Ref Environment, !Ref Client ], ':SecretString:albPriority}}' ]]
+
+Resources: 
+
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: TargetGroup
+    Properties:
+      Actions:
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup
+      Conditions:
+      - Field: host-header
+        HostHeaderConfig:
+          Values:
+          - !FindInMap [ ParameterMap, Variables, DomainName ]
+      ListenerArn: Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
+      Priority: !FindInMap [ ParameterMap, Variables, ALBPriority ]
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !ImportValue VpcId
+      Port: 8080
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200-499
+      HealthCheckIntervalSeconds: 60
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 60
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn: ListenerRule
+    Properties: 
+      Cluster: Fn::ImportValue: !Join ["", [ ECSCluster, !Ref Environment ] ]
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
+      DesiredCount: 2
+      TaskDefinition: !Ref TaskDefinition
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      PlacementStrategies:
+      - Type: spread
+        Field: instanceId
+      LoadBalancers: 
+      - ContainerName: !Sub aam-ecs-service-${Client}-${Environment}
+        ContainerPort: 8080
+        TargetGroupArn: !Ref TargetGroup
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub aam-ecs-service-parse-${Client}-${Environment}
+      ContainerDefinitions:
+      - Name: !Sub aam-ecs-service-parse-${Client}-${Environment}
+        Image: !Ref DockerImage
+        MemoryReservation: 256
+        PortMappings:
+        - ContainerPort: 8080
+          Protocol: tcp
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref AWS::StackName
+            awslogs-region: !Ref AWS::Region
+
+  RecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z12GWCNKT39Y1B
+      Name: !FindInMap [ ParameterMap, Variables, DomainName ]
+      ResourceRecords:
+      - Fn::ImportValue: !Join ["", [ ParseServerAlbEndpoint, !Ref Environment ] ]
+      TTL: 300
+      Type: CNAME
+
+
+Outputs:
