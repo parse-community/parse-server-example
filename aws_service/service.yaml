@@ -38,10 +38,22 @@ Mappings:
     test:
       secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-test-dev-Y86AiN
       domainName: test123.aamgeocloud.com
+      priority: 1
 
     dockertest:
       secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-dockertest-dev-OBWF7H
       domainName: dockertest.aamgeocloud.com
+      priority: 2
+
+    woollahra: 
+      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-woollahra-dev-APK8fW
+      domainName: woollahratest.aamgeocloud.com
+      priority: 3
+
+    moreland: 
+      secrets: arn:aws:secretsmanager:ap-southeast-2:998914283275:secret:aam-ssm-secret-parse-server-moreland-dev-APK8fW
+      domainName: morelandtest.aamgeocloud.com
+      priority: 4
 
 Resources: 
 
@@ -59,7 +71,7 @@ Resources:
           - !FindInMap [ !Ref Environment, !Ref Client, domainName]
       ListenerArn: 
         Fn::ImportValue: !Join ["", [ ParseServerAlbListener, !Ref Environment ] ]
-      Priority: 1 #TODO: CHANGE
+      Priority: !FindInMap [ !Ref Environment, !Ref Client, priority]
 
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
