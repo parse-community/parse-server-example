@@ -9,15 +9,29 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "~4.11.x",
-    "kerberos": "~0.0.x",
-    "parse": "~1.8.0",
-    "parse-server": "*"
+    "express": "4.17.1",
+    "kerberos": "1.1.4",
+    "parse": "2.19.0",
+    "parse-server": "4.5.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "lint": "eslint --cache ./cloud && eslint --cache index.js",
+    "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js",
+    "test": "jasmine"
   },
   "engines": {
     "node": ">=4.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "babel-eslint": "^10.1.0",
+    "jasmine": "^3.6.3",
+    "mongodb-runner": "^4.8.0",
+    "bluebird": "^3.7.2"
   }
 }
