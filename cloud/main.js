@@ -1,14 +1,14 @@
 Parse.Cloud.define('hello', (req) => {
-  console.log(req)
+  req.log.info(req)
   return 'Hi';
 });
 
 Parse.Cloud.define('asyncFunction', async (req) => {
   await new Promise((resolve) => setTimeout(resolve,1000));
-  console.log(req)
+  req.log.info(req)
   return 'Hi async';
 });
 
 Parse.Cloud.beforeSave('Test', () => {
-  throw new Parse.Error(211,'Saving test objects is not available.')
+  throw new Parse.Error(212,'Saving test objects is not available.')
 });
