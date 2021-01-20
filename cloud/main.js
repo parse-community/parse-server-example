@@ -1,11 +1,11 @@
 Parse.Cloud.define('hello', (req) => {
-  console.log(req)
+  request.log.info(req)
   return 'Hi';
 });
 
 Parse.Cloud.define('asyncFunction', async (req) => {
   await new Promise((resolve) => setTimeout(resolve,1000));
-  console.log(req)
+  request.log.info(req)
   return 'Hi async';
 });
 
