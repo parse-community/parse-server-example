@@ -18,7 +18,8 @@
     "start": "node index.js",
     "lint": "eslint --cache ./cloud && eslint --cache index.js",
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js",
-    "test": "jasmine"
+    "test": "jasmine",
+    "coverage": "nyc jasmine"
   },
   "engines": {
     "node": ">=4.3"
@@ -32,6 +33,7 @@
     "babel-eslint": "^10.1.0",
     "jasmine": "^3.6.3",
     "mongodb-runner": "^4.8.0",
-    "bluebird": "^3.7.2"
+    "bluebird": "^3.7.2",
+    "nyc": "^15.1.0"
   }
 }

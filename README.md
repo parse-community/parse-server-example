@@ -22,6 +22,13 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
+### Helpful Scripts:
+
+* `npm run lint` will check the linting of your cloud code and `index.js`.
+* `npm run lint-fix` will attempt fix the linting of your cloud code and `index.js`.
+* `npm run test` will run any tests that are written in `/spec`.
+* `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
+
 ### Getting Started With Heroku + mLab Development
 
 #### With the Heroku Button

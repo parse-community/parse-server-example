@@ -1,14 +1,2 @@
-Parse.Cloud.define('hello', (req) => {
-  console.log(req)
-  return 'Hi';
-});
-
-Parse.Cloud.define('asyncFunction', async (req) => {
-  await new Promise((resolve) => setTimeout(resolve,1000));
-  console.log(req)
-  return 'Hi async';
-});
-
-Parse.Cloud.beforeSave('Test', () => {
-  throw new Parse.Error(211,'Saving test objects is not available.')
-});
+// it is best practise to organize your cloud functions group into their own file. You can then import them in your main.js
+require('./functions.js');
