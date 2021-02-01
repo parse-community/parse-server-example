@@ -15,7 +15,7 @@ describe("Parse Server example", () => {
       fail('should not have been able to save test object.');
     } catch (e) {
       expect(e).toBeDefined();
-      expect(e.code).toBe(212);
+      expect(e.code).toBe(9001);
       expect(e.message).toBe('Saving test objects is not available.');
     }
   })
