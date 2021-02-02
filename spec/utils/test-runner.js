@@ -1,15 +1,15 @@
-const Promise = require("bluebird");
-const http = require("http");
-const { MongoClient } = require("mongodb");
-const { ParseServer } = require("parse-server");
-const { config, app } = require("../../index.js");
-const Config = require("../../node_modules/parse-server/lib/Config");
+const Promise = require('bluebird');
+const http = require('http');
+const { MongoClient } = require('mongodb');
+const { ParseServer } = require('parse-server');
+const { config, app } = require('../../index.js');
+const Config = require('../../node_modules/parse-server/lib/Config');
 
-const mongoDBRunnerStart = require("mongodb-runner/mocha/before").bind({
+const mongoDBRunnerStart = require('mongodb-runner/mocha/before').bind({
   timeout() {},
   slow() {},
 });
-const mongoDBRunnerStop = require("mongodb-runner/mocha/after");
+const mongoDBRunnerStop = require('mongodb-runner/mocha/after');
 
 const startDB = () =>
   new Promise((done, reject) => {
@@ -23,7 +23,7 @@ const stopDB = () =>
     mongoDBRunnerStop(done);
   });
 
-const connectDB = (databaseURI) =>
+const connectDB = databaseURI =>
   new Promise((resolve, reject) => {
     MongoClient.connect(databaseURI, (err, db) => {
       if (err) {
@@ -38,7 +38,7 @@ let parseServerState = {};
 
 const dropDB = async () => {
   await Parse.User.logOut();
-  const app = Config.get("test");
+  const app = Config.get('test');
   return await app.database.deleteEverything(true);
 };
 
@@ -50,15 +50,15 @@ const dropDB = async () => {
 async function startParseServer() {
   const mongodbPort = process.env.MONGODB_PORT || 27017;
   let parseServerOptions = Object.assign(config, {
-    databaseName: "parse-test",
+    databaseName: 'parse-test',
     databaseURI: `mongodb://localhost:${mongodbPort}/parse-test`,
-    masterKey: "test",
-    javascriptKey: "test",
-    appId: "test",
+    masterKey: 'test',
+    javascriptKey: 'test',
+    appId: 'test',
     port: 30001,
-    mountPath: "/test",
+    mountPath: '/test',
     serverURL: `http://localhost:30001/test`,
-    logLevel: "error",
+    logLevel: 'error',
     silent: true,
   });
   const {
@@ -79,7 +79,7 @@ async function startParseServer() {
       appId,
       serverURL,
       databaseURI,
-      silent: process.env.VERBOSE !== "1",
+      silent: process.env.VERBOSE !== '1',
     },
     parseServerOptions
   );

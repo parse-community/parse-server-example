@@ -24,8 +24,9 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 ### Helpful Scripts:
 
-* `npm run lint` will check the linting of your cloud code and `index.js`, as defined in `.eslintrc.json`.
-* `npm run lint-fix` will attempt fix the linting of your cloud code and `index.js`.
+* `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
+* `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.js`.
+* `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.js`, as defined in `.prettierrc`
 * `npm run test` will run any tests that are written in `/spec`.
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
 
