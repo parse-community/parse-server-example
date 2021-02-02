@@ -20,7 +20,8 @@
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache  --fix./spec",
     "test": "jasmine",
     "coverage": "nyc jasmine",
-    "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'"
+    "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
+    "watch": "babel-watch index.js"
   },
   "engines": {
     "node": ">=4.3"
@@ -36,6 +37,7 @@
     "jasmine": "^3.6.3",
     "mongodb-runner": "^4.8.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "babel-watch": "^7.3.0"
   }
 }

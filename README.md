@@ -24,6 +24,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 
 ### Helpful Scripts:
 
+* `npm run watch` will start your Parse Server and restart if you make any changes.
 * `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
 * `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.js`.
 * `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.js`, as defined in `.prettierrc`
