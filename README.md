@@ -6,9 +6,9 @@
 [![License][license-svg]][license-link]
 [![Twitter Follow](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow%20us%20on%20Twitter&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
 
-Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express.
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express. Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
 
-[Read the full Parse Server guide here.](https://docs.parseplatform.org/parse-server/guide/)
+# Table of Contents <!-- omit in toc -->
 
 - [Local Development](#local-development)
   - [Helpful Scripts](#helpful-scripts)
