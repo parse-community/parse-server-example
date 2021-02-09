@@ -1,4 +1,4 @@
-# parse-server-example
+# parse-server-example <!-- omit in toc -->
 
 [![Join The Conversation](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/parse-server)
 [![Backers on Open Collective](https://opencollective.com/parse-server/backers/badge.svg)][open-collective-link]
@@ -10,7 +10,24 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
 
 [Read the full Parse Server guide here.](https://docs.parseplatform.org/parse-server/guide/)
 
-## For Local Development
+- [Local Development](#local-development)
+  - [Helpful Scripts](#helpful-scripts)
+- [Remote Deployment](#remote-deployment)
+  - [Heroku](#heroku)
+  - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
+  - [Microsoft Azure App Service](#microsoft-azure-app-service)
+  - [Google App Engine](#google-app-engine)
+  - [Scalingo](#scalingo)
+  - [OpenShift Online (Next Gen)](#openshift-online-next-gen)
+- [Using Parse Server](#using-parse-server)
+  - [Health Check](#health-check)
+  - [APIs and SDKs](#apis-and-sdks)
+    - [REST API](#rest-api)
+    - [JavaScript](#javascript)
+    - [Android](#android)
+    - [iOS / tvOS / iPadOS / macOS (Swift)](#ios--tvos--ipados--macos-swift)
+
+# Local Development
 
 * Make sure you have at least Node 4.3. `node --version`
 * Clone this repo and change directory to it.
@@ -23,7 +40,7 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
 * Install ngrok and you can test with devices
 
 ## Helpful Scripts
-These scripts can help you to develop your app for Parse Server
+These scripts can help you to develop your app for Parse Server:
 
 * `npm run watch` will start your Parse Server and restart if you make any changes.
 * `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
@@ -32,15 +49,13 @@ These scripts can help you to develop your app for Parse Server
 * `npm run test` will run any tests that are written in `/spec`.
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
 
-## Getting Started
+# Remote Deployment
 
-### Heroku
-
-#### With the Heroku Button
+## Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-#### Without It
+Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
@@ -48,21 +63,17 @@ These scripts can help you to develop your app for Parse Server
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
-### AWS Elastic Beanstalk
-
-#### With the Deploy to AWS Button
+## AWS Elastic Beanstalk
 
 <a title="Deploy to AWS" href="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/eb-parse-server-sample/parse-server-example.zip" target="_blank"><img src="http://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png" height="40"></a>
 
-#### Without It
+Alternatively, deploy your local changes manually:
 
 * Clone the repo and change directory to it
 * Log in with the [AWS Elastic Beanstalk CLI](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), select a region, and create an app: `eb init`
 * Create an environment and pass in MongoDB URI, App ID, and Master Key: `eb create --envvars DATABASE_URI=<replace with URI>,APP_ID=<replace with Parse app ID>,MASTER_KEY=<replace with Parse master key>`
 
-### Microsoft Azure App Service
-
-#### With the Deploy to Azure Button
+## Microsoft Azure App Service
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.ParseServer)
 
@@ -70,8 +81,7 @@ Detailed information is available here:
 * [Parse Server with Azure Managed Services](https://azure.microsoft.com/en-us/marketplace/partners/microsoft/parseserver/)
 * [Parse Server Azure Blog Post](https://azure.microsoft.com/en-us/blog/announcing-the-publication-of-parse-server-with-azure-managed-services/)
 
-
-### Google App Engine
+## Google App Engine
 
 1. Clone the repo and change directory to it 
 1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
@@ -87,13 +97,11 @@ Detailed information is available here:
 A detailed tutorial is available here:
 [Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
 
-### Scalingo
-
-#### With the Scalingo button
+## Scalingo
 
 [![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy)
 
-#### Without it
+Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
 * Log in with the [Scalingo CLI](http://cli.scalingo.com/) and create an app: `scalingo create my-parse`
@@ -102,7 +110,7 @@ A detailed tutorial is available here:
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
 * Deploy it with: `git push scalingo master`
 
-### OpenShift Online (Next Gen)
+## OpenShift Online (Next Gen)
 
 1. Register for a free [OpenShift Online (Next Gen) account](http://www.openshift.com/devpreview/register.html)
 1. Create a project in the [OpenShift Online Console](https://console.preview.openshift.com/console/).
@@ -118,69 +126,83 @@ A detailed tutorial is available here:
 A detailed tutorial is available here:
 [Running Parse Server on OpenShift Online (Next Gen)](https://blog.openshift.com/parse-server/)
 
-# Using it
+# Using Parse Server
 
-Before using it, you can access a test page to verify if the basic setup is working fine [http://localhost:1337/test](http://localhost:1337/test).
-Then you can use the REST API, the JavaScript SDK, and any of our open-source SDKs:
+## Health Check
 
-Example request to a server running locally:
+You can use the `/health` endpoint to verify that Parse Server is up and running. For example, for local deployment, enter this URL in your browser:
 
-```curl
+> [http://localhost:1337/parse/health](http://localhost:1337/parse/health)
+
+If you deployed Parse Server remotely, change the URL accordingly.
+
+## APIs and SDKs
+
+Use the REST API, GraphQL API or any of the Parse SDKs to see Parse Server in action. Parse Server comes with a variety of SDKs to cover most common ecosystems and languages, such as JavaScript, Swift, ObjectiveC and Android just to name a few.
+
+The following shows example requests when interacting with a local deployment of Parse Server. If you deployed Parse Server remotely, change the URL accordingly.
+
+### REST API
+
+Save object:
+```sh
 curl -X POST \
-  -H "X-Parse-Application-Id: myAppId" \
+  -H "X-Parse-Application-Id: YOUR_APP_ID" \
   -H "Content-Type: application/json" \
-  -d '{"score":1337,"playerName":"Sean Plott","cheatMode":false}' \
+  -d '{"score":1337}' \
   http://localhost:1337/parse/classes/GameScore
-  
+```
+
+Call Cloud Code function:
+```sh
 curl -X POST \
-  -H "X-Parse-Application-Id: myAppId" \
+  -H "X-Parse-Application-Id: YOUR_APP_ID" \
   -H "Content-Type: application/json" \
-  -d '{}' \
+  -d "{}" \
   http://localhost:1337/parse/functions/hello
 ```
 
-Example using it via JavaScript:
+### JavaScript
 
-```javascript
-Parse.initialize('myAppId','unused');
-Parse.serverURL = 'https://whatever.herokuapp.com';
+```js
+// Initialize SDK
+Parse.initialize("YOUR_APP_ID", "unused");
+Parse.serverURL = 'http://localhost:1337/parse';
 
+// Save object
 const obj = new Parse.Object('GameScore');
 obj.set('score',1337);
 await obj.save();
-console.log(obj.toJSON());
 
+// Query object
 const query = new Parse.Query('GameScore');
 const objAgain = await query.get(obj.id);
-console.log(objAgain.toJSON());
 ```
 
-Example using it on Android:
+### Android
 ```java
-//in your application class
-
+// Initialize SDK in the application class
 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-  .applicationId("myAppId")
-  .server("http://myServerUrl/parse/")   // '/' important after 'parse'
+  .applicationId("YOUR_APP_ID")
+  .server("http://localhost:1337/parse/")   // '/' important after 'parse'
   .build());
 
-ParseObject testObject = new ParseObject("TestObject");
-testObject.put("foo", "bar");
-testObject.saveInBackground();
+// Save object
+ParseObject obj = new ParseObject("TestObject");
+obj.put("foo", "bar");
+obj.saveInBackground();
 ```
-Example using it on iOS (Swift):
-```swift
-//in your AppDelegate
 
-Parse.initializeWithConfiguration(ParseClientConfiguration(block: { (configuration: ParseMutableClientConfiguration) -> Void in
-  configuration.server = "https://<# Your Server URL #>/parse/" // '/' important after 'parse'
-  configuration.applicationId = "<# Your APP_ID #>"
+### iOS / tvOS / iPadOS / macOS (Swift)
+```swift
+// Initialize SDK in AppDelegate
+Parse.initializeWithConfiguration(ParseClientConfiguration(block: {
+  (configuration: ParseMutableClientConfiguration) -> Void in
+    configuration.server = "http://localhost:1337/parse/" // '/' important after 'parse'
+    configuration.applicationId = "YOUR_APP_ID"
 }))
 ```
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
-
------
-As of April 5, 2017, Parse, LLC has transferred this code to the parse-community organization, and will no longer be contributing to or distributing this code.
 
 [license-svg]: https://img.shields.io/badge/license-BSD-lightgrey.svg
 [license-link]: LICENSE
