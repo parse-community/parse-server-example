@@ -8,9 +8,9 @@
 
 Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express.
 
-Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-server/wiki/Parse-Server-Guide
+[Read the full Parse Server guide here.](https://docs.parseplatform.org/parse-server/guide/)
 
-### For Local Development
+## For Local Development
 
 * Make sure you have at least Node 4.3. `node --version`
 * Clone this repo and change directory to it.
@@ -22,7 +22,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Helpful Scripts
+## Helpful Scripts
 These scripts can help you to develop your app for Parse Server
 
 * `npm run watch` will start your Parse Server and restart if you make any changes.
@@ -32,7 +32,9 @@ These scripts can help you to develop your app for Parse Server
 * `npm run test` will run any tests that are written in `/spec`.
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
 
-### Getting Started With Heroku + mLab Development
+## Getting Started
+
+### Heroku
 
 #### With the Heroku Button
 
@@ -46,7 +48,7 @@ These scripts can help you to develop your app for Parse Server
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
-### Getting Started With AWS Elastic Beanstalk
+### AWS Elastic Beanstalk
 
 #### With the Deploy to AWS Button
 
@@ -58,7 +60,7 @@ These scripts can help you to develop your app for Parse Server
 * Log in with the [AWS Elastic Beanstalk CLI](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), select a region, and create an app: `eb init`
 * Create an environment and pass in MongoDB URI, App ID, and Master Key: `eb create --envvars DATABASE_URI=<replace with URI>,APP_ID=<replace with Parse app ID>,MASTER_KEY=<replace with Parse master key>`
 
-### Getting Started With Microsoft Azure App Service
+### Microsoft Azure App Service
 
 #### With the Deploy to Azure Button
 
@@ -69,7 +71,7 @@ Detailed information is available here:
 * [Parse Server Azure Blog Post](https://azure.microsoft.com/en-us/blog/announcing-the-publication-of-parse-server-with-azure-managed-services/)
 
 
-### Getting Started With Google App Engine
+### Google App Engine
 
 1. Clone the repo and change directory to it 
 1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
@@ -85,7 +87,7 @@ Detailed information is available here:
 A detailed tutorial is available here:
 [Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
 
-### Getting Started With Scalingo
+### Scalingo
 
 #### With the Scalingo button
 
@@ -100,7 +102,7 @@ A detailed tutorial is available here:
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
 * Deploy it with: `git push scalingo master`
 
-### Getting Started With OpenShift Online (Next Gen)
+### OpenShift Online (Next Gen)
 
 1. Register for a free [OpenShift Online (Next Gen) account](http://www.openshift.com/devpreview/register.html)
 1. Create a project in the [OpenShift Online Console](https://console.preview.openshift.com/console/).
