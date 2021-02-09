@@ -22,7 +22,7 @@ Read the full Parse Server guide here: https://github.com/ParsePlatform/parse-se
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
 
-### Helpful Scripts:
+### These scripts can help you to develop your app for Parse Server
 
 * `npm run watch` will start your Parse Server and restart if you make any changes.
 * `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
