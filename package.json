@@ -18,7 +18,7 @@
     "start": "node index.js",
     "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache  --fix./spec",
-    "test": "jasmine",
+    "test": "mongodb-runner start && jasmine",
     "coverage": "nyc jasmine",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
     "watch": "babel-watch index.js"
@@ -29,7 +29,6 @@
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "babel-watch": "7.4.0",
-    "bluebird": "3.7.2",
     "eslint": "7.19.0",
     "eslint-config-standard": "16.0.2",
     "eslint-plugin-import": "2.22.1",
