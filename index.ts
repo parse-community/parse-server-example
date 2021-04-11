@@ -3,7 +3,6 @@
 
 import express = require('express');
 import { ParseServer } = require('parse-server');
-const path = require('path');
 const args: [string] = process.argv || [];
 const test: boolean = args.some(arg => arg.includes('jasmine'));
 
@@ -14,7 +13,7 @@ if (!databaseUri) {
 }
 const config: any = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
+  cloud: process.env.CLOUD_CODE_MAIN || `${__dirname}/cloud/main.ts`,
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse', // Don't forget to change to https if needed
@@ -29,7 +28,7 @@ const config: any = {
 import app = express();
 
 // Serve static assets from the /public folder
-app.use('/public', express.static(path.join(__dirname, '/public')));
+app.use('/public', express.static(`${__dirname}/public`));
 
 // Serve the Parse API on the /parse URL prefix
 const mountPath: string = process.env.PARSE_MOUNT || '/parse';
