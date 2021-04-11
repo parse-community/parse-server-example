@@ -1,0 +1,18 @@
+  
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es6"],                     
+    "allowJs": true,
+    "outDir": "build",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "typeRoots" : ["./node_modules/@types"],
+  },
+  "exclude" : [
+    "spec/*.spec.ts"
+  ]
+}
