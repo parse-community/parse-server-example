@@ -15,9 +15,10 @@
     "parse-server": "4.5.0"
   },
   "scripts": {
-    "start": "node index.js",
-    "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
-    "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache  --fix./spec",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js",
+    "lint": "eslint --cache --ext .ts  ./cloud && eslint --cache index.ts && eslint --cache ./spec",
+    "lint-fix": "eslint --cache --ext .ts --fix ./cloud && eslint --cache --fix index.ts && eslint --cache  --fix./spec",
     "test": "jasmine",
     "coverage": "nyc jasmine",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
@@ -38,6 +39,8 @@
     "jasmine": "3.6.4",
     "mongodb-runner": "4.8.1",
     "nyc": "15.1.0",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "@types/node": "^12.7.2",
+    "typescript": "^4.0.3"
   }
 }
