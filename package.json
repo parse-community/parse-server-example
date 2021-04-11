@@ -9,8 +9,11 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/parse": "^2.18.5",
     "express": "4.17.1",
+    "install": "^0.13.0",
     "kerberos": "1.1.4",
+    "npm": "^7.9.0",
     "parse": "2.19.0",
     "parse-server": "4.5.0"
   },
@@ -21,15 +24,14 @@
     "lint-fix": "eslint --cache --ext .ts --fix ./cloud && eslint --cache --fix index.ts && eslint --cache  --fix./spec",
     "test": "jasmine",
     "coverage": "nyc jasmine",
-    "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
-    "watch": "babel-watch index.js"
+    "prettier": "prettier --write {cloud,spec}/{**/*,*}.ts index.ts",
+    "watch": "tsc --w"
   },
   "engines": {
     "node": ">=4.3"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "babel-watch": "7.4.0",
     "bluebird": "3.7.2",
     "eslint": "7.19.0",
     "eslint-config-standard": "16.0.2",

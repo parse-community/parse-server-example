@@ -1,17 +1,18 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
-import express = require('express');
-import { ParseServer } = require('parse-server');
-const args: [string] = process.argv || [];
+import express from 'express';
+import { ParseServer } from 'parse-server';
+import Server from 'parse-server';
+const args: string[] = process.argv || [];
 const test: boolean = args.some(arg => arg.includes('jasmine'));
 
-const databaseUri: string = process.env.DATABASE_URI || process.env.MONGODB_URI;
+const databaseUri: string | undefined = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
-const config: any = {
+const config: Server.ParseServerOptions = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || `${__dirname}/cloud/main.ts`,
   appId: process.env.APP_ID || 'myAppId',
@@ -25,15 +26,15 @@ const config: any = {
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
-import app = express();
+const app = express();
 
 // Serve static assets from the /public folder
-app.use('/public', express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/public`));
 
 // Serve the Parse API on the /parse URL prefix
 const mountPath: string = process.env.PARSE_MOUNT || '/parse';
 if (!test) {
-  const api:ParseServer = new ParseServer(config);
+  const api: ParseServer = new ParseServer(config);
   app.use(mountPath, api);
 }
 
@@ -45,10 +46,10 @@ app.get('/', function (req, res) {
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
 app.get('/test', function (req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
+  res.sendFile(`${__dirname}/public/test.html`);
 });
 
-const port: number = process.env.PORT || 1337;
+const port: number = Number(process.env.PORT) || 1337;
 if (!test) {
   const httpServer = require('http').createServer(app);
   httpServer.listen(port, function () {
