@@ -1,18 +1,18 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
-const express = require('express');
-const ParseServer = require('parse-server').ParseServer;
+import express = require('express');
+import { ParseServer } = require('parse-server');
 const path = require('path');
-const args = process.argv || [];
-const test = args.some(arg => arg.includes('jasmine'));
+const args: [string] = process.argv || [];
+const test: boolean = args.some(arg => arg.includes('jasmine'));
 
-const databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
+const databaseUri: string = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
-const config = {
+const config: any = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
@@ -26,15 +26,15 @@ const config = {
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
-const app = express();
+import app = express();
 
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-const mountPath = process.env.PARSE_MOUNT || '/parse';
+const mountPath: string = process.env.PARSE_MOUNT || '/parse';
 if (!test) {
-  const api = new ParseServer(config);
+  const api:ParseServer = new ParseServer(config);
   app.use(mountPath, api);
 }
 
@@ -49,7 +49,7 @@ app.get('/test', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/test.html'));
 });
 
-const port = process.env.PORT || 1337;
+const port: number = process.env.PORT || 1337;
 if (!test) {
   const httpServer = require('http').createServer(app);
   httpServer.listen(port, function () {
