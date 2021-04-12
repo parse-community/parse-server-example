@@ -21,8 +21,8 @@
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js",
     "lint": "eslint --cache --ext .ts  ./cloud && eslint --cache index.ts && eslint --cache ./spec",
-    "lint-fix": "eslint --cache --ext .ts --fix ./cloud && eslint --cache --fix index.ts && eslint --cache  --fix./spec",
-    "test": "jasmine",
+    "lint-fix": "eslint --cache --ext .ts --fix ./cloud && eslint --cache --fix index.ts && eslint --cache  --fix ./spec",
+    "test": "mongodb-runner start && jasmine",
     "coverage": "nyc jasmine",
     "prettier": "prettier --write {cloud,spec}/{**/*,*}.ts index.ts",
     "watch": "tsc --w"
@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "bluebird": "3.7.2",
     "eslint": "7.19.0",
     "eslint-config-standard": "16.0.2",
     "eslint-plugin-import": "2.22.1",
