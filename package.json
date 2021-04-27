@@ -1,11 +1,11 @@
 {
-  "name": "parse-server-example",
-  "version": "1.2.0",
-  "description": "An example Parse API server using the parse-server module",
+  "name": "blue-running-parse",
+  "version": "1.4.0",
+  "description": "Blue Ruinning Parse Server",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
+    "url": "https://github.com/kexic/parse-server-example"
   },
   "license": "MIT",
   "dependencies": {
