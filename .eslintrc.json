@@ -11,7 +11,7 @@
     "parser": "babel-eslint",
     "rules": {
         "indent": ["error", 2, { "SwitchCase": 1 }],
-        "linebreak-style": ["error", "unix"],
+        "linebreak-style": ["error", "windows"],
         "no-trailing-spaces": 2,
         "eol-last": 2,
         "space-in-parens": ["error", "never"],
