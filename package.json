@@ -2,18 +2,12 @@
   "name": "parse-server-example",
   "version": "1.4.0",
   "description": "An example Parse API server using the parse-server module",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ParsePlatform/parse-server-example"
   },
   "license": "MIT",
-  "dependencies": {
-    "express": "4.17.1",
-    "kerberos": "1.1.4",
-    "parse": "2.19.0",
-    "parse-server": "4.5.0"
-  },
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
@@ -21,10 +15,13 @@
     "test": "mongodb-runner start && jasmine",
     "coverage": "nyc jasmine",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
-    "watch": "babel-watch index.js"
+    "watch": "nodemon index.js --exec \"npm run lint && node\""
   },
-  "engines": {
-    "node": ">=4.3"
+  "dependencies": {
+    "express": "4.17.1",
+    "kerberos": "1.1.4",
+    "parse": "2.19.0",
+    "parse-server": "4.5.0"
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
@@ -36,7 +33,11 @@
     "eslint-plugin-promise": "4.2.1",
     "jasmine": "3.6.4",
     "mongodb-runner": "4.8.1",
+    "nodemon": "^2.0.7",
     "nyc": "15.1.0",
     "prettier": "2.2.1"
+  },
+  "engines": {
+    "node": ">=4.3"
   }
 }
