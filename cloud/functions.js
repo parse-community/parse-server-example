@@ -11,7 +11,7 @@ Parse.Cloud.define('asyncFunction', async req => {
 
 Parse.Cloud.define('ban', async req => {
   const query = new Parse.Query("Plays")
-  query.equalTo("UserId", req.params.userid)
+  query.equalTo("UserId", Number.parseInt(req.params.userid))
 
   const results = await query.find();
 
@@ -19,12 +19,14 @@ Parse.Cloud.define('ban', async req => {
     play.set("Banned", true)
   });
 
-  Parse.Object.saveAll(results)
+  await Parse.Object.saveAll(results)
+
+  return { status: 200, success: true, message: "User successfully banned!" }
 })
 
 Parse.Cloud.define('unban', async req => {
   const query = new Parse.Query("Plays")
-  query.equalTo("UserId", req.params.userid)
+  query.equalTo("UserId", Number.parseInt(req.params.userid))
 
   const results = await query.find();
 
@@ -32,7 +34,9 @@ Parse.Cloud.define('unban', async req => {
     play.set("Banned", false)
   });
 
-  Parse.Object.saveAll(results)
+  await Parse.Object.saveAll(results)
+
+  return { status: 200, success: true, message: "User successfully unbanned!" }
 })
 
 Parse.Cloud.beforeSave('Test', () => {
