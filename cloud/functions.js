@@ -9,6 +9,32 @@ Parse.Cloud.define('asyncFunction', async req => {
   return 'Hi async';
 });
 
+Parse.Cloud.define('ban', async req => {
+  const query = new Parse.Query("Plays")
+  query.equalTo("UserId", req.params.userid)
+
+  const results = await query.find();
+
+  results.forEach(play => {
+    play.set("Banned", true)
+  });
+
+  Parse.Object.saveAll(results)
+})
+
+Parse.Cloud.define('unban', async req => {
+  const query = new Parse.Query("Plays")
+  query.equalTo("UserId", req.params.userid)
+
+  const results = await query.find();
+
+  results.forEach(play => {
+    play.set("Banned", false)
+  });
+
+  Parse.Object.saveAll(results)
+})
+
 Parse.Cloud.beforeSave('Test', () => {
   throw new Parse.Error(9001, 'Saving test objects is not available.');
 });
