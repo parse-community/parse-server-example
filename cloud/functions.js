@@ -10,31 +10,51 @@ Parse.Cloud.define('asyncFunction', async req => {
 });
 
 Parse.Cloud.define('ban', async req => {
-  const query = new Parse.Query("Plays")
+  let query = new Parse.Query("Plays")
   query.equalTo("UserId", Number.parseInt(req.params.userid))
 
   const results = await query.find();
 
   results.forEach(play => {
-    play.set("Banned", true)
+    play.set("Allowed", false)
   });
 
   await Parse.Object.saveAll(results)
+
+  query = new Parse.Query("Global")
+  query.equalTo("UserId", Number.parseInt(req.params.userid))
+
+  const result = await query.first();
+
+  if (result) {
+    result.set("Allowed", false)
+    result.save()
+  }
 
   return { status: 200, success: true, message: "User successfully banned!" }
 })
 
 Parse.Cloud.define('unban', async req => {
-  const query = new Parse.Query("Plays")
+  let query = new Parse.Query("Plays")
   query.equalTo("UserId", Number.parseInt(req.params.userid))
 
   const results = await query.find();
 
   results.forEach(play => {
-    play.set("Banned", false)
+    play.set("Allowed", true)
   });
 
   await Parse.Object.saveAll(results)
+
+  query = new Parse.Query("Global")
+  query.equalTo("UserId", Number.parseInt(req.params.userid))
+
+  const result = await query.first();
+
+  if (result) {
+    result.set("Allowed", true)
+    result.save()
+  }
 
   return { status: 200, success: true, message: "User successfully unbanned!" }
 })
