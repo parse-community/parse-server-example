@@ -59,6 +59,31 @@ Parse.Cloud.define('unban', async req => {
   return { status: 200, success: true, message: "User successfully unbanned!" }
 })
 
+Parse.Cloud.define('op1', async () => {
+  let query = new Parse.Query("Plays")
+  let results = await query.find();
+
+  results.forEach(play => {
+    play.unset("Banned")
+    play.set("Allowed", true)
+  });
+
+  await Parse.Object.saveAll(results)
+
+  query = new Parse.Query("Global")
+
+  results = await query.find();
+
+  results.forEach(play => {
+    play.unset("Banned")
+    play.set("Allowed", true)
+  });
+
+  await Parse.Object.saveAll(results)
+
+  return { status: 200, success: true, message: "OP1 complete!" }
+})
+
 Parse.Cloud.beforeSave('Test', () => {
   throw new Parse.Error(9001, 'Saving test objects is not available.');
 });
