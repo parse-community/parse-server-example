@@ -10,8 +10,11 @@ Parse.Cloud.define('asyncFunction', async req => {
 });
 
 Parse.Cloud.define('ban', async req => {
+  const userid = parseInt(req.params.userid)
+  const reason = req.params.reason || "You were banned from joining RoBeats CS!"
+
   let query = new Parse.Query("Plays")
-  query.equalTo("UserId", Number.parseInt(req.params.userid))
+  query.equalTo("UserId", userid)
 
   const results = await query.find();
 
@@ -22,13 +25,26 @@ Parse.Cloud.define('ban', async req => {
   await Parse.Object.saveAll(results)
 
   query = new Parse.Query("Global")
-  query.equalTo("UserId", Number.parseInt(req.params.userid))
+  query.equalTo("UserId", userid)
 
-  const result = await query.first();
+  let result = await query.first();
 
   if (result) {
     result.set("Allowed", false)
     result.save()
+  }
+
+  query = new Parse.Query("Bans")
+  query.equalTo("UserId", userid)
+
+  result = await query.first();
+
+  if (!result) {
+    const banObject = new Parse.Object("Bans")
+    banObject.set("UserId", userid)
+    banObject.set("Reason", reason)
+
+    banObject.save()
   }
 
   return { status: 200, success: true, message: "User successfully banned!" }
@@ -49,11 +65,20 @@ Parse.Cloud.define('unban', async req => {
   query = new Parse.Query("Global")
   query.equalTo("UserId", Number.parseInt(req.params.userid))
 
-  const result = await query.first();
+  let result = await query.first();
 
   if (result) {
     result.set("Allowed", true)
     result.save()
+  }
+
+  query = new Parse.Query("Bans")
+  query.equalTo("UserId", Number.parseInt(req.params.userid))
+
+  result = await query.first();
+
+  if (result) {
+    await result.destroy()
   }
 
   return { status: 200, success: true, message: "User successfully unbanned!" }
