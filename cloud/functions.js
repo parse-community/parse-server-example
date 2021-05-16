@@ -11,7 +11,7 @@ Parse.Cloud.define('asyncFunction', async req => {
 
 Parse.Cloud.define('ban', async req => {
   const userid = parseInt(req.params.userid)
-  const reason = req.params.reason || "You were banned from joining RoBeats CS!"
+  const reason = req.params.reason || "You are banned from joining RoBeats CS!"
 
   let query = new Parse.Query("Plays")
   query.equalTo("UserId", userid)
