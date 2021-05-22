@@ -128,6 +128,7 @@ Parse.Cloud.define('profile', async req => {
             "Rating": "$Rating",
             "TotalMapsPlayed": "$TotalMapsPlayed",
             "CountryRegion": "$CountryRegion",
+            "Accuracy": "$Accuracy",
             "PlayerName": "$PlayerName",
             "UserId": "$UserId"
           }
@@ -146,6 +147,7 @@ Parse.Cloud.define('profile', async req => {
           "Rating": "$slots.Rating",
           "TotalMapsPlayed": "$slots.TotalMapsPlayed",
           "CountryRegion": "$slots.CountryRegion",
+          "Accuracy": "$slots.Accuracy",
           "PlayerName": "$slots.PlayerName",
           "UserId": "$slots.UserId",
           "Rank": "$Rank"
