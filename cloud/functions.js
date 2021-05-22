@@ -109,6 +109,61 @@ Parse.Cloud.define('op1', async () => {
   return { status: 200, success: true, message: "OP1 complete!" }
 })
 
+Parse.Cloud.define('profile', async req => {
+  const userid = Number.parseInt(req.params.userid)
+
+  const query = new Parse.Query("Global")
+
+  const pipeline = [
+    {
+      sort: {
+        "Rating": -1
+      }
+    },
+    {
+      group: {
+        "objectId": null,
+        "slots": {
+          $push: {
+            "Rating": "$Rating",
+            "TotalMapsPlayed": "$TotalMapsPlayed",
+            "CountryRegion": "$CountryRegion",
+            "PlayerName": "$PlayerName",
+            "UserId": "$UserId"
+          }
+        }
+      }
+    },
+    {
+      unwind: {
+        path: "$slots",
+        includeArrayIndex: "Rank"
+      }
+    },
+    {
+      replaceRoot: {
+        "newRoot": {
+          "Rating": "$slots.Rating",
+          "TotalMapsPlayed": "$slots.TotalMapsPlayed",
+          "CountryRegion": "$slots.CountryRegion",
+          "PlayerName": "$slots.PlayerName",
+          "UserId": "$slots.UserId",
+          "Rank": "$Rank"
+        },
+      }
+    },
+    {
+      match: {
+        "UserId": userid
+      }
+    }
+  ]
+
+  const slots = await query.aggregate(pipeline)
+
+  return slots[0]
+})
+
 Parse.Cloud.beforeSave('Test', () => {
   throw new Parse.Error(9001, 'Saving test objects is not available.');
 });
