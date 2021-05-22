@@ -116,6 +116,11 @@ Parse.Cloud.define('profile', async req => {
 
   const pipeline = [
     {
+      match: {
+        "Allowed": true
+      }
+    },
+    {
       sort: {
         "Rating": -1
       }
@@ -150,7 +155,9 @@ Parse.Cloud.define('profile', async req => {
           "Accuracy": "$slots.Accuracy",
           "PlayerName": "$slots.PlayerName",
           "UserId": "$slots.UserId",
-          "Rank": "$Rank"
+          "Rank": {
+            $add: ["$Rank", 1]
+          }
         },
       }
     },
