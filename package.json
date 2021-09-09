@@ -10,9 +10,9 @@
   "license": "MIT",
   "dependencies": {
     "express": "4.17.1",
-    "kerberos": "1.1.4",
-    "parse": "2.19.0",
-    "parse-server": "4.5.0"
+    "kerberos": "1.1.6",
+    "parse": "3.3.0",
+    "parse-server": "4.10.3"
   },
   "scripts": {
     "start": "node index.js",
@@ -26,17 +26,18 @@
   "engines": {
     "node": ">=4.3"
   },
+  "type": "module",
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "babel-watch": "7.4.0",
-    "eslint": "7.19.0",
-    "eslint-config-standard": "16.0.2",
-    "eslint-plugin-import": "2.22.1",
+    "babel-watch": "7.5.0",
+    "eslint": "7.32.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.24.2",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "4.2.1",
-    "jasmine": "3.6.4",
-    "mongodb-runner": "4.8.1",
+    "eslint-plugin-promise": "5.1.0",
+    "jasmine": "3.9.0",
+    "mongodb-runner": "4.8.3",
     "nyc": "15.1.0",
-    "prettier": "2.2.1"
+    "prettier": "2.3.2"
   }
 }
