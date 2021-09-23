@@ -11,6 +11,7 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
 # Table of Contents <!-- omit in toc -->
 
 - [Local Development](#local-development)
+  - [File Setup](#file-setup)
   - [Helpful Scripts](#helpful-scripts)
 - [Remote Deployment](#remote-deployment)
   - [Heroku](#heroku)
@@ -38,6 +39,16 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `export PARSE_MOUNT=/1` before launching the server.
 * You now have a database named "dev" that contains your Parse data
 * Install ngrok and you can test with devices
+
+## File Setup
+Feel free to change this at your discretion. Example projects are just that - an example.
+
+* `/spec` contains unit tests you can write to validate your Parse Server.
+* `/src/cloud` contains Parse.Cloud files to run custom cloud code.
+* `/src/public` contains public assets.
+* `/src/views` contains views that express can render.
+* `/src/config.js` contains all Parse Server settings.
+* `index.js` is the main entry point for `npm start`, and includes express routing.
 
 ## Helpful Scripts
 These scripts can help you to develop your app for Parse Server:
@@ -83,7 +94,7 @@ Detailed information is available here:
 
 ## Google App Engine
 
-1. Clone the repo and change directory to it 
+1. Clone the repo and change directory to it
 1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
 1. [Enable billing](https://console.cloud.google.com/project/_/settings) for your project.
 1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
@@ -164,9 +175,11 @@ curl -X POST \
 
 ### JavaScript
 
+We have built an example page to show JS SDK usage, available at [http://localhost:1337/](http://localhost:1337/).
+
 ```js
 // Initialize SDK
-Parse.initialize("YOUR_APP_ID", "unused");
+Parse.initialize("YOUR_APP_ID");
 Parse.serverURL = 'http://localhost:1337/parse';
 
 // Save object

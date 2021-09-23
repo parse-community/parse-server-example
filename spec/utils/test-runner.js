@@ -1,7 +1,8 @@
 import http from 'http';
 import { ParseServer } from 'parse-server';
-import { config, app } from '../../index.js';
-import Config from '../../node_modules/parse-server/lib/Config.js';
+import { app } from './../../index.js';
+import { config } from './../../src/config.js';
+import Config from './../../node_modules/parse-server/lib/Config.js';
 
 export let parseServerState = {};
 export const dropDB = async () => {
