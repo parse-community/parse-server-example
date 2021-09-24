@@ -6,7 +6,7 @@
 [![License][license-svg]][license-link]
 [![Twitter Follow](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow%20us%20on%20Twitter&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
 
-Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express. Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express, utilising AWS CI/CD pipeline and AWS Secret Manager Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
 
 # Table of Contents <!-- omit in toc -->
 
@@ -28,8 +28,20 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
     - [Android](#android)
     - [iOS / tvOS / iPadOS / macOS (Swift)](#ios--tvos--ipados--macos-swift)
 
-# Local Development
+## Creating AWS Secrets
+* Log into the AWS Console and navigate to AWS Secrets Manager
+* Click "store a new secret"
+* Select "other type of secret"
+* Enter the initial secret value
+* Name the secret (`/src/config` will reference this secret name). If you have selected key pairs, make sure you properly destructure.
+* If you would like to automatically rotate the key, follow [this](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotate-secrets_turn-on-for-other.html) guide.
 
+
+## Local Development
+
+* Install AWS SDK with `npm install aws-sdk -g`
+* Create an AWS profile with `aws configure --profile profileName`
+* Update `npm start`'s `AWS_Profile` and `AWS_REGION`
 * Make sure you have at least Node 4.3. `node --version`
 * Clone this repo and change directory to it.
 * `npm install`

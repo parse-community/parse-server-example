@@ -8,6 +8,9 @@ import { config } from './src/config.js';
 import { renderFile } from 'ejs';
 const args = process.argv || [];
 const test = args.some(arg => arg.includes('jasmine'));
+if (test) {
+  process.env.TESTING = test;
+}
 
 export const app = express();
 app.set('view engine', 'ejs');
@@ -18,10 +21,9 @@ app.set('views', `./src/views`);
 app.use('/public', express.static('./src/public'));
 
 // Serve the Parse API on the /parse URL prefix
-const mountPath = process.env.PARSE_MOUNT || '/parse';
 if (!test) {
   const api = new ParseServer(config);
-  app.use(mountPath, api);
+  app.use('/parse', api);
 }
 
 // Parse Server plays nicely with the rest of your web routes
@@ -29,7 +31,7 @@ app.get('/', function (req, res) {
   res.render('test.html', { appId: config.appId, serverUrl: config.serverURL });
 });
 
-const port = process.env.PORT || 1337;
+const port = 1337;
 if (!test) {
   const httpServer = createServer(app);
   httpServer.listen(port, function () {
