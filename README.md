@@ -8,6 +8,8 @@
 
 Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express, utilising AWS Secret Manager Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
 
+Please note: this example uses top level await which is only available in Node >= v14.8.0.
+
 # Table of Contents <!-- omit in toc -->
 
 - [Local Development](#local-development)
