@@ -1,7 +1,7 @@
 import http from 'http';
 import { ParseServer } from 'parse-server';
 import { app } from './../../index.js';
-import { getConfig } from './../../src/config.js';
+import { config } from './../../src/config.js';
 import Config from './../../node_modules/parse-server/lib/Config.js';
 
 export let parseServerState = {};
@@ -17,7 +17,6 @@ export const dropDB = async () => {
  * @return {Promise} Runner state
  */
 export async function startParseServer() {
-  const config = await getConfig();
   delete config.databaseAdapter;
   const parseServerOptions = Object.assign(config, {
     databaseURI: 'mongodb://localhost:27017/parse-test',

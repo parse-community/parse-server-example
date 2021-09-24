@@ -4,10 +4,9 @@
 import express from 'express';
 import { ParseServer } from 'parse-server';
 import { createServer } from 'http';
-import { getConfig } from './src/config.js';
+import { config } from './src/config.js';
 import { renderFile } from 'ejs';
 
-const config = await getConfig();
 export const app = express();
 app.set('view engine', 'ejs');
 app.engine('html', renderFile);
@@ -26,7 +25,8 @@ if (!process.env.TESTING) {
   app.use('/parse', api);
 
   const httpServer = createServer(app);
-  httpServer.listen(1337, () => {
+  const port = 1337;
+  httpServer.listen(port, () => {
     console.log(`parse-server-example running on port ${port}.`);
   });
   ParseServer.createLiveQueryServer(httpServer);
