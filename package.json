@@ -20,7 +20,7 @@
     "start": "AWS_PROFILE=aws_profile AWS_REGION=aws_region node index.js",
     "lint": "eslint --cache ./src && eslint --cache index.js && eslint --cache ./spec",
     "lint-fix": "eslint --cache --fix ./src && eslint --cache --fix index.js && eslint --cache --fix ./spec",
-    "test": "mongodb-runner start && jasmine",
+    "test": "mongodb-runner start && TESTING=true jasmine",
     "test:kill": "kill $(lsof -ti:27017) && npm test",
     "coverage": "nyc jasmine",
     "prettier": "prettier --write '{src,spec}/{**/*,*}{.js,.html,.css}' 'index.js'",
