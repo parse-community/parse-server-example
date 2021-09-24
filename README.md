@@ -11,6 +11,7 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
 # Table of Contents <!-- omit in toc -->
 
 - [Local Development](#local-development)
+  - [Creating AWS Secrets](#creating-aws-secrets)
   - [File Setup](#file-setup)
   - [Helpful Scripts](#helpful-scripts)
 - [Remote Deployment](#remote-deployment)
@@ -28,12 +29,14 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
     - [Android](#android)
     - [iOS / tvOS / iPadOS / macOS (Swift)](#ios--tvos--ipados--macos-swift)
 
+# Local Development
+
 ## Creating AWS Secrets
 * Log into the AWS Console and navigate to AWS Secrets Manager
 * Click "store a new secret"
 * Select "other type of secret"
 * Enter the initial secret value
-* Name the secret (`/src/config` will reference this secret name). If you have selected key pairs, make sure you properly destructure.
+* Name the secret (`/src/config` will reference this secret name). If you have selected key pairs, make sure you properly destructure the returned secret.
 * If you would like to automatically rotate the key, follow [this](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotate-secrets_turn-on-for-other.html) guide.
 
 
