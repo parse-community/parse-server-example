@@ -6,7 +6,7 @@
 [![License][license-svg]][license-link]
 [![Twitter Follow](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow%20us%20on%20Twitter&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
 
-Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express, utilising AWS CI/CD pipeline and AWS Secret Manager Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express, utilising AWS Secret Manager Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
 
 # Table of Contents <!-- omit in toc -->
 
