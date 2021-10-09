@@ -14,7 +14,7 @@ async function login() {
     updateStatus('Please correct the invalid fields.');
     return;
   }
-  await resolve(Parse.User.logIn(username, password));
+  await runParseOperation(Parse.User.logIn(username, password));
   showLoggedIn();
   showTab(1);
   updateStatus('Successfully logged in! Now, lets save an object.');
@@ -26,7 +26,7 @@ async function signup() {
     updateStatus('Please correct the invalid fields.');
     return;
   }
-  await resolve(Parse.User.signUp(username, password));
+  await runParseOperation(Parse.User.signUp(username, password));
   showLoggedIn();
   showTab(1);
   updateStatus('Successfully signed up! Now, lets save an object.');
@@ -37,7 +37,7 @@ function showLoggedIn() {
 }
 
 async function logout() {
-  await resolve(Parse.User.logOut());
+  await runParseOperation(Parse.User.logOut());
   showTab(0);
   updateStatus('Successfully logged out.');
   document.getElementById('userDetails').style.display = 'none';
@@ -58,7 +58,7 @@ async function saveObject() {
   }
   const TestObject = new Parse.Object('TestObject');
   TestObject.set('name', name);
-  await resolve(TestObject.save());
+  await runParseOperation(TestObject.save());
   updateStatus(`Test Object saved with id: ${TestObject.id}.`);
   document.getElementById('saveButton').innerHTML = 'Next';
   testObjectSaved = true;
@@ -66,7 +66,7 @@ async function saveObject() {
 
 async function findObjects() {
   const query = new Parse.Query('TestObject');
-  const objects = await resolve(query.find());
+  const objects = await runParseOperation(query.find());
   let innerHTML = '<tr><th>ID</th><th>Name</th><th>Created At</th></tr>';
   for (const object of objects) {
     innerHTML += `<tr><td>${object.id}</td><td>${object.get('name')}</td><td>${object
@@ -78,7 +78,7 @@ async function findObjects() {
 }
 
 async function callFunction() {
-  const cloudResult = await resolve(Parse.Cloud.run('hello'));
+  const cloudResult = await runParseOperation(Parse.Cloud.run('hello'));
   updateStatus(`Cloud function 'hello' ran with result: ${cloudResult}`);
 }
 
@@ -112,7 +112,7 @@ function updateStatus(text) {
     status.innerHTML = text;
   }
 }
-async function resolve(promise) {
+async function runParseOperation(promise) {
   try {
     updateStatus('Loading...');
     const result = await Promise.resolve(promise);
