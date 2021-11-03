@@ -15,6 +15,7 @@ Parse.Cloud.define('ban', async req => {
 
   let query = new Parse.Query("Plays")
   query.equalTo("UserId", userid)
+  query.limit(Number.MAX_SAFE_INTEGER)
 
   const results = await query.find();
 
@@ -53,6 +54,7 @@ Parse.Cloud.define('ban', async req => {
 Parse.Cloud.define('unban', async req => {
   let query = new Parse.Query("Plays")
   query.equalTo("UserId", Number.parseInt(req.params.userid))
+  query.limit(Number.MAX_SAFE_INTEGER)
 
   const results = await query.find();
 
