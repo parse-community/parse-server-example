@@ -86,7 +86,7 @@ Detailed information is available here:
 
 [![Deploy to Alibaba Cloud](https://github.com/alibabacloud-howto/solution-applicationstack-parse/raw/main/images/deploy.png)](https://github.com/alibabacloud-howto/solution-applicationstack-parse)
 
-Either deploy the Parse Server with MongoDB or RDS for PostgreSQL as the backend database:
+Deploy the Parse Server either with MongoDB or RDS for PostgreSQL as the backend database:
 * [Deploy Application Stack Parse Server with MongoDB on Alibaba Cloud](https://github.com/alibabacloud-howto/solution-applicationstack-parse/tree/main/parse-server-mongodb)
 * [Deploy Application Stack Parse Server with RDS for PostgreSQL on Alibaba Cloud](https://github.com/alibabacloud-howto/solution-applicationstack-parse/tree/main/parse-server-postgresql)
 
