@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose")
 
 const schema = new Schema({
-    _id: String,
     Bads: Number,
     Rating: Number,
     Mean: Number,

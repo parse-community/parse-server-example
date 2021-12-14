@@ -62,54 +62,52 @@ module.exports = function(fastify, opts, done) {
         
         let oldScore = await Play.findOne({ SongMD5Hash: SongMD5Hash, UserId: UserId })
 
-        console.log(oldScore.toJSON())
-
         if (oldScore) {
-            oldScore.Perfects = Perfects
-            oldScore.Accuracy = Accuracy
-            oldScore.Mean = Mean
-            oldScore.MaxChain = MaxChain
-            oldScore.Greats = Greats
-            oldScore.Misses = Misses
-            oldScore.Goods = Goods
-            oldScore.Rate = Rate
-            oldScore.PlayerName = PlayerName
-            oldScore.Mods = Mods
-            oldScore.Score = Score
-            oldScore.Bads = Bads
-            oldScore.Rating = Rating
-            oldScore.UserId = UserId
-            oldScore.Marvelouses = Marvelouses
-            oldScore.SongMD5Hash = SongMD5Hash
-
-            await oldScore.save()
-        } else {
             if (Rating > oldScore.Rating || (oldScore.Rating == 0 && Score > oldScore.Score)) {
-                const score = new Play({
-                    Perfects: Perfects,
-                    Accuracy: Accuracy,
-                    Mean: Mean,
-                    MaxChain: MaxChain,
-                    Greats: Greats,
-                    Misses: Misses,
-                    Goods: Goods,
-                    Rate: Rate,
-                    PlayerName: PlayerName,
-                    Mods: Mods,
-                    Score: Score,
-                    Bads: Bads,
-                    Rating: Rating,
-                    UserId: UserId,
-                    Marvelouses: Marvelouses,
-                    SongMD5Hash: SongMD5Hash,
-                    Allowed: true
-                })
+                oldScore.Perfects = Perfects
+                oldScore.Accuracy = Accuracy
+                oldScore.Mean = Mean
+                oldScore.MaxChain = MaxChain
+                oldScore.Greats = Greats
+                oldScore.Misses = Misses
+                oldScore.Goods = Goods
+                oldScore.Rate = Rate
+                oldScore.PlayerName = PlayerName
+                oldScore.Mods = Mods
+                oldScore.Score = Score
+                oldScore.Bads = Bads
+                oldScore.Rating = Rating
+                oldScore.UserId = UserId
+                oldScore.Marvelouses = Marvelouses
+                oldScore.SongMD5Hash = SongMD5Hash
 
-                score.save()
+                await oldScore.save()
             }
+        } else {
+            const score = new Play({
+                Perfects: Perfects,
+                Accuracy: Accuracy,
+                Mean: Mean,
+                MaxChain: MaxChain,
+                Greats: Greats,
+                Misses: Misses,
+                Goods: Goods,
+                Rate: Rate,
+                PlayerName: PlayerName,
+                Mods: Mods,
+                Score: Score,
+                Bads: Bads,
+                Rating: Rating,
+                UserId: UserId,
+                Marvelouses: Marvelouses,
+                SongMD5Hash: SongMD5Hash,
+                Allowed: true
+            })
+
+            await score.save()
         }
 
-        const playerScores = await Play.find({ UserId: UserId })
+        const playerScores = await Play.find({ UserId: UserId }).sort("-Rating")
 
         const overall = getRating(playerScores)
         const accuracy = getAccuracy(playerScores)
@@ -133,6 +131,12 @@ module.exports = function(fastify, opts, done) {
         await Play.deleteOne({ _id: request.query.id })
 
         reply.send({message: "score went bye bye"})
+    })
+
+    fastify.get("/player", { preHandler: fastify.protected }, async (request, reply) => {
+        const plays = await Play.find({ UserId: Number.parseInt(request.query.userid) }).sort("-Rating")
+
+        reply.send(plays)
     })
 
     done()
