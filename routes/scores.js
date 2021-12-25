@@ -28,15 +28,16 @@ module.exports = function(fastify, opts, done) {
         return accuracy / scores.length
     }
 
-    fastify.get("/", { preHandler: fastify.protected }, (request, reply) => {
-        Play.find({SongMD5Hash: request.query.hash}).sort("-Rating").exec((err, results) => {
-            if (err) {
-                reply.status(500).send({error: err})
-                return
-            }
+    fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
+        let filter = { SongMD5Hash: request.query.hash, Allowed : true }
 
-            reply.send(results)
-        })
+        if (request.query.rate) {
+            filter.Rate = Number.parseInt(request.query.rate)
+        }
+
+        const query = Play.find(filter).sort("-Rating").limit(request.query.limit ? Number.parseInt(request.query.limit) : 50)
+
+        reply.send(await query)
     })
 
     fastify.post("/", { preHandler: fastify.protected }, async (request, reply) => {

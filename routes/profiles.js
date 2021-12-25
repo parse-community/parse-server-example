@@ -23,7 +23,9 @@ module.exports = (fastify, opts, done) => {
                     "CountryRegion": "$CountryRegion",
                     "Accuracy": "$Accuracy",
                     "PlayerName": "$PlayerName",
-                    "UserId": "$UserId"
+                    "UserId": "$UserId",
+                    "Elo": "$Elo",
+                    "RankedMatchesPlayed": "$RankedMatchesPlayed"
                   }
                 }
               }
@@ -43,6 +45,8 @@ module.exports = (fastify, opts, done) => {
                   "Accuracy": "$slots.Accuracy",
                   "PlayerName": "$slots.PlayerName",
                   "UserId": "$slots.UserId",
+                  "Elo": "$slots.Elo",
+                  "RankedMatchesPlayed": "$slots.RankedMatchesPlayed",
                   "Rank": {
                     $add: ["$Rank", 1]
                   }
@@ -58,7 +62,7 @@ module.exports = (fastify, opts, done) => {
 
         const results = await profile.aggregate(pipeline)
 
-        reply.send(results[0])
+        reply.send(results[0] || {})
     })
 
     fastify.get("/top", async (request, reply) => {

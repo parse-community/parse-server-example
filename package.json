@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/RoVSRG/robeats-cs-backend#readme",
   "dependencies": {
+    "arpad": "^2.0.0",
     "fastify": "^3.24.1",
     "mongoose": "^6.1.1"
   }

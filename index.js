@@ -27,6 +27,7 @@ fastify.get("/", (request, reply) => {
 fastify.register(require("./routes/scores"), { prefix: "/api/scores" })
 fastify.register(require("./routes/profiles"), { prefix: "/api/profiles" })
 fastify.register(require("./routes/bans"), { prefix: "/api/bans" })
+fastify.register(require("./routes/matchmaking"), { prefix: "/api/matchmaking" })
 
 fastify.listen(3000, function (err, address) {
     if (err) {

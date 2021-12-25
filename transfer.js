@@ -16,6 +16,8 @@ db.Global.find({}).forEach(slot => {
     db.Global.remove({ _id: id })
 
     db.Global.insert(slot)
+
+    db.Global.updateOne({ _id: id }, { $set: { Elo: 500, RankedMatchesPlayed: 0 } })
 })
 
 db.Bans.find({}).forEach(ban => {

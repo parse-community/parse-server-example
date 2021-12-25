@@ -7,6 +7,7 @@ const schema = new Schema({
     UserId: Number,
     Accuracy: Number,
     CountryRegion: String,
+    Elo: { type: Number, default: 500 },
     Allowed: Boolean
 }, {
     timestamps: { createdAt: "_created_at", updatedAt: "_updated_at" }
