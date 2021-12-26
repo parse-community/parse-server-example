@@ -10,7 +10,7 @@ module.exports = (fastify, opts, done) => {
         reply.send({})
     })
 
-    fastify.get("/elo", (request, reply) => {
+    fastify.get("/elo", { preHandler: fastify.protected }, (request, reply) => {
         const player = Number.parseInt(request.query.player)
         const opponent = Number.parseInt(request.query.opponent)
 
@@ -27,7 +27,7 @@ module.exports = (fastify, opts, done) => {
         reply.send({ elo: newElo })
     })
 
-    fastify.post("/match", async (request, reply) => {
+    fastify.post("/match", { preHandler: fastify.protected }, async (request, reply) => {
         await Match.findOneAndDelete({ UserId: Number.parseInt(request.query.userid) })
 
         const profile = await Profile.findOne({ UserId: Number.parseInt(request.query.userid) })
