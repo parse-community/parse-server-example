@@ -2,23 +2,26 @@ const Play = require("../models/play")
 const Profile = require("../models/profile")
 
 module.exports = function(fastify, opts, done) {
-    function getRating(topScores) {
+    function calculateOverallRating(scores) {
         let rating = 0;
-        let maxNumOfScores = 25;
-        for (let i = 0; i < maxNumOfScores; i++) {
-            if (topScores[i] != null) {
-                if (i <= 10) {
-                    rating = rating + topScores[i].Rating * 1.5;
-                } else {
-                    rating = rating + topScores[i].Rating;
-                }
+        let maxNumOfScores = Math.min(scores.length, 25);
+      
+        scores.forEach((item, i) => {
+            if (i > maxNumOfScores) {
+                return false
             }
-        }
-        rating = Math.floor((100 * rating) / 30) / 100;
-        return rating;
-    }
+      
+            if (i <= 10) {
+                rating = rating + item.Rating * 1.5
+            } else {
+                rating = rating + item.Rating;
+            }
+        })
+      
+        return Math.floor((100 * rating) / 30) / 100
+      }
 
-    function getAccuracy(scores) {
+    function calculateOverallAccuracy(scores) {
         let accuracy = 0
 
         scores.forEach(score => {
@@ -110,8 +113,8 @@ module.exports = function(fastify, opts, done) {
 
         const playerScores = await Play.find({ UserId: UserId }).sort("-Rating")
 
-        const overall = getRating(playerScores)
-        const accuracy = getAccuracy(playerScores)
+        const overall = calculateOverallRating(playerScores)
+        const accuracy = calculateOverallAccuracy(playerScores)
 
         await Profile.updateOne({ UserId: UserId }, {
             PlayerName: PlayerName,

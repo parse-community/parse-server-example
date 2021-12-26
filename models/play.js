@@ -16,7 +16,7 @@ const schema = new Schema({
     Marvelouses: Number,
     Score: Number,
     SongMD5Hash: String,
-    Allowed: Boolean,
+    Allowed: { type: Boolean, default: true },
     Mods: [Number]
 }, {
     timestamps: { createdAt: "_created_at", updatedAt: "_updated_at" }
