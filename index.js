@@ -11,9 +11,11 @@ fastify.decorate("protected", (request, reply, done) => {
 })
 
 const mongoose = require("mongoose")
-mongoose.connect("mongodb://127.0.0.1:27017/dev", {
+mongoose.connect(process.env.rcsdb, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    ssl: true,
+    sslCA: "./ca-certificate.crt"
 })
 
 fastify.get("/", (request, reply) => {
