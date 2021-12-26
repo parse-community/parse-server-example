@@ -1,7 +1,7 @@
 const profile = require("../models/profile")
 
 module.exports = (fastify, opts, done) => {
-    fastify.get("/", async (request, reply) => {
+    fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
         const pipeline = [
             {
               $match: {
@@ -65,7 +65,7 @@ module.exports = (fastify, opts, done) => {
         reply.send(results[0] || {})
     })
 
-    fastify.get("/top", async (request, reply) => {
+    fastify.get("/top", { preHandler: fastify.protected }, async (request, reply) => {
       const players = await profile.find({ Allowed: true }).sort("-Rating").limit(50)
 
       reply.send(players)

@@ -3,13 +3,13 @@ const Play = require("../models/play")
 const Profile = require("../models/profile")
 
 module.exports = (fastify, opts, done) => {
-    fastify.get("/", async (request, reply) => {
+    fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
         const ban = await Ban.findOne({ UserId: Number.parseInt(request.query.userid) })
 
         reply.send(ban)
     })
 
-    fastify.post("/", async (request, reply) => {
+    fastify.post("/", { preHandler: fastify.protected }, async (request, reply) => {
         const ban = new Ban({
             UserId: Number.parseInt(request.query.userid),
             Reason: request.query.reason
@@ -23,7 +23,7 @@ module.exports = (fastify, opts, done) => {
         reply.send("User was banned!")
     })
 
-    fastify.delete("/", async (request, reply) => {
+    fastify.delete("/", { preHandler: fastify.protected }, async (request, reply) => {
         await Ban.findOneAndDelete({ UserId: Number.parseInt(request.query.userid) })
         await Play.updateMany({ UserId: Number.parseInt(request.query.userid) }, { Allowed: true })
         await Profile.findOneAndUpdate({ UserId: Number.parseInt(request.query.userid) }, { Allowed: true })
