@@ -38,7 +38,7 @@ fastify.register(require("./routes/profiles"), { prefix: "/api/profiles" })
 fastify.register(require("./routes/bans"), { prefix: "/api/bans" })
 fastify.register(require("./routes/matchmaking"), { prefix: "/api/matchmaking" })
 
-fastify.listen(3000, function (err, address) {
+fastify.listen(process.env.rcsport ? Number.parseInt(process.env.rcsport) : 3000, function (err, address) {
     if (err) {
         fastify.log.error(err)
         process.exit(1)
