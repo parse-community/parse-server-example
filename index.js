@@ -10,13 +10,20 @@ fastify.decorate("protected", (request, reply, done) => {
     }
 })
 
-const mongoose = require("mongoose")
-mongoose.connect(process.env.rcsdb, {
+let connectOptions = {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    ssl: true,
-    sslCA: "./ca-certificate.crt"
-})
+    useUnifiedTopology: true
+}
+
+if (process.env.rcsdb.match("127.0.0.1") == null) {
+    connectOptions.ssl = true
+    connectOptions.sslCA = "./ca-certificate.crt"
+}
+
+console.log(connectOptions)
+
+const mongoose = require("mongoose")
+mongoose.connect(process.env.rcsdb, connectOptions)
 
 fastify.get("/", (request, reply) => {
     reply.type('text/html').send("<img src=\"https://forklores.files.wordpress.com/2012/11/pinto-beans-and-cornbread-3.jpg?w=663&h=501\"/>")

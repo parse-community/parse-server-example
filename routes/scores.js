@@ -2,6 +2,18 @@ const Play = require("../models/play")
 const Profile = require("../models/profile")
 
 module.exports = function(fastify, opts, done) {
+    function calculateRating(difficulty, accuracy, rate) {        
+        let ratemult
+        
+        if (rate >= 1) {
+            ratemult = 1 + (rate-1) * 1.75
+        } else {
+            ratemult = 1 + (rate-1) * 1.6
+        }
+        
+        return ratemult * Math.pow(accuracy / 97, 4) * difficulty
+    }
+
     function calculateOverallRating(scores) {
         let rating = 0;
         let maxNumOfScores = Math.min(scores.length, 25);
@@ -29,6 +41,23 @@ module.exports = function(fastify, opts, done) {
         })
 
         return accuracy / scores.length
+    }
+
+    async function recalculateUser(userId, filter = {}) {
+        const playerScores = await Play.find({ UserId: userId }).sort("-Rating")
+
+        const overall = calculateOverallRating(playerScores)
+        const accuracy = calculateOverallAccuracy(playerScores)
+
+        let update = {
+            Accuracy: accuracy,
+            Rating: overall,
+            ...filter
+        }
+
+        await Profile.updateOne({ UserId: userId }, update, {
+            upsert: true
+        })
     }
 
     fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
@@ -111,22 +140,28 @@ module.exports = function(fastify, opts, done) {
             await score.save()
         }
 
-        const playerScores = await Play.find({ UserId: UserId }).sort("-Rating")
-
-        const overall = calculateOverallRating(playerScores)
-        const accuracy = calculateOverallAccuracy(playerScores)
-
-        await Profile.updateOne({ UserId: UserId }, {
+        await recalculateUser(UserId, {
             PlayerName: PlayerName,
-            Accuracy: accuracy,
-            CountryRegion: CountryRegion,
-            Rating: overall,
-            $inc: {
-                TotalMapsPlayed: 1
-            }
-        }, {
-            upsert: true
+            CountryRegion: CountryRegion
         })
+
+        reply.send({ok: "ok"})
+    })
+
+    fastify.post("/rerate", { preHandler: fastify.protected }, async (request, reply) => {
+        const difficulty = Number.parseInt(request.query.difficulty)
+
+        if (!request.query.hash) {
+            throw new Error("Hash must be specified!")
+        }
+
+        for await (const element of Play.find({ SongMD5Hash: request.query.hash })) {
+            element.Rating = calculateRating(difficulty, element.Accuracy, element.Rate / 100)
+
+            await element.save()
+
+            await recalculateUser(element.UserId)
+        }
 
         reply.send({ok: "ok"})
     })
