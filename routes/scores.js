@@ -23,8 +23,8 @@ module.exports = function(fastify, opts, done) {
         } else {
             ratemult = 1 + (rate-1) * 1.45
         }
-        
-        return ratemult * Math.pow(accuracy / 97, 4) * difficulty
+
+        return difficulty * weightPercentage(accuracy)/100 * ratemult
     }
 
     const calculateOverallRating = (scores) => {
