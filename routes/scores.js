@@ -19,9 +19,9 @@ module.exports = function(fastify, opts, done) {
         let ratemult
         
         if (rate >= 1) {
-            ratemult = 1 + (rate-1) * 1.6
+            ratemult = 1 + (rate-1) * 1.3
         } else {
-            ratemult = 1 + (rate-1) * 1.45
+            ratemult = 1 + (rate-1) * 1.15
         }
 
         return difficulty * weightPercentage(accuracy)/100 * ratemult
