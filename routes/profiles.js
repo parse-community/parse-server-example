@@ -6,11 +6,9 @@ module.exports = (fastify, opts, done) => {
 
         const rank = profile ? (await Profile.countDocuments({ "Rating": { $gt: profile.Rating } })) + 1 : undefined
 
-        console.log(rank)
-
         reply.send({
           Rank: rank,
-          ...profile.toObject()
+          ...profile?.toObject()
         })
     })
 
