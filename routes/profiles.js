@@ -1,72 +1,21 @@
-const profile = require("../models/profile")
+const Profile = require("../models/profile")
 
 module.exports = (fastify, opts, done) => {
     fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
-        const pipeline = [
-            {
-              $match: {
-                "Allowed": true
-              }
-            },
-            {
-              $sort: {
-                "Rating": -1
-              }
-            },
-            {
-              $group: {
-                "_id": null,
-                "slots": {
-                  $push: {
-                    "Rating": "$Rating",
-                    "TotalMapsPlayed": "$TotalMapsPlayed",
-                    "CountryRegion": "$CountryRegion",
-                    "Accuracy": "$Accuracy",
-                    "PlayerName": "$PlayerName",
-                    "UserId": "$UserId",
-                    "Elo": "$Elo",
-                    "RankedMatchesPlayed": "$RankedMatchesPlayed"
-                  }
-                }
-              }
-            },
-            {
-              $unwind: {
-                path: "$slots",
-                includeArrayIndex: "Rank"
-              }
-            },
-            {
-              $replaceRoot: {
-                "newRoot": {
-                  "Rating": "$slots.Rating",
-                  "TotalMapsPlayed": "$slots.TotalMapsPlayed",
-                  "CountryRegion": "$slots.CountryRegion",
-                  "Accuracy": "$slots.Accuracy",
-                  "PlayerName": "$slots.PlayerName",
-                  "UserId": "$slots.UserId",
-                  "Elo": "$slots.Elo",
-                  "RankedMatchesPlayed": "$slots.RankedMatchesPlayed",
-                  "Rank": {
-                    $add: ["$Rank", 1]
-                  }
-                },
-              }
-            },
-            {
-                $match: {
-                    "UserId": Number.parseInt(request.query.userid)
-                }
-            }
-        ]
+        const profile = await Profile.findOne({ "UserId": Number.parseInt(request.query.userid) })
 
-        const results = await profile.aggregate(pipeline)
+        const rank = profile ? (await Profile.countDocuments({ "Rating": { $gt: profile.Rating } })) + 1 : undefined
 
-        reply.send(results[0] || {})
+        console.log(rank)
+
+        reply.send({
+          Rank: rank,
+          ...profile.toObject()
+        })
     })
 
     fastify.get("/top", { preHandler: fastify.protected }, async (request, reply) => {
-      const players = await profile.find({ Allowed: true }).sort("-Rating").limit(50)
+      const players = await Profile.find({ Allowed: true }).sort("-Rating").limit(50)
 
       reply.send(players)
     })
