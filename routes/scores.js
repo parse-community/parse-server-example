@@ -20,17 +20,13 @@ const weightPercentage = (value) => {
         return 0;
 }
 
-module.exports = function(fastify, opts, done) {
-    const calculateRating = (difficulty, accuracy, rate) => {        
-        let ratemult
-        
-        if (rate >= 1) {
-            ratemult = 1 + (rate-1) * 1.3
-        } else {
-            ratemult = 1 + (rate-1) * 1.15
-        }
+const calculateDifficulty = (difficulty, rate) => {
+    return difficulty * (3.525563 + (0.03531581 - 3.525563) / (1 + Math.pow(rate / 1.457032, 2.729336)))
+}
 
-        return difficulty * weightPercentage(accuracy)/100 * ratemult
+module.exports = function(fastify, opts, done) {
+    const calculateRating = (difficulty, accuracy) => {
+        return difficulty * weightPercentage(accuracy) / 100
     }
 
     const calculateOverallRating = (scores) => {
@@ -168,13 +164,15 @@ module.exports = function(fastify, opts, done) {
     })
 
     fastify.post("/rerate", { preHandler: fastify.protected }, async (request, reply) => {
-        const difficulty = Number.parseInt(request.query.difficulty)
+        const baseDifficulty = Number.parseInt(request.query.difficulty)
 
         if (!request.query.hash) {
             throw new Error("Hash must be specified!")
         }
 
         for await (const element of Play.find({ SongMD5Hash: request.query.hash })) {
+            const difficulty = calculateDifficulty(baseDifficulty, element.Rate / 100)
+
             element.Rating = calculateRating(difficulty, element.Accuracy, element.Rate / 100)
 
             await element.save()
