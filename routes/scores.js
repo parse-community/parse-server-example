@@ -1,13 +1,19 @@
 const Play = require("../models/play")
 const Profile = require("../models/profile")
 
+// if x == 100 then return 110
+// elseif x >= 90 then return -116640 + (64595/18)*x - (9937/270)*x^2 + (17/135)*x^3
+// elseif x >= 85 then return 6040 - (851/6)*x + (5/6)*x^2
+// elseif x >= 75 then return 0.5*x - 37.5
+// else return 0 end
+
 const weightPercentage = (value) => {
     if (value === 100)
         return 110;
     else if (value >= 90)
-        return -116640 + (64595/18) * value - Math.pow((9937/270)*value, 2) + Math.pow((17/135)*value, 3);
+        return -116640 + (64595/18) * value - (9937/270)*Math.pow(value, 2) + (17/135)*Math.pow(value, 3);
     else if (value >= 85)
-        return 6040 - (851/6) * value + Math.pow((5/6) * value, 2);
+        return 6040 - (851/6) * value + (5/6) * Math.pow(value, 2);
     else if (value >= 75)
         return 0.5 * value - 37.5;
     else
