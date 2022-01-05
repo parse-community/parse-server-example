@@ -21,7 +21,13 @@ const weightPercentage = (value) => {
 }
 
 const calculateDifficulty = (difficulty, rate) => {
-    return difficulty * (3.525563 + (0.03531581 - 3.525563) / (1 + Math.pow(rate / 1.457032, 2.729336)))
+    if (rate == 1) {
+        return difficulty
+    } else if (rate < 1) {
+        return difficulty * (459616.4 + (-0.008317092 - 459616.4)/(1 + Math.pow(rate/5051.127, 1.532436)))
+    } else {
+        return difficulty * (946.4179 + (-6.728875 - 946.4179)/(1 + Math.pow(rate/85114960, 0.2634697)))
+    }
 }
 
 module.exports = function(fastify, opts, done) {
