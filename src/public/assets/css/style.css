@@ -1,0 +1,163 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  line-height: 24px;
+  color: #585858;
+}
+
+a {
+  color: #169cee;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #2c3d50;
+}
+
+a:visited {
+  color: #2a6496;
+}
+
+/*
+  helpers
+ */
+
+.align-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+  app css
+ */
+
+.container {
+  margin: 0 auto;
+  margin-top: 45px;
+  max-width: 860px;
+}
+
+#parse-logo {
+  width: 109px;
+  height: 110px;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.up-and-running,
+.time-to-deploy {
+  font-weight: bold;
+}
+
+.advice {
+  margin-bottom: 40px;
+}
+
+.advice {
+  background: #f4f4f4;
+  border-radius: 4px;
+  -webkit-border-radius: 4px 4px;
+  -moz-border-radius: 4px 4px;
+  -ms-border-radius: 4px 4px;
+  -o-border-radius: 4px 4px;
+  padding: 10px 20px;
+}
+
+#parse-url {
+  color: #169cee;
+  font-weight: bold;
+}
+
+#regForm {
+  background-color: #ffffff;
+  margin: 20px auto;
+  padding: 20px;
+  width: 70%;
+  min-width: 300px;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Style the input fields */
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  border: 1px solid #aaaaaa;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+  text-align: center;
+}
+#userDetails {
+  display: none;
+  text-align: center;
+}
+
+button {
+  background-color: #169cee;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prod-test {
+  margin-bottom: 60px;
+}
+
+#prod-test input {
+  background-color: #fff;
+  border: 1px solid #b5b5b5;
+  color: #000000;
+  font-family: 'Inconsolata';
+  font-size: 16px;
+  line-height: 17px;
+  padding: 12px;
+  width: 260px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px 4px;
+  -moz-border-radius: 4px 4px;
+  -ms-border-radius: 4px 4px;
+  -o-border-radius: 4px 4px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+#footer {
+  border-top: 1px solid #e2e2e2;
+  padding: 20px;
+}
+
+#footer ul li {
+  list-style-type: none;
+  display: inline-block;
+}
+#footer ul li:after {
+  content: '-';
+  padding: 10px;
+}
+#footer ul li:last-child:after {
+  content: '';
+}
