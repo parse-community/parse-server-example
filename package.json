@@ -9,34 +9,38 @@
   },
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "2.994.0",
+    "ejs": "3.1.6",
     "express": "4.17.1",
-    "kerberos": "1.1.4",
-    "parse": "2.19.0",
-    "parse-server": "4.5.0"
+    "kerberos": "1.1.6",
+    "parse": "3.3.0",
+    "parse-server": "4.10.3"
   },
   "scripts": {
-    "start": "node index.js",
-    "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
-    "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./spec",
-    "test": "mongodb-runner start && jasmine",
+    "start": "AWS_PROFILE=aws_profile AWS_REGION=aws_region node index.js",
+    "lint": "eslint --cache ./src && eslint --cache index.js && eslint --cache ./spec",
+    "lint-fix": "eslint --cache --fix ./src && eslint --cache --fix index.js && eslint --cache --fix ./spec",
+    "test": "mongodb-runner start && TESTING=true jasmine",
+    "test:kill": "kill $(lsof -ti:27017) && npm test",
     "coverage": "nyc jasmine",
-    "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
+    "prettier": "prettier --write '{src,spec}/{**/*,*}{.js,.html,.css}' 'index.js'",
     "watch": "babel-watch index.js"
   },
   "engines": {
     "node": ">=4.3"
   },
+  "type": "module",
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "babel-watch": "7.4.0",
-    "eslint": "7.19.0",
-    "eslint-config-standard": "16.0.2",
-    "eslint-plugin-import": "2.22.1",
+    "babel-watch": "7.5.0",
+    "eslint": "7.32.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.24.2",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "4.2.1",
-    "jasmine": "3.6.4",
-    "mongodb-runner": "4.8.1",
+    "eslint-plugin-promise": "5.1.0",
+    "jasmine": "3.9.0",
+    "mongodb-runner": "4.8.3",
     "nyc": "15.1.0",
-    "prettier": "2.2.1"
+    "prettier": "2.3.2"
   }
 }

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Parse Server Example</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-min.css" rel="stylesheet" />
+    <link href="/public/assets/css/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="align-center">
+        <img id="parse-logo" src="/public/assets/images/parse-logo.png" />
+      </div>
+
+      <div class="advice">
+        <p>
+          <strong>Hi</strong>, and welcome to Parse Server! We've prepared a small 3-steps page to
+          assist you testing your local Parse server.
+        </p>
+        <p>These first steps will help you run and test the Parse server locally.</p>
+      </div>
+
+      <p class="up-and-running">
+        Looks like our local Parse Server is running under
+        <span id="parse-url"><%= serverUrl %></span>. Let’s test it?
+      </p>
+
+      <p>
+        We have an express server with Parse server running on top of it connected to a MongoDB.
+      </p>
+
+      <p>
+        The following steps will try to save some data on parse server and then fetch it back. Hey
+        ho?
+      </p>
+
+      <div id="userDetails">
+        Currently logged in as:
+        <p id="currentUser"></p>
+        <button onclick="logout()">Logout</button>
+        <code>
+          <br />
+          await Parse.User.logOut();<br />
+        </code>
+      </div>
+      <div id="regForm">
+        <div class="tab">
+          <h1>Step One: Login or Signup</h1>
+          <p><input id="username" placeholder="Username" oninput="this.className = ''" /></p>
+          <p>
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              oninput="this.className = ''"
+            />
+          </p>
+          <button onclick="login()">Login</button>
+          <button onclick="signup()">Signup</button>
+          <p class="status"></p>
+          <code>
+            await Parse.User.logIn(username, password);<br />
+            // or <br />
+            const user = new Parse.User();<br />
+            user.setUsername(username);<br />
+            user.setPassword(password);<br />
+            await user.signUp();
+          </code>
+        </div>
+
+        <div class="tab">
+          <h1>Step Two: Save a TestObject</h1>
+          <p><input id="name" placeholder="Object Name" oninput="this.className = ''" /></p>
+          <button id="saveButton" onclick="saveObject()">Save Object</button>
+          <p class="status"></p>
+
+          <code>
+            const obj = new Parse.Object('TestObject');<br />
+            obj.set('name', name);<br />
+            await obj.save();
+          </code>
+        </div>
+
+        <div class="tab">
+          <h1>Step Three: Find TestObjects</h1>
+          <table id="testTable"></table>
+          <button id="nextPage" onclick="showTab(3)">Next</button>
+          <p class="status"></p>
+
+          <code>
+            const query = new Parse.Query('TestObject');<br />
+            const objects = await query.find();
+          </code>
+        </div>
+
+        <div class="tab">
+          <h1>Step Four: Call a Cloud Function</h1>
+          <button onclick="callFunction()">Call Function</button>
+          <p class="status"></p>
+
+          <code> const result = await Parse.Cloud.run('hello'); </code>
+        </div>
+      </div>
+
+      <footer id="footer" class="align-center">
+        <ul>
+          <li><a href="https://parseplatform.org" target="_blank">parseplatform.org</a></li>
+          <li><a href="https://docs.parseplatform.org" target="_blank">Docs</a></li>
+          <li>
+            <a href="https://github.com/ParsePlatform/parse-server-example" target="_blank"
+              >Github</a
+            >
+          </li>
+        </ul>
+      </footer>
+    </div>
+    <script src="/public/assets/js/script.js"></script>
+    <script
+      src="https://npmcdn.com/parse@3.3.0/dist/parse.min.js"
+      onload="loadParse('<%= appId %>', '<%= serverUrl %>')"
+    ></script>
+  </body>
+</html>
