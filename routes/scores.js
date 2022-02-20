@@ -88,7 +88,7 @@ module.exports = function(fastify, opts, done) {
             filter.Rate = Number.parseInt(request.query.rate)
         }
 
-        const query = Play.find(filter).sort("-Rating").limit(request.query.limit ? Number.parseInt(request.query.limit) : 50)
+        const query = Play.find(filter).sort({ "Rating": -1, "Score": -1 }).limit(request.query.limit ? Number.parseInt(request.query.limit) : 50)
 
         reply.send(await query)
     })
