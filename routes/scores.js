@@ -73,6 +73,9 @@ module.exports = function(fastify, opts, done) {
         let update = {
             Accuracy: accuracy,
             Rating: overall,
+            $inc: {
+                TotalMapsPlayed: 1
+            },
             ...filter
         }
 
