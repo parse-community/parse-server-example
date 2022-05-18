@@ -1,14 +1,22 @@
-# parse-server-example <!-- omit in toc -->
+![parse-repository-header](https://user-images.githubusercontent.com/5673677/169108275-8efa0dae-4997-4ddc-9c12-88a9c4c42e31.png)
+
+---
 
 [![Join The Conversation](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/parse-server)
-[![Backers on Open Collective](https://opencollective.com/parse-server/tiers/backers/badge.svg)][open-collective-link]
-[![Sponsors on Open Collective](https://opencollective.com/parse-server/tiers/sponsors/badge.svg)][open-collective-link]
+[![Backers on Open Collective](https://opencollective.com/parse-server/backers/badge.svg)][open-collective-link]
+[![Sponsors on Open Collective](https://opencollective.com/parse-server/sponsors/badge.svg)][open-collective-link]
 [![License][license-svg]][license-link]
-[![Twitter Follow](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow%20us%20on%20Twitter&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
+[![Forum](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/parse-server)
+[![Twitter](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
 
-Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express. Read the full [Parse Server Guide](https://docs.parseplatform.org/parse-server/guide/) for more information.
+---
 
-# Table of Contents <!-- omit in toc -->
+This is an example project using the [Parse Server](https://github.com/ParsePlatform/parse-server) module on Express.
+
+
+The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is a good place to get started. An [API reference](https://parseplatform.org/parse-server/api/) and [Cloud Code guide](https://docs.parseplatform.org/cloudcode/guide/) are also available. If you're interested in developing for Parse Server, the [Development guide](https://docs.parseplatform.org/parse-server/guide/#development-guide) will help you get set up. All documentations for Parse Platform's server and its client SDKs are available at [parseplatform.org](https://parseplatform.org). 
+
+---
 
 - [Local Development](#local-development)
   - [Helpful Scripts](#helpful-scripts)
@@ -29,15 +37,14 @@ Example project using the [parse-server](https://github.com/ParsePlatform/parse-
 
 # Local Development
 
-* Make sure you have at least Node 4.3. `node --version`
-* Clone this repo and change directory to it.
-* `npm install`
-* Install mongo locally using http://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x/
-* Run `mongo` to connect to your database, just to make sure it's working. Once you see a mongo prompt, exit with Control-D
-* Run the server with: `npm start`
-* By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `export PARSE_MOUNT=/1` before launching the server.
-* You now have a database named "dev" that contains your Parse data
-* Install ngrok and you can test with devices
+1. Make sure you have a compatible Node.js version installed. Run `node --version` to see your local Node.js version. Open the `package.json` file too see which version of Node.js this example repository requires at `{ engines": { "node": "<NODE_VERSION>" } }`. Note that there may be other Parse Server version available that support older or newer Node.js versions, see the [Parse Server compatibility table](https://github.com/parse-community/parse-server#compatibility).
+2. Clone this repository and change directory to it.
+3. Run `npm install`.
+4. Install a MongoDB database locally from https://docs.mongodb.org/master/tutorial/install-mongodb-on-os-x.
+5. Run `mongo` to connect to your database, just to make sure it's working. Once you see a mongo prompt, exit with `Control-D`.
+6. Launch Parse Server with `npm start`.
+7. By default the API route will use `/parse` as a base. You can change this by setting the environment variable `PARSE_MOUNT`, for example in the CLI run run `export PARSE_MOUNT=/app` to set the path to `app`.
+8. Your Parse Server is not running and is connected to your local database named `dev` in which the data is stored that you manage via Parse Server.
 
 ## Helpful Scripts
 These scripts can help you to develop your app for Parse Server:
@@ -65,7 +72,7 @@ Alternatively, to deploy manually:
 
 ## AWS Elastic Beanstalk
 
-<a title="Deploy to AWS" href="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/eb-parse-server-sample/parse-server-example.zip" target="_blank"><img src="http://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png" height="40"></a>
+<a title="Deploy to AWS" href="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/eb-parse-server-sample/parse-server-example.zip" target="_blank"><img src="https://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png" height="40"></a>
 
 Alternatively, deploy your local changes manually:
 
@@ -75,7 +82,7 @@ Alternatively, deploy your local changes manually:
 
 ## Microsoft Azure App Service
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.ParseServer)
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.ParseServer)
 
 Detailed information is available here:
 * [Parse Server with Azure Managed Services](https://azure.microsoft.com/en-us/marketplace/partners/microsoft/parseserver/)
@@ -104,7 +111,7 @@ A detailed tutorial is available here:
 Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
-* Log in with the [Scalingo CLI](http://cli.scalingo.com/) and create an app: `scalingo create my-parse`
+* Log in with the [Scalingo CLI](https://cli.scalingo.com/) and create an app: `scalingo create my-parse`
 * Use the [Scalingo MongoDB addon](https://scalingo.com/addons/scalingo-mongodb): `scalingo addons-add scalingo-mongodb free`
 * Setup MongoDB connection string: `scalingo env-set DATABASE_URI='$SCALINGO_MONGO_URL'`
 * By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
@@ -112,7 +119,7 @@ Alternatively, to deploy manually:
 
 ## OpenShift Online (Next Gen)
 
-1. Register for a free [OpenShift Online (Next Gen) account](http://www.openshift.com/devpreview/register.html)
+1. Register for a free [OpenShift Online (Next Gen) account](https://www.openshift.com/devpreview/register.html)
 1. Create a project in the [OpenShift Online Console](https://console.preview.openshift.com/console/).
 1. Install the [OpenShift CLI](https://docs.openshift.com/online/getting_started/beyond_the_basics.html#btb-installing-the-openshift-cli).
 1. Add the Parse Server template to your project: `oc create -f https://raw.githubusercontent.com/ParsePlatform/parse-server-example/master/openshift.json`
