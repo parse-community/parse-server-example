@@ -26,12 +26,12 @@ async function startParseServer() {
     mountPath: '/test',
     serverURL: `http://localhost:30001/test`,
     logLevel: 'error',
-    silent: true
+    silent: true,
   });
   const parseServer = new ParseServer(parseServerOptions);
   app.use(parseServerOptions.mountPath, parseServer);
   const httpServer = http.createServer(app);
-  await new Promise((resolve) => httpServer.listen(parseServerOptions.port, resolve));
+  await new Promise(resolve => httpServer.listen(parseServerOptions.port, resolve));
   Object.assign(parseServerState, {
     parseServer,
     httpServer,
@@ -47,7 +47,7 @@ async function startParseServer() {
  */
 async function stopParseServer() {
   const { httpServer } = parseServerState;
-  await new Promise((resolve) => httpServer.close(resolve));
+  await new Promise(resolve => httpServer.close(resolve));
   parseServerState = {};
 }
 
