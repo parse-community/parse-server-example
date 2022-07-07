@@ -85,13 +85,45 @@ module.exports = function(fastify, opts, done) {
     }
 
     fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
-        let filter = { SongMD5Hash: request.query.hash, Allowed : true }
+        // let filter = { SongMD5Hash: request.query.hash, Allowed : true }
 
-        if (request.query.rate) {
-            filter.Rate = Number.parseInt(request.query.rate)
-        }
+        // if (request.query.rate) {
+        //     filter.Rate = Number.parseInt(request.query.rate)
+        // }
 
-        const query = Play.find(filter).sort({ "Rating": -1, "Score": -1 }).limit(request.query.limit ? Number.parseInt(request.query.limit) : 50)
+        // const query = Play.find(filter).sort({ "Rating": -1, "Score": -1 }).limit(request.query.limit ? Number.parseInt(request.query.limit) : 50)
+
+        const query = Play.aggregate([
+            {
+              "$match": {
+                "SongMD5Hash": request.query.hash,
+                "Allowed": true
+              }
+            },
+            {
+              "$sort": {
+                "Rating": -1, 
+                "Score": -1
+              }
+            },
+            {
+                "$limit": request.query.limit ? Number.parseInt(request.query.limit) : 50
+            },
+            {
+              "$lookup": {
+                "from": "Global", 
+                "localField": "UserId", 
+                "foreignField": "UserId", 
+                "as": "Player"
+              }
+            },
+            {
+              "$unwind": {
+                "path": "$Player", 
+                "preserveNullAndEmptyArrays": true
+              }
+            }
+        ])
 
         reply.send(await query)
     })
