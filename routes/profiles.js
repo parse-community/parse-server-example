@@ -4,7 +4,7 @@ module.exports = (fastify, opts, done) => {
     fastify.get("/", { preHandler: fastify.protected }, async (request, reply) => {
         const profile = await Profile.findOne({ "UserId": Number.parseInt(request.query.userid) })
 
-        const rank = profile ? (await Profile.countDocuments({ "Rating": { $gt: profile.Rating }, "Allowed": true })) + 1 : undefined
+        const rank = profile ? (await Profile.countDocuments({ "Rating.Overall": { $gt: profile.Rating }, "Allowed": true })) + 1 : undefined
 
         reply.send({
           Rank: rank,
@@ -13,7 +13,7 @@ module.exports = (fastify, opts, done) => {
     })
 
     fastify.get("/top", { preHandler: fastify.protected }, async (request, reply) => {
-      const players = await Profile.find({ Allowed: true }).sort("-Rating").limit(50)
+      const players = await Profile.find({ Allowed: true }).sort("-Rating.Overall").limit(50)
 
       reply.send(players)
     })

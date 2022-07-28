@@ -1,8 +1,18 @@
 const { Schema, model } = require("mongoose")
 
+const Rating = new Schema({
+    Chordjack: Number,
+    Handstream: Number,
+    Jack: Number,
+    Jumpstream: Number,
+    Stamina: Number,
+    Stream: Number,
+    Technical: Number,
+})
+
 const schema = new Schema({
     TotalMapsPlayed: Number,
-    Rating: Number,
+    Rating: Rating,
     PlayerName: String,
     UserId: Number,
     Accuracy: Number,
