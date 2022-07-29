@@ -15,7 +15,7 @@ let connectOptions = {
     useUnifiedTopology: true
 }
 
-if (process.env.rcsdb.match("127.0.0.1") == null && process.env.rcsdb.match("localhost") == null) {
+if (process.env.rcsdb?.match("127.0.0.1") == null && process.env.rcsdb?.match("localhost") == null) {
     connectOptions.ssl = true
     connectOptions.sslCA = "./ca-certificate.crt"
 }
