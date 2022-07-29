@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose")
 
 const Rating = new Schema({
+    Overall: Number,
     Chordjack: Number,
     Handstream: Number,
     Jack: Number,

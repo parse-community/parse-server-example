@@ -151,8 +151,10 @@ module.exports = function(fastify, opts, done) {
         
         let oldScore = await Play.findOne({ SongMD5Hash: SongMD5Hash, UserId: UserId })
 
+        console.log(oldScore?.Rating, Rating)
+
         if (oldScore) {
-            if (Rating > oldScore.Rating || (oldScore.Rating == 0 && Score > oldScore.Score)) {
+            if (Rating.Overall > oldScore.Rating.Overall || (oldScore.Rating.Overall == 0 && Score > oldScore.Score)) {
                 oldScore.Perfects = Perfects
                 oldScore.Accuracy = Accuracy
                 oldScore.Mean = Mean
