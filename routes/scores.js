@@ -20,39 +20,47 @@ const weightPercentage = (value) => {
         return 0;
 }
 
-const calculateDifficulty = (difficulty, rate) => {
-    if (rate == 1) {
-        return difficulty
-    } else if (rate < 1) {
-        return difficulty * (459616.4 + (-0.008317092 - 459616.4)/(1 + Math.pow(rate/5051.127, 1.532436)))
-    } else {
-        return difficulty * (946.4179 + (-6.728875 - 946.4179)/(1 + Math.pow(rate/85114960, 0.2634697)))
-    }
-}
-
 module.exports = function(fastify, opts, done) {
-    const calculateRating = (difficulty, accuracy) => {
-        return difficulty * weightPercentage(accuracy) / 100
-    }
-
     const calculateOverallRating = (scores) => {
-        let rating = 0;
+        let rating = {
+            Overall: 0,
+            Stream: 0,
+            Stamina: 0,
+            Jack: 0,
+            Chordjack: 0,
+            Jumpstream: 0,
+            Handstream: 0,
+            Technical: 0,
+        };
+    
+        let skillsets = {}
+    
+        for (let skillset of Object.keys(rating)) {
+            skillsets[skillset] = scores.map(score => typeof score.Rating == "object" ? score.Rating[skillset] : 0).sort((a, b) => b - a)
+        }
+        
         let maxNumOfScores = Math.min(scores.length, 25);
       
-        scores.forEach((item, i) => {
-            if (i > maxNumOfScores) {
-                return false
-            }
-      
-            if (i <= 10) {
-                rating = rating + item.Rating * 1.5
-            } else {
-                rating = rating + item.Rating;
-            }
-        })
-      
-        return Math.floor((100 * rating) / 30) / 100
-      }
+        for (let skillset of Object.keys(skillsets)) {
+            skillsets[skillset].forEach((item, i) => {
+                if (i + 1 > maxNumOfScores) {
+                    return false
+                }
+                
+                if (i + 1 <= 10) {
+                    rating[skillset] += item * 1.5
+                } else {
+                    rating[skillset] += item
+                }
+            })
+        }
+    
+        for (let skillset of Object.keys(skillsets)) {
+            rating[skillset] = Math.floor((100 * rating[skillset]) / 30) / 100
+        }
+    
+        return rating
+    }
 
     function calculateOverallAccuracy(scores) {
         let accuracy = 0
@@ -151,9 +159,12 @@ module.exports = function(fastify, opts, done) {
         
         let oldScore = await Play.findOne({ SongMD5Hash: SongMD5Hash, UserId: UserId })
 
-        console.log(oldScore?.Rating, Rating)
-
         if (oldScore) {
+            if (!oldScore.Rating) {
+                reply.send({ error: "Score already exists but has no rating" })
+                return
+            }
+
             if (Rating.Overall > oldScore.Rating.Overall || (oldScore.Rating.Overall == 0 && Score > oldScore.Score)) {
                 oldScore.Perfects = Perfects
                 oldScore.Accuracy = Accuracy
