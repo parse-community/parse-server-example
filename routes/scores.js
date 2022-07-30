@@ -238,7 +238,11 @@ module.exports = function(fastify, opts, done) {
     })
 
     fastify.delete("/", { preHandler: fastify.protected }, async (request, reply) => {
-        await Play.deleteOne({ _id: request.query.id })
+        const document = await Play.findOneAndRemove({ _id: request.query.id })
+
+        if (document) {
+            await recalculateUser(document.UserId)
+        }
 
         reply.send({message: "score went bye bye"})
     })
