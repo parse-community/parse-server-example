@@ -81,9 +81,6 @@ module.exports = function(fastify, opts, done) {
         let update = {
             Accuracy: accuracy,
             Rating: overall,
-            $inc: {
-                TotalMapsPlayed: 1
-            },
             ...filter
         }
 
@@ -161,7 +158,7 @@ module.exports = function(fastify, opts, done) {
 
         if (oldScore) {
             if (!oldScore.Rating) {
-                reply.send({ error: "Score already exists but has no rating" })
+                reply.code(404).send({ error: "Score already exists but has no rating" })
                 return
             }
 
@@ -211,7 +208,10 @@ module.exports = function(fastify, opts, done) {
 
         await recalculateUser(UserId, {
             PlayerName: PlayerName,
-            CountryRegion: CountryRegion
+            CountryRegion: CountryRegion,
+            $inc: {
+                TotalMapsPlayed: 1
+            }
         })
 
         reply.send({ok: "ok"})
