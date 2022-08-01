@@ -129,3 +129,5 @@ dist
 .DS_Store
 
 ca-certificate.crt
+
+/_maps
