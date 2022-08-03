@@ -20,7 +20,8 @@
   "dependencies": {
     "express": "^4.18.1",
     "parse": "3.4.2",
-    "parse-server": "5.2.1"
+    "parse-server": "5.2.1",
+    "parse-server-mailgun-adapter-template": "^1.1.7"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.17.0",

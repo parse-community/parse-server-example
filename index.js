@@ -33,13 +33,54 @@ const config = {
 	appName: process.env.APP_NAME || "parseCodecraftExample", 
 
 	emailAdapter: {
-		module: 'parse-server-simple-mailgun-adapter',
+		module: 'parse-server-mailgun-adapter-template',
 		options: {
+       // Display name
+       displayName: 'Parse Server Test',
+        // The address that your emails come from
 			fromAddress: process.env.EMAIL_FROM || "test@example.com",
+       // Your domain from mailgun.com
 			domain: process.env.MAILGUN_DOMAIN || "example.com",
+      // Your API key from mailgun.com
 			apiKey: process.env.MAILGUN_API_KEY  || "apikey"
 		}
 	},
+
+
+  // var fs = require('fs'); //required if loading html from file!
+
+
+  
+  // emailAdapter: {
+  //   module: 'parse-server-mailgun-adapter-template',
+  //   options: {
+  //     // The address that your emails come from
+  //     fromAddress: 'no-reply@yourdomain.com',
+  //     // Your domain from mailgun.com
+  //     domain: 'mg.yourdomain.com',
+  //     // Your API key from mailgun.com
+  //     apiKey: 'key-0123456789abcdefghijklmnopqrstuv',
+
+  //     // Verification email subject
+  //     verificationSubject: 'Please verify your e-mail for %appname%',
+  //     // Verification email body
+  //     verificationBody: 'Hi,\n\nYou are being asked to confirm the e-mail address %email% with %appname%\n\nClick here to confirm it:\n%link%',
+  //     //OPTIONAL (will send HTML version of email):
+  //     verificationBodyHTML: fs.readFileSync("./verificationBody.html", "utf8") ||  null,
+
+  //     // Password reset email subject
+  //     passwordResetSubject: 'Password Reset Request for %appname%',
+  //     // Password reset email body
+  //     passwordResetBody: 'Hi,\n\nYou requested a password reset for %appname%.\n\nClick here to reset it:\n%link%',
+  //     //OPTIONAL (will send HTML version of email):
+  //     passwordResetBodyHTML: "<!DOCTYPE html><html xmlns=http://www.w3.org/1999/xhtml>........"
+  //   }
+  // }
+
+
+
+
+
 	
 	//**** File Storage ****//
 	// filesAdapter: new S3Adapter(
