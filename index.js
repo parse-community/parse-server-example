@@ -3,6 +3,7 @@
 
 const express = require('express');
 const ParseServer = require('parse-server').ParseServer;
+var S3Adapter = require('parse-server').S3Adapter;
 const path = require('path');
 const args = process.argv || [];
 const test = args.some(arg => arg.includes('jasmine'));
@@ -83,11 +84,11 @@ const config = {
 
 	
 	//**** File Storage ****//
-	// filesAdapter: new S3Adapter(
-	// 	{
-	// 		directAccess: true
-	// 	}
-	// )
+	filesAdapter: new S3Adapter(
+		{
+			directAccess: true //allows to load server/asset directly from S3
+		}
+	)
 
 
 };
