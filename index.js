@@ -3,7 +3,7 @@
 
 const express = require('express');
 const ParseServer = require('parse-server').ParseServer;
-var S3Adapter = require('parse-server').S3Adapter;
+// var S3Adapter = require('parse-server').S3Adapter;
 const path = require('path');
 const args = process.argv || [];
 const test = args.some(arg => arg.includes('jasmine'));
@@ -84,11 +84,11 @@ const config = {
 
 	
 	//**** File Storage ****//
-	filesAdapter: new S3Adapter(
-		{
-			directAccess: true //allows to load server/asset directly from S3
-		}
-	)
+	// filesAdapter: new S3Adapter(
+	// 	{
+	// 		directAccess: true //allows to load server/asset directly from S3
+	// 	}
+	// )
 
 
 };
@@ -100,6 +100,13 @@ const config = {
 // parse-dashboard --dev --appId myAppId --masterKey myMasterKey --serverURL "https://parse-from-real-source.herokuapp.com/parse" --appName parse-test
 
 // Source -  https://www.youtube.com/watch?v=MAiva7qYUbc&list=PL-TLnxxt_AVFEOlCFBHBG_BbpaF3UX-EU&index=13
+
+
+// s3
+// S3_ACCESS_KEY - AKIAY7NPONVIPH4UUC5H
+// S3_BUCKET - parse-server-codecraft-example2
+// S3_SECRET_KEY - G8O/EElTbOG50ct4e+tnAcfEEef/iVHEduY3pQVa
+// SERVER_URL - https://parse-from-real-source.herokuapp.com/parse
 
 
 const app = express();
