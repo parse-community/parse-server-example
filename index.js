@@ -3,8 +3,8 @@
 
 const express = require('express');
 const ParseServer = require('parse-server').ParseServer;
-var S3Adapter = require('@parse/s3-files-adapter').S3Adapter;
-var s3Adapter = new S3Adapter();
+// var S3Adapter = require('@parse/s3-files-adapter').S3Adapter;
+// var s3Adapter = new S3Adapter();
 const path = require('path');
 const args = process.argv || [];
 const test = args.some(arg => arg.includes('jasmine'));
