@@ -48,7 +48,7 @@ const config = {
 			apiKey: process.env.MAILGUN_API_KEY  || "apikey"
 		}
 	},
-
+  
 
   // var fs = require('fs'); //required if loading html from file!
 
@@ -96,6 +96,7 @@ const config = {
 
 
 };
+fileUpload.enableForPublic;
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
