@@ -1,3 +1,4 @@
+import axios from 'axios';
 describe('Parse Server example', () => {
   Parse.User.enableUnsafeCurrentUser();
   it('call function', async () => {
@@ -20,17 +21,13 @@ describe('Parse Server example', () => {
     }
   });
   it('coverage for /', async () => {
-    const { text, headers } = await Parse.Cloud.httpRequest({
-      url: 'http://localhost:30001/',
-    });
+    const { data, headers } = await axios.get('http://localhost:30001/');
     expect(headers['content-type']).toContain('text/html');
-    expect(text).toBe('I dream of being a website.  Please star the parse-server repo on GitHub!');
+    expect(data).toBe('I dream of being a website.  Please star the parse-server repo on GitHub!');
   });
   it('coverage for /test', async () => {
-    const { text, headers } = await Parse.Cloud.httpRequest({
-      url: 'http://localhost:30001/test',
-    });
+    const { data, headers } = await axios.get('http://localhost:30001/test');
     expect(headers['content-type']).toContain('text/html');
-    expect(text).toContain('<title>Parse Server Example</title>');
+    expect(data).toContain('<title>Parse Server Example</title>');
   });
 });

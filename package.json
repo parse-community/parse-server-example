@@ -9,27 +9,29 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "coverage": "nyc jasmine",
+    "coverage": "TESTING=true nyc jasmine",
     "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./spec",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
     "start": "node index.js",
-    "test": "mongodb-runner start && jasmine",
+    "test": "mongodb-runner start && TESTING=true jasmine",
     "watch": "nodemon index.js"
   },
   "dependencies": {
-    "express": "4.18.1",
-    "parse": "3.4.2",
-    "parse-server": "5.2.1"
+    "axios": "1.2.1",
+    "express": "4.18.2",
+    "parse": "3.5.1",
+    "parse-server": "6.0.0-alpha.17"
   },
+  "type": "module",
   "devDependencies": {
-    "@babel/eslint-parser": "7.17.0",
-    "eslint": "8.15.0",
-    "jasmine": "4.1.0",
+    "@babel/eslint-parser": "7.19.1",
+    "eslint": "8.30.0",
+    "jasmine": "4.5.0",
     "mongodb-runner": "4.9.0",
-    "nodemon": "2.0.16",
+    "nodemon": "2.0.20",
     "nyc": "15.1.0",
-    "prettier": "2.6.2"
+    "prettier": "2.8.1"
   },
   "engines": {
     "node": ">=12.22.10 <19"
