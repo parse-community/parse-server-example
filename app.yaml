@@ -3,11 +3,11 @@ env: flex
 
 env_variables:
   # --REQUIRED--
-  DATABASE_URI: mongodb://localhost:27017/dev
-  APP_ID: <your-app-id>
-  MASTER_KEY: <your-master-key>
+  DATABASE_URI: mongodb+srv://ParseAdmin:parse123@cluster0.i2infdi.mongodb.net/?retryWrites=true&w=majority
+  APP_ID: myAppId
+  MASTER_KEY: myMasterKey
   SERVER_URL: https://your-project-id.appspot.com/parse
   # --OPTIONAL--
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse
-  # CLOUD_CODE_MAIN:  
+  # CLOUD_CODE_MAIN:
