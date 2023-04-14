@@ -1,21 +1,19 @@
-const http = require('http');
-const { ParseServer } = require('parse-server');
-const { config, app } = require('../../index.js');
-const Config = require('../../node_modules/parse-server/lib/Config');
+import http from 'http';
+import { ParseServer } from 'parse-server';
+import { app, config } from '../../index.js';
 
-let parseServerState = {};
-const dropDB = async () => {
+export const dropDB = async () => {
   await Parse.User.logOut();
-  const app = Config.get('test');
-  return await app.database.deleteEverything(true);
+  return await Parse.Server.database.deleteEverything(true);
 };
+let parseServerState = {};
 
 /**
  * Starts the ParseServer instance
  * @param {Object} parseServerOptions Used for creating the `ParseServer`
  * @return {Promise} Runner state
  */
-async function startParseServer() {
+export async function startParseServer() {
   delete config.databaseAdapter;
   const parseServerOptions = Object.assign(config, {
     databaseURI: 'mongodb://localhost:27017/parse-test',
@@ -29,13 +27,13 @@ async function startParseServer() {
     silent: true,
   });
   const parseServer = new ParseServer(parseServerOptions);
-  app.use(parseServerOptions.mountPath, parseServer);
+  await parseServer.start();
+  app.use(parseServerOptions.mountPath, parseServer.app);
   const httpServer = http.createServer(app);
   await new Promise(resolve => httpServer.listen(parseServerOptions.port, resolve));
   Object.assign(parseServerState, {
     parseServer,
     httpServer,
-    expressApp: app,
     parseServerOptions,
   });
   return parseServerOptions;
@@ -45,15 +43,7 @@ async function startParseServer() {
  * Stops the ParseServer instance
  * @return {Promise}
  */
-async function stopParseServer() {
-  const { httpServer } = parseServerState;
-  await new Promise(resolve => httpServer.close(resolve));
+export async function stopParseServer() {
+  await new Promise(resolve => parseServerState.httpServer.close(resolve));
   parseServerState = {};
 }
-
-module.exports = {
-  dropDB,
-  startParseServer,
-  stopParseServer,
-  parseServerState,
-};
