@@ -1,19 +1,24 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
+//Loading required packages and module
 const express = require("express");
 const ParseServer = require("parse-server").ParseServer;
 const path = require("path");
 const http = require("http")
-// const __dirname = path.resolve();
 
 
-
+// Configuring Object for ParseServer Instance 
 const config = {
+  // DatabaseURI we can give the mongodb locally url and remote url too
   databaseURI: process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev',
+  // Giving the path of the function for cloud
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
+  // Defining our appId and also pass into request body as key "_ApplicationId":
   appId: process.env.APP_ID || 'myAppId',
+  //Master key and nothing to do till now
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  // The serverURL of ParseServer
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse', // Don't forget to change to https if needed
   liveQuery: {
     classNames: ['Posts', 'Comments'], // List of classes to support for query subscriptions
@@ -23,6 +28,7 @@ const config = {
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
+//Creating an instance of express 
 const app = express();
 
 // Serve static assets from the /public folder
@@ -33,6 +39,7 @@ if (!process.env.TESTING) {
   const mountPath = process.env.PARSE_MOUNT || '/parse';
   const server = new ParseServer(config);
   server.start();
+  //Defining /parse endpoint here and configuration
   app.use(mountPath, server.app);
 }
 
