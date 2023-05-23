@@ -44,7 +44,7 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 5. Run `mongo` to connect to your database, just to make sure it's working. Once you see a mongo prompt, exit with `Control-D`.
 6. Launch Parse Server with `npm start`.
 7. By default the API route will use `/parse` as a base. You can change this by setting the environment variable `PARSE_MOUNT`, for example in the CLI run run `export PARSE_MOUNT=/app` to set the path to `app`.
-8. Your Parse Server is not running and is connected to your local database named `dev` in which the data is stored that you manage via Parse Server.
+8. Your Parse Server is now running and is connected to your local database named `dev` in which the data is stored that you manage via Parse Server.
 
 ## Helpful Scripts
 These scripts can help you to develop your app for Parse Server:
