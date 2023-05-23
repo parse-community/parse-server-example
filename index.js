@@ -1,15 +1,16 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
-import express from 'express';
-import { ParseServer } from 'parse-server';
-import path from 'path';
-const __dirname = path.resolve();
-import http from 'http';
+const express = require("express");
+const ParseServer = require("parse-server").ParseServer;
+const path = require("path");
+const http = require("http")
+// const __dirname = path.resolve();
 
-export const config = {
-  databaseURI:
-    process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev',
+
+
+const config = {
+  databaseURI: process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
@@ -22,7 +23,7 @@ export const config = {
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
-export const app = express();
+const app = express();
 
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
@@ -31,7 +32,7 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 if (!process.env.TESTING) {
   const mountPath = process.env.PARSE_MOUNT || '/parse';
   const server = new ParseServer(config);
-  await server.start();
+  server.start();
   app.use(mountPath, server.app);
 }
 
@@ -49,9 +50,9 @@ app.get('/test', function (req, res) {
 if (!process.env.TESTING) {
   const port = process.env.PORT || 1337;
   const httpServer = http.createServer(app);
-  httpServer.listen(port, function () {
+  httpServer.listen(port,function () {
     console.log('parse-server-example running on port ' + port + '.');
   });
   // This will enable the Live Query real-time server
-  await ParseServer.createLiveQueryServer(httpServer);
+  ParseServer.createLiveQueryServer(httpServer);
 }

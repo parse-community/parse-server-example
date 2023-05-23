@@ -1,5 +1,6 @@
 Parse.Cloud.define('hello', req => {
-  req.log.info(req);
+  console.log(req,"req");
+  // req.log.info(req);
   return 'Hi';
 });
 

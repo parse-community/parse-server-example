@@ -13,7 +13,7 @@
     "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./spec",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "mongodb-runner start && TESTING=true jasmine",
     "watch": "nodemon index.js"
   },
@@ -23,13 +23,12 @@
     "parse": "4.0.1",
     "parse-server": "6.0.0"
   },
-  "type": "module",
   "devDependencies": {
     "@babel/eslint-parser": "7.21.3",
     "eslint": "8.38.0",
     "jasmine": "4.6.0",
     "mongodb-runner": "4.10.0",
-    "nodemon": "2.0.22",
+    "nodemon": "^2.0.22",
     "nyc": "15.1.0",
     "prettier": "2.8.7"
   },
