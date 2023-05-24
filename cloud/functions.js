@@ -1,7 +1,3 @@
-//
-const moment = require("moment-timezone");
-moment.tz.setDefault("Asia/Kolkata")
-
 Parse.Cloud.define('hello', req => {
   req.log.info(req);
   return 'Hi';
@@ -44,5 +40,24 @@ Parse.Cloud.define("signUp" , async ( req )=>{
   } catch (error) {
     console.error(error);
     throw error ; 
+  }
+});
+
+
+// End point for user login
+
+Parse.Cloud.define("userLogin", async ( req )=>{
+  try {
+    const { username, password } = req.params ;
+    
+    if( !( username && password ) ){
+      throw new Error("Missing either password or username");
+    }
+
+    let user = await Parse.User.logIn(username,password);
+    return user;
+  } catch (error) {
+    console.error(error);
+    throw error ;
   }
 });
