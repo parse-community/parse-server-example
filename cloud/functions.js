@@ -61,3 +61,25 @@ Parse.Cloud.define("userLogin", async ( req )=>{
     throw error ;
   }
 });
+
+// Creating Post 
+Parse.Cloud.define("createPost", async ( req )=>{
+  try {
+    if( !req.user ){
+      throw new Error("Unauthorized Access!");
+    }
+    const { title, description, comments }= req.params;
+    const Post = Parse.Object.extend("Post");
+    const post = new Post();
+    const data = {
+      title,
+      description,
+      comments:comments || []
+    };
+    let result = await post.save(data);
+    return result ;
+  } catch (error) {
+    console.error(error);
+    throw error ;
+  }
+})
