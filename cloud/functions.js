@@ -82,4 +82,42 @@ Parse.Cloud.define("createPost", async ( req )=>{
     console.error(error);
     throw error ;
   }
+});
+
+//Get post 
+Parse.Cloud.define("post", async ( req )=>{
+  try {
+    if( !req.user ){
+      throw new Error("Unauthorized Access!");
+    }
+
+    const { postId } = req.params ;
+    const query = new Parse.Query("Post");
+    const result = await query.get(postId);
+    return result ;
+  } catch (error) {
+    console.error(error);
+    throw error ;
+  }
+});
+
+// Create Comments for post
+Parse.Cloud.define("createComment", async ( req )=>{
+  try {
+    if( !req.user ){
+      throw new Error("Unauthorized Access!");
+    }
+    const { postId, commentDescription } = req.params ;
+    let query = new Parse.Query("Post");
+    const post = await query.get(postId);
+    const Comment = Parse.Object.extend("Comment");
+    const comment = new Comment();
+    const result = await comment.save({commentDescription,postId},{useMasterKey:true});
+    post.add("comments",result.id);
+    await post.save();
+    return result; 
+  } catch (error) {
+    console.error(error);
+    throw error ;
+  }
 })
