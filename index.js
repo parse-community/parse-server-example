@@ -1,18 +1,33 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
-import express from 'express';
-import { ParseServer } from 'parse-server';
-import path from 'path';
-const __dirname = path.resolve();
-import http from 'http';
+//Loading required packages and module
+const express = require("express");
+const ParseServer = require("parse-server").ParseServer;
+const path = require("path");
+const http = require("http");
 
-export const config = {
-  databaseURI:
-    process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev',
+// Defining databaseURL and environment type
+const databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI ;
+var ENVIRONMENT = 'development';
+//ENVIRONMENT = 'production';
+
+if (!databaseUri) {
+  console.log('DATABASE_URI not specified, falling back to localhost.');
+}
+
+
+// Configuring Object for ParseServer Instance 
+const config = {
+  // DatabaseURI we can give the mongodb locally url and remote url too
+  databaseURI: process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.8.2',
+  // Giving the path of the function for cloud
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
+  // Defining our appId and also pass into request body as key "_ApplicationId":
   appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  //Master key and nothing to do till now
+  masterKey: process.env.MASTER_KEY || 'myMasterKey', //Add your master key here. Keep it secret!
+  // The serverURL of ParseServer
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse', // Don't forget to change to https if needed
   liveQuery: {
     classNames: ['Posts', 'Comments'], // List of classes to support for query subscriptions
@@ -22,7 +37,8 @@ export const config = {
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
-export const app = express();
+//Creating an instance of express 
+const app = express();
 
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
@@ -31,7 +47,8 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 if (!process.env.TESTING) {
   const mountPath = process.env.PARSE_MOUNT || '/parse';
   const server = new ParseServer(config);
-  await server.start();
+  server.start();
+  //Defining /parse endpoint here and configuration
   app.use(mountPath, server.app);
 }
 
@@ -49,9 +66,9 @@ app.get('/test', function (req, res) {
 if (!process.env.TESTING) {
   const port = process.env.PORT || 1337;
   const httpServer = http.createServer(app);
-  httpServer.listen(port, function () {
+  httpServer.listen(port,function () {
     console.log('parse-server-example running on port ' + port + '.');
   });
   // This will enable the Live Query real-time server
-  await ParseServer.createLiveQueryServer(httpServer);
+  ParseServer.createLiveQueryServer(httpServer);
 }
