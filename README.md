@@ -2,6 +2,10 @@
 
 ---
 
+[![Build Status](https://github.com/parse-community/parse-server-example/workflows/ci/badge.svg?branch=master)](https://github.com/parse-community/parse-server-example/actions?query=workflow%3Aci+branch%3Amaster)
+[![Snyk Badge](https://snyk.io/test/github/parse-community/parse-server-example/badge.svg)](https://snyk.io/test/github/parse-community/parse-server-example)
+[![auto-release](https://img.shields.io/badge/%F0%9F%9A%80-auto--release-9e34eb.svg)](https://github.com/parse-community/parse-server-example/releases)
+
 [![Join The Conversation](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/parse-server)
 [![Backers on Open Collective](https://opencollective.com/parse-server/backers/badge.svg)][open-collective-link]
 [![Sponsors on Open Collective](https://opencollective.com/parse-server/sponsors/badge.svg)][open-collective-link]

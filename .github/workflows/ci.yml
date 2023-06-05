@@ -1,4 +1,4 @@
-name: Node.js
+name: ci
 on:
   push:
     branches:
