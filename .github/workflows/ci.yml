@@ -32,3 +32,6 @@ jobs:
       run: npm run lint
     - name: Run Tests
       run: npm run test
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
