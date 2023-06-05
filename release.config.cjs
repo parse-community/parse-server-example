@@ -26,7 +26,7 @@ async function config() {
   // Get branch
   const branch = ref.split('/').pop();
   console.log(`Running on branch: ${branch}`);
-  
+
   // Set changelog file
   //const changelogFile = `./changelogs/CHANGELOG_${branch}.md`;
   const changelogFile = `./CHANGELOG.md`;
@@ -47,7 +47,7 @@ async function config() {
       // { name: 'release-3', range: '3.x.x', channel: '3.x' },
       // { name: 'release-4', range: '4.x.x', channel: '4.x' },
     ],
-    dryRun: false,
+    dryRun: true,
     debug: true,
     ci: true,
     tagFormat: '${version}',
