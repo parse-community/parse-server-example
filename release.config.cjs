@@ -26,7 +26,7 @@ async function config() {
   // Get branch
   const branch = ref.split('/').pop();
   console.log(`Running on branch: ${branch}`);
-  
+
   // Set changelog file
   //const changelogFile = `./changelogs/CHANGELOG_${branch}.md`;
   const changelogFile = `./CHANGELOG.md`;
