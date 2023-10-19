@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/ParsePlatform/parse-server-example/compare/1.2.1...1.2.2) (2023-10-19)
+
+
+### Bug Fixes
+
+* Security bump @babel/traverse from 7.22.4 to 7.23.2 ([#446](https://github.com/ParsePlatform/parse-server-example/issues/446)) ([0ac3f6f](https://github.com/ParsePlatform/parse-server-example/commit/0ac3f6f46f4a95e7424f7cbf73ffbc4d7745c7ba))
+
 ## [1.2.1](https://github.com/ParsePlatform/parse-server-example/compare/1.2.0...1.2.1) (2023-09-04)
 
 
