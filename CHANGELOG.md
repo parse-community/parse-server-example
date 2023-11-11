@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/ParsePlatform/parse-server-example/compare/1.2.2...1.2.3) (2023-11-11)
+
+
+### Bug Fixes
+
+* Security upgrade axios from 1.3.5 to 1.6.0 ([#448](https://github.com/ParsePlatform/parse-server-example/issues/448)) ([a771900](https://github.com/ParsePlatform/parse-server-example/commit/a77190039c7d0b38278c2884cd5b9ccc1eba7808))
+
 ## [1.2.2](https://github.com/ParsePlatform/parse-server-example/compare/1.2.1...1.2.2) (2023-10-19)
 
 
