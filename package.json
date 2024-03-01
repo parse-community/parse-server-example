@@ -1,6 +1,6 @@
 {
   "name": "parse-server-example",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "An example Parse API server using the parse-server module",
   "repository": {
     "type": "git",

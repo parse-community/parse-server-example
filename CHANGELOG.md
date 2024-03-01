@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/ParsePlatform/parse-server-example/compare/1.2.3...1.2.4) (2024-03-01)
+
+
+### Bug Fixes
+
+* Upgrade parse-server from 6.3.1 to 6.5.0 ([#452](https://github.com/ParsePlatform/parse-server-example/issues/452)) ([434e634](https://github.com/ParsePlatform/parse-server-example/commit/434e6340bf9391fd1e84c363c9270c1b2c68f3e0))
+
 ## [1.2.3](https://github.com/ParsePlatform/parse-server-example/compare/1.2.2...1.2.3) (2023-11-11)
 
 
