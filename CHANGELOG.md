@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ParsePlatform/parse-server-example/compare/1.2.4...1.3.0) (2024-03-10)
+
+
+### Features
+
+* Run with latest Google App Engine Flex environment requirements ([#454](https://github.com/ParsePlatform/parse-server-example/issues/454)) ([d87d5f1](https://github.com/ParsePlatform/parse-server-example/commit/d87d5f11806b795f8312e960cad7e51377f0a2b7))
+
 ## [1.2.4](https://github.com/ParsePlatform/parse-server-example/compare/1.2.3...1.2.4) (2024-03-01)
 
 
