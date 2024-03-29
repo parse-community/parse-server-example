@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/ParsePlatform/parse-server-example/compare/1.3.0...1.3.1) (2024-03-29)
+
+
+### Bug Fixes
+
+* Security upgrade express from 4.18.2 to 4.19.2 ([#458](https://github.com/ParsePlatform/parse-server-example/issues/458)) ([cbe730f](https://github.com/ParsePlatform/parse-server-example/commit/cbe730f3698eb1f4b6bc0d54bc153298f82bdf21))
+
 # [1.3.0](https://github.com/ParsePlatform/parse-server-example/compare/1.2.4...1.3.0) (2024-03-10)
 
 
