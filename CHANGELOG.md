@@ -1,3 +1,24 @@
+## [1.3.1](https://github.com/ParsePlatform/parse-server-example/compare/1.3.0...1.3.1) (2024-03-29)
+
+
+### Bug Fixes
+
+* Security upgrade express from 4.18.2 to 4.19.2 ([#458](https://github.com/ParsePlatform/parse-server-example/issues/458)) ([cbe730f](https://github.com/ParsePlatform/parse-server-example/commit/cbe730f3698eb1f4b6bc0d54bc153298f82bdf21))
+
+# [1.3.0](https://github.com/ParsePlatform/parse-server-example/compare/1.2.4...1.3.0) (2024-03-10)
+
+
+### Features
+
+* Run with latest Google App Engine Flex environment requirements ([#454](https://github.com/ParsePlatform/parse-server-example/issues/454)) ([d87d5f1](https://github.com/ParsePlatform/parse-server-example/commit/d87d5f11806b795f8312e960cad7e51377f0a2b7))
+
+## [1.2.4](https://github.com/ParsePlatform/parse-server-example/compare/1.2.3...1.2.4) (2024-03-01)
+
+
+### Bug Fixes
+
+* Upgrade parse-server from 6.3.1 to 6.5.0 ([#452](https://github.com/ParsePlatform/parse-server-example/issues/452)) ([434e634](https://github.com/ParsePlatform/parse-server-example/commit/434e6340bf9391fd1e84c363c9270c1b2c68f3e0))
+
 ## [1.2.3](https://github.com/ParsePlatform/parse-server-example/compare/1.2.2...1.2.3) (2023-11-11)
 
 
