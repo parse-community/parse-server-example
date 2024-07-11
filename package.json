@@ -20,12 +20,12 @@
   "dependencies": {
     "axios": "1.7.2",
     "express": "4.19.2",
-    "parse": "4.1.0",
+    "parse": "5.3.0",
     "parse-server": "6.5.0"
   },
   "type": "module",
   "devDependencies": {
-    "@babel/eslint-parser": "7.21.3",
+    "@babel/eslint-parser": "7.24.7",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "10.0.0",
     "@semantic-release/git": "10.0.1",
