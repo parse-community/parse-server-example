@@ -24,6 +24,8 @@ export const config = {
 
 export const app = express();
 
+app.set('trust proxy', true);
+
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
 

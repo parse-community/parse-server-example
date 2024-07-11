@@ -1,6 +1,10 @@
 runtime: nodejs
 env: flex
 
+runtime_config:
+  operating_system: "ubuntu22"
+  runtime_version: "18"
+
 env_variables:
   # --REQUIRED--
   DATABASE_URI: mongodb://localhost:27017/dev
