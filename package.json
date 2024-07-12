@@ -14,7 +14,9 @@
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./spec",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
     "start": "node index.js",
-    "test": "mongodb-runner start && TESTING=true jasmine",
+    "pretest": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
+    "test": "TESTING=true jasmine",
+    "posttest": "mongodb-runner stop --all",
     "watch": "nodemon index.js"
   },
   "dependencies": {
@@ -32,9 +34,10 @@
     "@semantic-release/github": "10.1.0",
     "@semantic-release/npm": "12.0.1",
     "@semantic-release/release-notes-generator": "14.0.1",
+    "cross-env": "7.0.3",
     "eslint": "8.38.0",
     "jasmine": "4.6.0",
-    "mongodb-runner": "4.10.0",
+    "mongodb-runner": "5.6.3",
     "nodemon": "2.0.22",
     "nyc": "15.1.0",
     "prettier": "2.8.7",
