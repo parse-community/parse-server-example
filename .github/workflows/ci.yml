@@ -12,20 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 16, 18]
+        node-version: [18, 20, 22]
       fail-fast: false
     name: Test Node ${{ matrix.node-version }}
     steps:
     - name: Fix usage of insecure GitHub protocol
       run: sudo git config --system url."https://github".insteadOf "git://github"
-    - name: Fix git protocol for Node 14
-      if: ${{ startsWith(matrix.node-version, '14') }}
-      run: sudo git config --system url."https://github".insteadOf "ssh://git@github"
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
     - name: Install Dependancies
       run: npm install
     - name: Check Linting

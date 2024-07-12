@@ -25,6 +25,7 @@ export async function startParseServer() {
     serverURL: `http://localhost:30001/test`,
     logLevel: 'error',
     silent: true,
+    allowClientClassCreation: true,
   });
   const parseServer = new ParseServer(parseServerOptions);
   await parseServer.start();
