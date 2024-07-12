@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/ParsePlatform/parse-server-example/compare/1.3.1...2.0.0) (2024-07-12)
+
+
+### Features
+
+* Add support for Node 20, 22; remove support for Node 14, 16 ([#473](https://github.com/ParsePlatform/parse-server-example/issues/473)) ([9442870](https://github.com/ParsePlatform/parse-server-example/commit/944287095f40ce61e819e6cfb0d74bd2a7cad473))
+* Upgrade to parse-server 7.2.0 ([#470](https://github.com/ParsePlatform/parse-server-example/issues/470)) ([49ac7b5](https://github.com/ParsePlatform/parse-server-example/commit/49ac7b5511b728b1df7704fcaa91aac9e4006e1c))
+
+
+### BREAKING CHANGES
+
+* Removes support for Node 14, 16. ([9442870](9442870))
+
 # [2.0.0](https://github.com/ParsePlatform/parse-server-example/compare/1.4.0...2.0.0) (2024-07-12)
 
 

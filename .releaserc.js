@@ -119,4 +119,8 @@ function getReleaseComment() {
   return comment;
 }
 
-module.exports = config();
+// For CommonJS use:
+// module.exports = config();
+
+// For ES6 modules use:
+export default config();
