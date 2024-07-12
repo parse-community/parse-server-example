@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/ParsePlatform/parse-server-example/compare/1.3.1...1.4.0) (2024-07-12)
+
+
+### Features
+
+* Upgrade to parse-server 7.2.0 ([#470](https://github.com/ParsePlatform/parse-server-example/issues/470)) ([49ac7b5](https://github.com/ParsePlatform/parse-server-example/commit/49ac7b5511b728b1df7704fcaa91aac9e4006e1c))
+
 ## [1.3.1](https://github.com/ParsePlatform/parse-server-example/compare/1.3.0...1.3.1) (2024-03-29)
 
 
