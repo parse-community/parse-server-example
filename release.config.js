@@ -43,10 +43,12 @@ async function config() {
 
   const config = {
     branches: [
+      'main',
       'master',
-      // { name: 'alpha', prerelease: true },
-      // { name: 'beta', prerelease: true },
-      // 'next-major',
+      'release',
+      { name: 'alpha', prerelease: true },
+      { name: 'beta', prerelease: true },
+      'next-major',
       // Long-Term-Support branches
       // { name: 'release-1', range: '1.x.x', channel: '1.x' },
       // { name: 'release-2', range: '2.x.x', channel: '2.x' },
