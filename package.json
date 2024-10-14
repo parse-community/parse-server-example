@@ -36,7 +36,7 @@
     "@semantic-release/release-notes-generator": "14.0.1",
     "cross-env": "7.0.3",
     "eslint": "8.38.0",
-    "jasmine": "5.3.1",
+    "jasmine": "5.4.0",
     "mongodb-runner": "5.7.0",
     "nodemon": "3.1.7",
     "nyc": "17.1.0",
