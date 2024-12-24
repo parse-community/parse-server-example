@@ -23,7 +23,7 @@
     "axios": "1.7.9",
     "express": "4.21.2",
     "parse": "5.3.0",
-    "parse-server": "7.3.0"
+    "parse-server": "7.4.0"
   },
   "type": "module",
   "devDependencies": {
