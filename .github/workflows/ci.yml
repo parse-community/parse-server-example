@@ -28,8 +28,10 @@ jobs:
       run: npm install
     - name: Check Linting
       run: npm run lint
-    - name: Run Tests
-      run: npm run test
+    - name: Run Unit Tests
+      run: npm run test:unit
+    - name: Run e2e Tests
+      run: npm run test:e2e
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

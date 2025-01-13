@@ -4,7 +4,7 @@
     "text-summary"
   ],
   "exclude": [
-    "**/spec/**"
+    "**/e2e/**"
   ]
 }
 
