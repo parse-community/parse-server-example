@@ -1,171 +1,135 @@
-/**
- *  Steps handler
- */
-
-var Steps = {};
-
-Steps.init = function() {
-  this.buildParseUrl();
-  this.bindBtn('#step-1-btn', function(e){
-    ParseRequest.postData();
-    e.preventDefault();
-  })
-}
-
-Steps.buildParseUrl = function() {
-  var url = Config.getUrl();
-  $('#parse-url').html(url + '/parse');
-}
-
-Steps.bindBtn = function(id, callback) {
-  $(id).click(callback);
-}
-
-Steps.closeStep = function(id) {
-  $(id).addClass('step--disabled');
-}
-
-Steps.openStep  = function(id) {
-  $(id).removeClass('step--disabled');
-}
-
-Steps.fillStepOutput  = function(id, data) {
-  $(id).html('Output: ' + data).slideDown();
-}
-
-Steps.fillStepError  = function(id, errorMsg) {
-  $(id).html(errorMsg).slideDown();
-}
-
-
-Steps.fillBtn  = function(id, message) {
-  $(id).addClass('success').html('✓  ' + message);
-}
-
-Steps.showWorkingMessage = function() {
-  $('#step-4').delay(500).slideDown();
-}
-
+// Initialize Parse SDK
+Parse.initialize('myAppId');
+Parse.serverURL = `${window.location.origin}/parse`;
 
 /**
- *  Parse requests handler
+ * Utility Functions
  */
+const buildParseUrl = () => {
+  const url = `${window.location.origin}/parse`;
+  document.querySelector('#parse-url').textContent = url;
+};
 
-var ParseRequest = {};
+const bindBtn = (selector, callback) => {
+  document.querySelector(selector)?.addEventListener('click', callback);
+};
 
-ParseRequest.postData = function() {
-  XHR.setCallback(function(data){
-    // store objectID
-    Store.objectId = JSON.parse(data).objectId;
-    // close first step
-    Steps.closeStep('#step-1');
-    Steps.fillStepOutput('#step-1-output', data);
-    Steps.fillBtn('#step-1-btn', 'Posted');
-    // open second step
-    Steps.openStep('#step-2');
-    Steps.bindBtn('#step-2-btn', function(e){
-      ParseRequest.getData();
+const closeStep = (selector) => {
+  document.querySelector(selector)?.classList.add('step--disabled');
+};
+
+const openStep = (selector) => {
+  document.querySelector(selector)?.classList.remove('step--disabled');
+};
+
+const fillStepOutput = (selector, data) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.textContent = `Output: ${data}`;
+    element.style.display = 'block';
+  }
+};
+
+const fillStepError = (selector, errorMsg) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.textContent = errorMsg;
+    element.style.display = 'block';
+  }
+};
+
+const fillBtn = (selector, message) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.classList.add('success');
+    element.textContent = `✓ ${message}`;
+  }
+};
+
+const showWorkingMessage = () => {
+  const step = document.querySelector('#step-4');
+  if (step) {
+    setTimeout(() => {
+      step.style.display = 'block';
+    }, 500);
+  }
+};
+
+/**
+ * Parse Requests
+ */
+const postData = async () => {
+  try {
+    const gameScore = new Parse.Object('GameScore');
+    gameScore.set('score', 1337);
+    gameScore.set('playerName', 'Sean Plott');
+    gameScore.set('cheatMode', false);
+
+    const result = await gameScore.save();
+    Store.objectId = result.id;
+
+    closeStep('#step-1');
+    fillStepOutput('#step-1-output', JSON.stringify(result));
+    fillBtn('#step-1-btn', 'Posted');
+    openStep('#step-2');
+
+    bindBtn('#step-2-btn', async (e) => {
       e.preventDefault();
+      await getData();
     });
-  },
-  function(error) {
-       Steps.fillStepError('#step-1-error', 'There was a failure: ' + error);
-   });
-  XHR.POST('/parse/classes/GameScore');
+  } catch (error) {
+    fillStepError('#step-1-error', `There was a failure: ${error.message}`);
+  }
 };
 
-ParseRequest.getData = function() {
-  XHR.setCallback(function(data){
-    // close second step
-    Steps.closeStep('#step-2');
-    Steps.fillStepOutput('#step-2-output', data);
-    Steps.fillBtn('#step-2-btn', 'Fetched');
-    // open third step
-    Steps.openStep('#step-3');
-    Steps.bindBtn('#step-3-btn', function(e){
-      ParseRequest.postCloudCodeData();
+const getData = async () => {
+  try {
+    const query = new Parse.Query('GameScore');
+    const result = await query.get(Store.objectId);
+
+    closeStep('#step-2');
+    fillStepOutput('#step-2-output', JSON.stringify(result));
+    fillBtn('#step-2-btn', 'Fetched');
+    openStep('#step-3');
+
+    bindBtn('#step-3-btn', async (e) => {
       e.preventDefault();
-      });
-    },
-    function(error) {
-    	Steps.fillStepError('#step-2-error', 'There was a failure: ' + error);
-  });  
-  XHR.GET('/parse/classes/GameScore');
+      await postCloudCodeData();
+    });
+  } catch (error) {
+    fillStepError('#step-2-error', `There was a failure: ${error.message}`);
+  }
 };
 
-ParseRequest.postCloudCodeData = function() {
-  XHR.setCallback(function(data){
-    // close second step
-    Steps.closeStep('#step-3');
-    Steps.fillStepOutput('#step-3-output', data);
-    Steps.fillBtn('#step-3-btn', 'Tested');
-    // open third step
-    Steps.showWorkingMessage();
-    },
-    function(error) {
-    	Steps.fillStepError('#step-3-error', 'There was a failure: ' + error);
-    });  
-  XHR.POST('/parse/functions/hello');
-}
+const postCloudCodeData = async () => {
+  try {
+    const result = await Parse.Cloud.run('hello');
 
-
-/**
- * Store objectId and other references
- */
-
-var Store = {
-  objectId: ""
+    closeStep('#step-3');
+    fillStepOutput('#step-3-output', JSON.stringify(result));
+    fillBtn('#step-3-btn', 'Tested');
+    showWorkingMessage();
+  } catch (error) {
+    fillStepError('#step-3-error', `There was a failure: ${error.message}`);
+  }
 };
 
-var Config = {};
-
-Config.getUrl = function() {
-  if (url) return url;
-  var port = window.location.port;
-  var url = window.location.protocol + '//' + window.location.hostname;
-  if (port) url = url + ':' + port;
-  return url;
-}
-
+/**
+ * Store
+ */
+const Store = {
+  objectId: '',
+};
 
 /**
- * XHR object
+ * Boot
  */
+const init = () => {
+  buildParseUrl();
+  bindBtn('#step-1-btn', async (e) => {
+    e.preventDefault();
+    await postData();
+  });
+};
 
-var XHR = {};
-
-XHR.setCallback = function(callback, failureCallback) {
-  this.xhttp = new XMLHttpRequest();
-  var _self = this;
-  this.xhttp.onreadystatechange = function() {
-    if (_self.xhttp.readyState == 4) {
-      if (_self.xhttp.status >= 200 && _self.xhttp.status <= 299) {
-        callback(_self.xhttp.responseText);
-      } else {
-        failureCallback(_self.xhttp.responseText);
-      }
-    }
-  };
-}
-
-XHR.POST = function(path, callback) {
-  var seed = {"score":1337,"playerName":"Sean Plott","cheatMode":false}
-  this.xhttp.open("POST", Config.getUrl() + path, true);
-  this.xhttp.setRequestHeader("X-Parse-Application-Id", $('#appId').val());
-  this.xhttp.setRequestHeader("Content-type", "application/json");
-  this.xhttp.send(JSON.stringify(seed));
-}
-
-XHR.GET = function(path, callback) {
-  this.xhttp.open("GET", Config.getUrl() + path + '/' + Store.objectId, true);
-  this.xhttp.setRequestHeader("X-Parse-Application-Id", $('#appId').val());
-  this.xhttp.setRequestHeader("Content-type", "application/json");
-  this.xhttp.send(null);
-}
-
-
-/**
- *  Boot
- */
-
-Steps.init();
+init();

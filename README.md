@@ -73,6 +73,7 @@ The testing pyramid emphasizes the following layers:
 - Focus on testing individual functions or components in isolation.
 - Fast, reliable, and provide detailed feedback on specific parts of your code.
 - Recommended to have a large amount of unit tests that test small units of code
+- These tests should use mocks to simulate dependencies, eliminating the need for the entire system to be operational.
 - Example: Testing a utility function or a cloud function independently.
 - Command: `npm run test:unit`
 
