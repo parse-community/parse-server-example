@@ -52,7 +52,7 @@ describe("TestObject beforeSave", () => {
       const addBeforeSaveFlagSpy = jest.spyOn(testObject, "addBeforeSaveFlag");
       const performAdditionalProcessingSpy = jest.spyOn(testObject, "performAdditionalProcessing");
 
-      await testObject.execute();
+      await testObject.execute().catch(() => {}); // Catch the expected throw to allow assertions.
 
       expect(validateRequestSpy).toHaveBeenCalledTimes(1);
       expect(addBeforeSaveFlagSpy).toHaveBeenCalledWith(mockObject);
@@ -61,10 +61,17 @@ describe("TestObject beforeSave", () => {
 
     it("should set both beforeSave flag and additional data", async () => {
       const testObject = new TestObjectBeforeSave(mockRequest);
-      await testObject.execute();
+      await testObject.execute().catch(() => {}); // Catch the expected throw to allow assertions.
 
       expect(mockObject.set).toHaveBeenCalledWith("beforeSave", true);
       expect(mockObject.set).toHaveBeenCalledWith("additionalData", "mockedData");
+    });
+
+    it("should throw an error with code 9001", async () => {
+      const testObject = new TestObjectBeforeSave(mockRequest);
+      await expect(testObject.execute()).rejects.toThrowError(
+        new Parse.Error(9001, "Saving test objects is not available.")
+      );
     });
   });
 });

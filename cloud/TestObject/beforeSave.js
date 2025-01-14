@@ -9,6 +9,8 @@ export class TestObjectBeforeSave {
     this.validateRequest();
     this.addBeforeSaveFlag(object);
     await this.performAdditionalProcessing(object);
+
+    throw new Parse.Error(9001, 'Saving test objects is not available.');
   }
 
   validateRequest() {
