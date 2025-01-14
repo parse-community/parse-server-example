@@ -8,30 +8,57 @@ on:
       - '**'
   workflow_dispatch:
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20, 22]
-      fail-fast: false
-    name: Test Node ${{ matrix.node-version }}
+    name: Lint
     steps:
-    - name: Fix usage of insecure GitHub protocol
-      run: sudo git config --system url."https://github".insteadOf "git://github"
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Install Dependancies
-      run: npm install
-    - name: Check Linting
-      run: npm run lint
-    - name: Run Unit Tests
-      run: npm run test:unit
-    - name: Run e2e Tests
-      run: npm run test:e2e
+      - name: Fix usage of insecure GitHub protocol
+        run: sudo git config --system url."https://github".insteadOf "git://github"
+      - uses: actions/checkout@v3
+      - name: Use Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Check Linting
+        run: npm run lint
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Unit Tests
+    steps:
+      - name: Fix usage of insecure GitHub protocol
+        run: sudo git config --system url."https://github".insteadOf "git://github"
+      - uses: actions/checkout@v3
+      - name: Use Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Unit Tests
+        run: npm run test:unit
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    name: End-to-End Tests
+    steps:
+      - name: Fix usage of insecure GitHub protocol
+        run: sudo git config --system url."https://github".insteadOf "git://github"
+      - uses: actions/checkout@v3
+      - name: Use Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run e2e Tests
+        run: npm run test:e2e
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
