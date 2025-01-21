@@ -57,38 +57,8 @@ These scripts can help you to develop your app for Parse Server:
 * `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
 * `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.js`.
 * `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.js`, as defined in `.prettierrc`.
-* `npm run test:e2e` will run any e2e tests that are written in `/e2e`.
-* `npm run test:unit` will run any unit tests that are written in `tests`
 * `npm test` will run all tests
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
-
-## Testing
-
-Effective testing is crucial for maintaining the stability and reliability of your application. The testing pyramid is a widely adopted strategy to balance different types of tests and ensure a robust testing process.
-
-### Testing Pyramid
-The testing pyramid emphasizes the following layers:
-
-1. Unit Tests:
-- Focus on testing individual functions or components in isolation.
-- Fast, reliable, and provide detailed feedback on specific parts of your code.
-- Recommended to have a large amount of unit tests that test small units of code
-- These tests should use mocks to simulate dependencies, eliminating the need for the entire system to be operational.
-- Example: Testing a utility function or a cloud function independently.
-- Command: `npm run test:unit`
-
-2. Integration Tests:
-- Validate that different modules or components work together correctly.
-- Useful for testing database interactions, API endpoints, or cloud function workflows.
-- Recommended to have a medium amount of integration tests that test the integration of units.
-- Typically slower than unit tests but cover a broader scope.
-
-3. End-to-End (E2E) Tests:
-- Test the application as a whole, simulating real user interactions.
-- Validate that the entire system works as expected, from the user interface to the backend.
-- Recommmended to have a small amount of e2e tests.
-- Example: Testing user login or data submission flows.
-- Command: `npm run test:e2e`
 
 ## Configuration
 

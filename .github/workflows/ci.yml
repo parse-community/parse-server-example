@@ -25,9 +25,9 @@ jobs:
       - name: Check Linting
         run: npm run lint
 
-  unit-tests:
+  tests:
     runs-on: ubuntu-latest
-    name: Unit Tests
+    name: Tests
     steps:
       - name: Fix usage of insecure GitHub protocol
         run: sudo git config --system url."https://github".insteadOf "git://github"
@@ -39,26 +39,8 @@ jobs:
           cache: 'npm'
       - name: Install Dependencies
         run: npm ci
-      - name: Run Unit Tests
-        run: npm run test:unit
-
-  e2e-tests:
-    runs-on: ubuntu-latest
-    name: End-to-End Tests
-    steps:
-      - name: Fix usage of insecure GitHub protocol
-        run: sudo git config --system url."https://github".insteadOf "git://github"
-      - uses: actions/checkout@v3
-      - name: Use Node.js 22
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: 'npm'
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run e2e Tests
-        run: npm run test:e2e
-
+      - name: Run Tests
+        run: npm test
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

@@ -1,5 +1,3 @@
-// E2E tests should be minimal and only test the integration of the Parse Server.
-// Unit tests are preferred as they are faster and more reliable, and do not require a running Parse Server.
 describe('Parse Server example', () => {
   Parse.User.enableUnsafeCurrentUser();
   it('call function', async () => {

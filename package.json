@@ -10,13 +10,13 @@
   "main": "index.js",
   "scripts": {
     "coverage": "nyc --reporter=html --reporter=text npm test",
-    "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./e2e",
-    "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./e2e",
-    "prettier": "prettier --write '{cloud,e2e}/{**/*,*}.js' 'index.js'",
+    "lint": "eslint --cache ./cloud && eslint --cache index.js && eslint --cache ./spec",
+    "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./spec",
+    "prettier": "prettier --write '{cloud,spec}/{**/*,*}.js' 'index.js'",
     "start": "node index.js",
     "pretest": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
     "test": "TESTING=true jasmine",
-    "posttest:e2e": "mongodb-runner stop --all",
+    "posttest": "mongodb-runner stop --all",
     "watch": "nodemon index.js"
   },
   "dependencies": {
