@@ -14,10 +14,8 @@
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.js && eslint --cache --fix ./e2e",
     "prettier": "prettier --write '{cloud,e2e}/{**/*,*}.js' 'index.js'",
     "start": "node index.js",
-    "pretest:e2e": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
-    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/",
-    "test:e2e": "TESTING=true jasmine",
-    "test": "npm run test:unit && npm run test:e2e",
+    "pretest": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
+    "test": "TESTING=true jasmine",
     "posttest:e2e": "mongodb-runner stop --all",
     "watch": "nodemon index.js"
   },
