@@ -36,7 +36,6 @@
     "cross-env": "7.0.3",
     "eslint": "9.18.0",
     "jasmine": "5.5.0",
-    "jest": "29.7.0",
     "mongodb-runner": "5.7.1",
     "nodemon": "3.1.9",
     "nyc": "17.1.0",
