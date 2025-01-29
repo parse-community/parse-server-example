@@ -57,8 +57,13 @@ These scripts can help you to develop your app for Parse Server:
 * `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
 * `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.js`.
 * `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.js`, as defined in `.prettierrc`.
-* `npm run test` will run any tests that are written in `/spec`.
+* `npm test` will run all tests
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
+
+## Configuration
+
+Configuration is located in `config.js`.
+
 
 # Remote Deployment
 
