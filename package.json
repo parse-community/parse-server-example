@@ -27,7 +27,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@babel/eslint-parser": "7.26.5",
+    "@babel/eslint-parser": "7.26.8",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/git": "10.0.1",
