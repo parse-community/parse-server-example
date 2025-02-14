@@ -40,7 +40,7 @@
     "mongodb-runner": "5.8.0",
     "nodemon": "3.1.9",
     "nyc": "17.1.0",
-    "prettier": "3.5.0",
+    "prettier": "3.5.1",
     "semantic-release": "24.2.2"
   },
   "engines": {
