@@ -1,12 +1,12 @@
 {
   "name": "parse-server-example",
   "version": "2.0.0",
-  "description": "An example Parse API server using the parse-server module",
+  "description": "An example implementation of Parse Server",
   "repository": {
     "type": "git",
     "url": "https://github.com/ParsePlatform/parse-server-example"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
     "coverage": "nyc --reporter=html --reporter=text npm test",
@@ -22,7 +22,7 @@
   "dependencies": {
     "express": "4.21.2",
     "parse": "6.0.0",
-    "parse-server": "8.0.0-alpha.6"
+    "parse-server": "8.0.0"
   },
   "type": "module",
   "devDependencies": {
@@ -43,6 +43,6 @@
     "semantic-release": "24.2.3"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": ">=18.20.4 <19.0.0 || >=20.18.0 <21.0.0 || >=22.12.0 <23.0.0"
   }
 }
