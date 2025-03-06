@@ -1,3 +1,21 @@
+# [3.0.0](https://github.com/parse-community/parse-server-example/compare/2.0.0...3.0.0) (2025-03-06)
+
+
+### Bug Fixes
+
+* Bump express from 4.21.0 to 4.21.1 ([#531](https://github.com/parse-community/parse-server-example/issues/531)) ([4d5c64f](https://github.com/parse-community/parse-server-example/commit/4d5c64f7e56c34c19a698b0b4ba6c878f3aa4228))
+
+### Features
+
+* Upgrade parse-server from 7.2.0 to 7.3.0 ([#529](https://github.com/parse-community/parse-server-example/issues/529)) ([76c6229](https://github.com/parse-community/parse-server-example/commit/76c62295625c3fd9f0a09adc226bed9e74f60d79))
+* Upgrade parse-server from 7.3.0 to 7.4.0 ([#553](https://github.com/parse-community/parse-server-example/issues/553)) ([2c40f21](https://github.com/parse-community/parse-server-example/commit/2c40f21c1934a3c2cbf1084568dd561b56302a1f))
+* Upgrade to Parse Server 8 using ES6 syntax and Parse JS SDK in example web page ([#562](https://github.com/parse-community/parse-server-example/issues/562)) ([120e98f](https://github.com/parse-community/parse-server-example/commit/120e98f280686571bd18e47b4bf48b7fdad75b0f))
+
+
+### BREAKING CHANGES
+
+* This release upgrades to Parse Server 8. See the Parse Server 8 [change log](https://github.com/parse-community/parse-server/releases/tag/8.0.0) for more details about breaking changes. This release also changes to using ES6 syntax. ([120e98f](120e98f))
+
 # [2.0.0](https://github.com/ParsePlatform/parse-server-example/compare/1.3.1...2.0.0) (2024-07-12)
 
 
