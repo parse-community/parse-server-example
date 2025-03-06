@@ -7,9 +7,12 @@ if (dns.setDefaultResultOrder) {
   dns.setDefaultResultOrder('ipv4first');
 }
 
-beforeAll(async () => {
-  await startParseServer();
-}, 100 * 60 * 20);
+beforeAll(
+  async () => {
+    await startParseServer();
+  },
+  100 * 60 * 20
+);
 
 afterAll(async () => {
   await dropDB();

@@ -1,6 +1,7 @@
 import http from 'http';
 import { ParseServer } from 'parse-server';
-import { app, config } from '../../index.js';
+import { config } from '../../config.js';
+import express from 'express';
 
 export const dropDB = async () => {
   await Parse.User.logOut();
@@ -29,14 +30,18 @@ export async function startParseServer() {
   });
   const parseServer = new ParseServer(parseServerOptions);
   await parseServer.start();
+
+  const app = express();
   app.use(parseServerOptions.mountPath, parseServer.app);
   const httpServer = http.createServer(app);
   await new Promise(resolve => httpServer.listen(parseServerOptions.port, resolve));
+
   Object.assign(parseServerState, {
     parseServer,
     httpServer,
     parseServerOptions,
   });
+
   return parseServerOptions;
 }
 
