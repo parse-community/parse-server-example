@@ -20,7 +20,7 @@
     "watch": "nodemon index.js"
   },
   "dependencies": {
-    "express": "4.21.2",
+    "express": "5.1.0",
     "parse": "6.1.0",
     "parse-server": "8.0.2"
   },
