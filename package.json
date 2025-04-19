@@ -13,7 +13,7 @@
     "lint": "eslint --cache ./cloud && eslint --cache index.ts && eslint --cache ./spec",
     "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.ts && eslint --cache --fix ./spec",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.{ts,js,mjs,cjs}' index.ts",
-    "start": "node dist/index.ts",
+    "start": "node dist/index.js",
     "pretest": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
     "test": "TESTING=true jasmine",
     "posttest": "mongodb-runner stop --all",
@@ -26,7 +26,6 @@
     "parse": "6.1.1",
     "parse-server": "8.1.0"
   },
-  "type": "module",
   "devDependencies": {
     "@babel/eslint-parser": "7.27.0",
     "@eslint/js": "^9.0.0",
