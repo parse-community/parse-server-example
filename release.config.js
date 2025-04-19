@@ -28,9 +28,9 @@ const templates = {
 
 // Declare semantic config
 async function config() {
-
   // Get branch
-  const branch = ref?.split('/')?.pop()?.split('-')[0] || '(current branch could not be determined)';
+  const branch =
+    ref?.split('/')?.pop()?.split('-')[0] || '(current branch could not be determined)';
   console.log(`Running on branch: ${branch}`);
 
   // Set changelog file
@@ -60,43 +60,63 @@ async function config() {
     ci: true,
     tagFormat: '${version}',
     plugins: [
-      ['@semantic-release/commit-analyzer', {
-        preset: 'angular',
-        releaseRules: [
-          { type: 'docs', scope: 'README', release: 'patch' },
-          { scope: 'no-release', release: false },
-        ],
-        parserOpts: {
-          noteKeywords: [ 'BREAKING CHANGE' ],
+      [
+        '@semantic-release/commit-analyzer',
+        {
+          preset: 'angular',
+          releaseRules: [
+            { type: 'docs', scope: 'README', release: 'patch' },
+            { scope: 'no-release', release: false },
+          ],
+          parserOpts: {
+            noteKeywords: ['BREAKING CHANGE'],
+          },
         },
-      }],
-      ['@semantic-release/release-notes-generator', {
-        preset: 'angular',
-        parserOpts: {
-          noteKeywords: [ 'BREAKING CHANGE' ]
+      ],
+      [
+        '@semantic-release/release-notes-generator',
+        {
+          preset: 'angular',
+          parserOpts: {
+            noteKeywords: ['BREAKING CHANGE'],
+          },
+          writerOpts: {
+            commitsSort: ['subject', 'scope'],
+            mainTemplate: templates.main.text,
+            headerPartial: templates.header.text,
+            commitPartial: templates.commit.text,
+            footerPartial: templates.footer.text,
+          },
         },
-        writerOpts: {
-          commitsSort: ['subject', 'scope'],
-          mainTemplate: templates.main.text,
-          headerPartial: templates.header.text,
-          commitPartial: templates.commit.text,
-          footerPartial: templates.footer.text,
+      ],
+      [
+        '@semantic-release/changelog',
+        {
+          changelogFile: changelogFile,
         },
-      }],
-      ['@semantic-release/changelog', {
-        'changelogFile': changelogFile,
-      }],
-      ['@semantic-release/npm', {
-        'npmPublish': false,
-      }],
-      ['@semantic-release/git', {
-        assets: [changelogFile, 'package.json', 'package-lock.json'],
-      }],
-      ['@semantic-release/github', {
-        successComment: getReleaseComment(),
-        labels: ['type:ci'],
-        releasedLabels: ['state:released<%= nextRelease.channel ? `-\${nextRelease.channel}` : "" %>']
-      }],
+      ],
+      [
+        '@semantic-release/npm',
+        {
+          npmPublish: false,
+        },
+      ],
+      [
+        '@semantic-release/git',
+        {
+          assets: [changelogFile, 'package.json', 'package-lock.json'],
+        },
+      ],
+      [
+        '@semantic-release/github',
+        {
+          successComment: getReleaseComment(),
+          labels: ['type:ci'],
+          releasedLabels: [
+            'state:released<%= nextRelease.channel ? `-\${nextRelease.channel}` : "" %>',
+          ],
+        },
+      ],
     ],
   };
 

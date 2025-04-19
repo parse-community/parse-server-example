@@ -33,3 +33,6 @@ node_modules
 
 # build folder
 dist
+
+# Docker files
+Docker*

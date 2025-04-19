@@ -2,8 +2,8 @@ runtime: nodejs
 env: flex
 
 runtime_config:
-  operating_system: "ubuntu22"
-  runtime_version: "18"
+  operating_system: 'ubuntu22'
+  runtime_version: '18'
 
 env_variables:
   # --REQUIRED--
@@ -14,4 +14,4 @@ env_variables:
   # --OPTIONAL--
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse
-  # CLOUD_CODE_MAIN:  
+  # CLOUD_CODE_MAIN:

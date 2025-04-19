@@ -3,12 +3,12 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: 'npm'
     # Location of package-lock.json
-    directory: "/"
+    directory: '/'
     # Check daily for updates
     schedule:
-      interval: "daily"
+      interval: 'daily'
     commit-message:
       # Set commit message prefix
-      prefix: "refactor"
+      prefix: 'refactor'

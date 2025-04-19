@@ -13,7 +13,7 @@ describe('Parse Server example', () => {
   it('failing test', async () => {
     const obj = new Parse.Object('TestObject');
     await expectAsync(obj.save()).toBeRejectedWith(
-      new Parse.Error(9001, 'Saving test objects is not available.')
+      new Parse.Error(Parse.Error.OTHER_CAUSE, 'Saving test objects is not available.')
     );
   });
 });
