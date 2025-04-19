@@ -4,6 +4,6 @@
   ],
   "ext": "json,ts,mjs,cjs,js",
   "execMap": {
-    "ts": "node -r source-map-support/register --loader=ts-node/esm/transpile-only"
+    "ts": "tsx"
   }
 }

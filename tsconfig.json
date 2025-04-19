@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "ESNext",
+    "module": "commonjs",
+    "target": "es2015",
     "moduleResolution": "Node",
     "outDir": "./dist",
-    "allowJs": true,
+    "noImplicitAny": false,
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
