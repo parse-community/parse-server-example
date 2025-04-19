@@ -30,3 +30,6 @@ node_modules
 # Emacs
 *~
 .eslintcache
+
+# build folder
+dist

@@ -1,6 +1,6 @@
 export default [
   {
-    files: ['**/*.js'], // Apply to JavaScript files.
+    files: ['**/*.js', '**/*.ts', '**/*.mjs', '**/*.cjs'], // Apply to JavaScript files.
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',

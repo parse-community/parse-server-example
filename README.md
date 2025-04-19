@@ -54,15 +54,15 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 These scripts can help you to develop your app for Parse Server:
 
 * `npm run watch` will start your Parse Server and restart if you make any changes.
-* `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
-* `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.js`.
-* `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.js`, as defined in `.prettierrc`.
+* `npm run lint` will check the linting of your cloud code, tests and `index.ts`, as defined in `.eslintrc.json`.
+* `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.ts`.
+* `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.ts`, as defined in `.prettierrc`.
 * `npm test` will run all tests
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
 
 ## Configuration
 
-Configuration is located in `config.js`.
+Configuration is located in `config.ts`.
 
 
 # Remote Deployment

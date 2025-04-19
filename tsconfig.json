@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "./dist",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.cjs",
+    "**/*.mjs",
+    "**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "public",
+    "spec",
+    "logs",
+    "dist",
+    "release.config.js",
+    "eslint.config.js"
+  ]
+}
