@@ -13,10 +13,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "**/*.ts",
-    "**/*.cjs",
-    "**/*.mjs",
-    "**/*.js"
+    "**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -25,6 +22,6 @@
     "logs",
     "dist",
     "release.config.js",
-    "eslint.config.js"
+    "eslint.config.mjs"
   ]
 }

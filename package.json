@@ -29,6 +29,7 @@
   "type": "module",
   "devDependencies": {
     "@babel/eslint-parser": "7.27.0",
+    "@eslint/js": "^9.0.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/git": "10.0.1",
@@ -39,6 +40,7 @@
     "@types/parse": "^3.0.9",
     "cross-env": "7.0.3",
     "eslint": "9.24.0",
+    "globals": "^16.0.0",
     "jasmine": "5.6.0",
     "mongodb-runner": "5.8.2",
     "nodemon": "3.1.9",
@@ -46,7 +48,8 @@
     "prettier": "3.5.3",
     "semantic-release": "24.2.3",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.30.1"
   },
   "engines": {
     "node": ">=18.20.4 <19.0.0 || >=20.18.0 <21.0.0 || >=22.12.0 <23.0.0"
