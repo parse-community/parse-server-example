@@ -14,11 +14,11 @@ const bindBtn = (selector, callback) => {
   document.querySelector(selector)?.addEventListener('click', callback);
 };
 
-const closeStep = (selector) => {
+const closeStep = selector => {
   document.querySelector(selector)?.classList.add('step--disabled');
 };
 
-const openStep = (selector) => {
+const openStep = selector => {
   document.querySelector(selector)?.classList.remove('step--disabled');
 };
 
@@ -73,7 +73,7 @@ const postData = async () => {
     fillBtn('#step-1-btn', 'Posted');
     openStep('#step-2');
 
-    bindBtn('#step-2-btn', async (e) => {
+    bindBtn('#step-2-btn', async e => {
       e.preventDefault();
       await getData();
     });
@@ -92,7 +92,7 @@ const getData = async () => {
     fillBtn('#step-2-btn', 'Fetched');
     openStep('#step-3');
 
-    bindBtn('#step-3-btn', async (e) => {
+    bindBtn('#step-3-btn', async e => {
       e.preventDefault();
       await postCloudCodeData();
     });
@@ -126,7 +126,7 @@ const Store = {
  */
 const init = () => {
   buildParseUrl();
-  bindBtn('#step-1-btn', async (e) => {
+  bindBtn('#step-1-btn', async e => {
     e.preventDefault();
     await postData();
   });

@@ -12,7 +12,7 @@
     "coverage": "nyc --reporter=html --reporter=text npm test",
     "lint": "eslint --cache .",
     "lint-fix": "eslint --cache --fix .",
-    "prettier": "prettier --write '{cloud,spec}/{**/*,*}.{ts,js,mjs,cjs}' index.ts",
+    "prettier": "prettier --write .",
     "start": "node dist/index.js",
     "pretest": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
     "test": "TESTING=true jasmine",

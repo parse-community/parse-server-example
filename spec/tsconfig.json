@@ -3,8 +3,6 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": [
-    "**/*.ts"
-  ],
+  "include": ["**/*.ts"],
   "exclude": []
 }

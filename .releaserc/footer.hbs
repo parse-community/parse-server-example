@@ -1,10 +1,12 @@
 {{#if noteGroups}}
 {{#each noteGroups}}
 
-### {{title}}
+### {{ title }}
 
 {{#each notes}}
-* {{#if commit.scope}}**{{commit.scope}}:** {{/if}}{{text}} ([{{commit.shortHash}}]({{commit.shortHash}}))
+* {{#if commit.scope}}**{{ commit.scope }}:** {{/if}}{{ text }} ([{{ commit.shortHash }}]({{
+  commit.shortHash
+}}))
 {{/each}}
 {{/each}}
 
