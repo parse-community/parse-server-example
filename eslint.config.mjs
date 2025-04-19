@@ -7,12 +7,13 @@ const __dirname = path.resolve();
 
 export default tseslint.config(js.configs.recommended, ...tseslint.configs.recommended, {
   files: ['**/*.ts'],
+  ignores: ['./public/**/*', 'release.config.js'],
   languageOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
     parser: tseslint.parser,
     parserOptions: {
-      project: './tsconfig.json',
+      project: ['./tsconfig.json', './spec/tsconfig.json'],
       tsconfigRootDir: __dirname,
     },
     globals: {
