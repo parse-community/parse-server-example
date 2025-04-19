@@ -27,4 +27,4 @@ ENV DATABASE_URI=setMongoDBURI
 
 EXPOSE 1337
 
-CMD ["npm", "start"]
+CMD ["node", "dist/index.js"]
