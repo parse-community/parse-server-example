@@ -10,8 +10,8 @@
   "main": "dist/index.js",
   "scripts": {
     "coverage": "nyc --reporter=html --reporter=text npm test",
-    "lint": "eslint --cache ./cloud && eslint --cache index.ts && eslint --cache ./spec",
-    "lint-fix": "eslint --cache --fix ./cloud && eslint --cache --fix index.ts && eslint --cache --fix ./spec",
+    "lint": "eslint --cache .",
+    "lint-fix": "eslint --cache --fix .",
     "prettier": "prettier --write '{cloud,spec}/{**/*,*}.{ts,js,mjs,cjs}' index.ts",
     "start": "node dist/index.js",
     "pretest": "cross-env MONGODB_VERSION=${MONGODB_VERSION:=7.0.1} MONGODB_TOPOLOGY=${MONGODB_TOPOLOGY:=standalone} mongodb-runner start -t ${MONGODB_TOPOLOGY} --version ${MONGODB_VERSION} -- --port 27017",
