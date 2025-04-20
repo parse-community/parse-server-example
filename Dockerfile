@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:latest AS builder
+FROM node:22.12.0-alpine AS builder
 
 WORKDIR /usr/src/parse
 
