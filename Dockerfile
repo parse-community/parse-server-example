@@ -18,13 +18,11 @@ WORKDIR /usr/src/parse
 
 # Copy only the required files from the builder stage
 COPY --from=builder /usr/src/parse/node_modules ./node_modules
-COPY --from=builder /usr/src/parse/dist ./dist
+COPY --from=builder /usr/src/parse/dist ./
 COPY --from=builder /usr/src/parse/public ./public
 
-ENV APP_ID=setYourAppId
-ENV MASTER_KEY=setYourMasterKey
-ENV DATABASE_URI=setMongoDBURI
+VOLUME ["/usr/src/parse/cloud", "/usr/src/parse/logs"]
 
 EXPOSE 1337
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "index.js"]
