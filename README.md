@@ -23,6 +23,7 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 ---
 
 - [Local Development](#local-development)
+  - [Docker Deployment](#docker-deployment)
   - [Helpful Scripts](#helpful-scripts)
 - [Remote Deployment](#remote-deployment)
   - [Heroku](#heroku)
@@ -49,6 +50,35 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 6. Launch Parse Server with `npm start`.
 7. By default the API route will use `/parse` as a base. You can change this by setting the environment variable `PARSE_MOUNT`, for example in the CLI run run `export PARSE_MOUNT=/app` to set the path to `app`.
 8. Your Parse Server is not running and is connected to your local database named `dev` in which the data is stored that you manage via Parse Server.
+
+## Docker Deployment
+
+You can also run Parse Server using Docker:
+
+1. Create a `.env` file with your configuration variables. For example:
+   ```
+   APP_ID=myAppId
+   MASTER_KEY=myMasterKey
+   DATABASE_URI=mongodb://localhost:27017/parse
+   PORT=1337
+   PARSE_MOUNT=/parse
+   ```
+
+2. Run Docker with the following command, mounting volumes as needed:
+   ```
+   docker build -t parse-server .
+   docker run -p 1337:1337 --env-file .env \
+     -v $(pwd)/logs:/usr/src/parse/logs \
+     -v $(pwd)/cloud:/usr/src/parse/cloud \
+     parse-server
+   ```
+
+This allows you to:
+- Use an environment file for configuration
+- Mount the logs directory to persist logs outside the container
+- Mount the cloud directory to access your Cloud Code files from the container
+
+You can customize the mounted volumes based on your needs, such as mounting config files or other directories that require persistence or runtime modifications.
 
 ## Helpful Scripts
 These scripts can help you to develop your app for Parse Server:
