@@ -56,7 +56,7 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 You can also run Parse Server using Docker:
 
 1. Create a `.env` file with your configuration variables. For example:
-   ```
+   ```env
    APP_ID=myAppId
    MASTER_KEY=myMasterKey
    DATABASE_URI=mongodb://localhost:27017/parse
@@ -65,7 +65,7 @@ You can also run Parse Server using Docker:
    ```
 
 2. Run Docker with the following command, mounting volumes as needed:
-   ```
+   ```bash
    docker build -t parse-server .
    docker run -p 1337:1337 --env-file .env \
      -v $(pwd)/logs:/usr/src/parse/logs \
