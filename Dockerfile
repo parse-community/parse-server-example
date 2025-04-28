@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:22.12.0-alpine AS builder
+FROM node:20.19.1-alpine AS builder
 
 WORKDIR /usr/src/parse
 
@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 # latest supported node version when this Dockerfile was written
-FROM node:22.12.0-alpine
+FROM node:20.19.1-alpine
 
 WORKDIR /usr/src/parse
 
