@@ -14,5 +14,3 @@ Parse.Cloud.define('helloAsyncFunction', async req => {
 Parse.Cloud.beforeSave('TestObject', () => {
   throw new Parse.Error(Parse.Error.OTHER_CAUSE, 'Saving test objects is not available.');
 });
-
-export {};
