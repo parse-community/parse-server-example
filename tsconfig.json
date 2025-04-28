@@ -4,6 +4,7 @@
     "target": "ES2022",
     "moduleResolution": "Node",
     "outDir": "./dist",
+    "rootDir": "./",
     "noImplicitAny": false,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
