@@ -1,26 +1,28 @@
-FROM node:latest
+# Builder stage
+FROM node:20.19.1-alpine AS builder
 
-RUN mkdir parse
+WORKDIR /usr/src/parse
 
-ADD . /parse
-WORKDIR /parse
+COPY package*.json .
+
 RUN npm install
 
-ENV APP_ID setYourAppId
-ENV MASTER_KEY setYourMasterKey
-ENV DATABASE_URI setMongoDBURI
+COPY . .
 
-# Optional (default : 'parse/cloud/main.js')
-# ENV CLOUD_CODE_MAIN cloudCodePath
+RUN npm run build
 
-# Optional (default : '/parse')
-# ENV PARSE_MOUNT mountPath
+# latest supported node version when this Dockerfile was written
+FROM node:20.19.1-alpine
+
+WORKDIR /usr/src/parse
+
+# Copy only the required files from the builder stage
+COPY --from=builder /usr/src/parse/node_modules ./node_modules
+COPY --from=builder /usr/src/parse/dist ./
+COPY --from=builder /usr/src/parse/public ./public
+
+VOLUME ["/usr/src/parse/cloud", "/usr/src/parse/logs"]
 
 EXPOSE 1337
 
-# Uncomment if you want to access cloud code outside of your container
-# A main.js file must be present, if not Parse will not start
-
-# VOLUME /parse/cloud               
-
-CMD [ "npm", "start" ]
+CMD ["node", "index.js"]

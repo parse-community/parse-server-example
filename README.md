@@ -23,6 +23,7 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 ---
 
 - [Local Development](#local-development)
+  - [Docker Deployment](#docker-deployment)
   - [Helpful Scripts](#helpful-scripts)
 - [Remote Deployment](#remote-deployment)
   - [Heroku](#heroku)
@@ -50,19 +51,48 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
 7. By default the API route will use `/parse` as a base. You can change this by setting the environment variable `PARSE_MOUNT`, for example in the CLI run run `export PARSE_MOUNT=/app` to set the path to `app`.
 8. Your Parse Server is not running and is connected to your local database named `dev` in which the data is stored that you manage via Parse Server.
 
+## Docker Deployment
+
+You can also run Parse Server using Docker:
+
+1. Create a `.env` file with your configuration variables. For example:
+   ```env
+   APP_ID=myAppId
+   MASTER_KEY=myMasterKey
+   DATABASE_URI=mongodb://localhost:27017/parse
+   PORT=1337
+   PARSE_MOUNT=/parse
+   ```
+
+2. Run Docker with the following command, mounting volumes as needed:
+   ```bash
+   docker build -t parse-server .
+   docker run -p 1337:1337 --env-file .env \
+     -v $(pwd)/logs:/usr/src/parse/logs \
+     -v $(pwd)/cloud:/usr/src/parse/cloud \
+     parse-server
+   ```
+
+This allows you to:
+- Use an environment file for configuration
+- Mount the logs directory to persist logs outside the container
+- Mount the cloud directory to access your Cloud Code files from the container
+
+You can customize the mounted volumes based on your needs, such as mounting config files or other directories that require persistence or runtime modifications.
+
 ## Helpful Scripts
 These scripts can help you to develop your app for Parse Server:
 
 * `npm run watch` will start your Parse Server and restart if you make any changes.
-* `npm run lint` will check the linting of your cloud code, tests and `index.js`, as defined in `.eslintrc.json`.
-* `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.js`.
-* `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.js`, as defined in `.prettierrc`.
+* `npm run lint` will check the linting of your cloud code, tests and `index.ts`, as defined in `.eslintrc.json`.
+* `npm run lint-fix` will attempt fix the linting of your cloud code, tests and `index.ts`.
+* `npm run prettier` will help improve the formatting and layout of your cloud code, tests and `index.ts`, as defined in `.prettierrc`.
 * `npm test` will run all tests
 * `npm run coverage` will run tests and check coverage. Output is available in the `/coverage` folder.
 
 ## Configuration
 
-Configuration is located in `config.js`.
+Configuration is located in `config.ts`.
 
 
 # Remote Deployment

@@ -34,6 +34,5 @@ node_modules
 # build folder
 dist
 
-# env files
-.env*
-!.env.example
+# Docker files
+Docker*
