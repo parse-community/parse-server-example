@@ -47,7 +47,7 @@
     "nodemon": "3.1.10",
     "nyc": "17.1.0",
     "prettier": "3.5.3",
-    "semantic-release": "24.2.4",
+    "semantic-release": "24.2.5",
     "tsx": "4.19.4",
     "typescript": "5.8.3",
     "typescript-eslint": "8.32.1"
