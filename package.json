@@ -37,7 +37,7 @@
     "@semantic-release/npm": "12.0.1",
     "@semantic-release/release-notes-generator": "14.0.3",
     "@types/jasmine": "5.1.8",
-    "@types/node": "22.15.30",
+    "@types/node": "24.0.3",
     "@types/parse": "3.0.9",
     "cross-env": "7.0.3",
     "eslint": "9.29.0",
