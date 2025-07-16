@@ -690,6 +690,19 @@ Parse.Cloud.afterSave("books", async (request) => {
     }
 });
 
+// July 2025:
+// The notes below were correct for a long time, and perhaps they still represent the current
+// ideal since we have not yet taken the time to figure out to use schema files.
+// But our more recent practice has been to cheat and just create fields manually in the dashboard.
+// That is much easier because it doesn't require deploying the cloud code at all.
+// In theory, we have also kept this function in sync with manual changes, but
+// I'm guessing we have not done so perfectly.
+// So it would probably be unsafe to run this on the live database now.
+// I've created a new private repository at https://github.com/BloomBooks/bloom-parser-server-schema
+// to hold schema files for each environment as of today. That at least documents where things are.
+// And some day we should figure out how to make use of them to properly update the schema when we need to.
+// End July 2025.
+//
 // This function is used to set up the fields used in the bloom library.
 // Adding something here should be the ONLY way fields and classes are added to parse.com.
 // After adding one, it is recommended that you first deploy the modified cloud code
@@ -817,6 +830,7 @@ Parse.Cloud.define("setupTables", async () => {
                 { name: "rebrand", type: "Boolean" },
                 // bloomPUBVersion is explained in BL-10720
                 { name: "bloomPUBVersion", type: "Number" },
+                { name: "bookHashFromImages", type: "String" }, // BL-14980
 
                 // analytics_* fields are populated by the updateBookAnalytics job.
                 { name: "analytics_startCount", type: "Number" },
