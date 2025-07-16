@@ -38,6 +38,8 @@ Here is the full [Parse Server guide](http://docs.parseplatform.org/parse-server
 
    and see the tables in the dashboard.
 
+   But see notes on the `setupTables` function in `cloud/main.js` before running on a live database.
+
 1. Run Parse Dashboard:
 
    Go to [http://localhost:1337/dashboard](http://localhost:1337/dashboard)
