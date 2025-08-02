@@ -40,7 +40,7 @@
     "@types/node": "22.15.30",
     "@types/parse": "3.0.9",
     "cross-env": "7.0.3",
-    "eslint": "9.31.0",
+    "eslint": "9.32.0",
     "globals": "16.3.0",
     "jasmine": "5.9.0",
     "mongodb-runner": "5.9.2",
