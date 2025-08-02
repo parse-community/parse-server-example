@@ -39,7 +39,7 @@
     "@types/jasmine": "5.1.8",
     "@types/node": "22.15.30",
     "@types/parse": "3.0.9",
-    "cross-env": "7.0.3",
+    "cross-env": "10.0.0",
     "eslint": "9.32.0",
     "globals": "16.3.0",
     "jasmine": "5.9.0",
