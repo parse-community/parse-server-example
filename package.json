@@ -41,7 +41,7 @@
     "@types/parse": "3.0.9",
     "cross-env": "10.1.0",
     "eslint": "9.36.0",
-    "globals": "16.3.0",
+    "globals": "16.4.0",
     "jasmine": "5.9.0",
     "mongodb-runner": "5.9.2",
     "nodemon": "3.1.10",
