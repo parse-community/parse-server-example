@@ -24,7 +24,7 @@
   "dependencies": {
     "express": "5.2.1",
     "parse": "7.1.2",
-    "parse-server": "8.6.0"
+    "parse-server": "9.1.0"
   },
   "type": "module",
   "devDependencies": {
