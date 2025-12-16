@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "express": "5.2.1",
-    "parse": "7.1.2",
+    "parse": "8.0.0",
     "parse-server": "9.1.1"
   },
   "type": "module",
