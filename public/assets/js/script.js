@@ -47,7 +47,7 @@ const fillBtn = (selector, message) => {
 };
 
 const showWorkingMessage = () => {
-  const step = document.querySelector('#step-4');
+  const step = document.querySelector('#step-5');
   if (step) {
     setTimeout(() => {
       step.style.display = 'block';
@@ -108,9 +108,27 @@ const postCloudCodeData = async () => {
     closeStep('#step-3');
     fillStepOutput('#step-3-output', JSON.stringify(result));
     fillBtn('#step-3-btn', 'Tested');
-    showWorkingMessage();
+    openStep('#step-4');
+
+    bindBtn('#step-4-btn', async (e) => {
+      e.preventDefault();
+      await getRecentObjects();
+    });
   } catch (error) {
     fillStepError('#step-3-error', `There was a failure: ${error.message}`);
+  }
+};
+
+const getRecentObjects = async () => {
+  try {
+    const result = await Parse.Cloud.run('getRecentObjects', { className: 'GameScore', limit: 5 });
+
+    closeStep('#step-4');
+    fillStepOutput('#step-4-output', JSON.stringify(result));
+    fillBtn('#step-4-btn', 'Fetched');
+    showWorkingMessage();
+  } catch (error) {
+    fillStepError('#step-4-error', `There was a failure: ${error.message}`);
   }
 };
 
