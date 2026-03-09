@@ -1,0 +1,45 @@
+# Skyramp Test Bot workflow (uses develop branch)
+name: Skyramp Testbot (Early Access)
+on: pull_request
+
+env:
+  SKYRAMP_TEST_TOKEN: ${{ secrets.SKYRAMP_TEST_TOKEN }}
+  SKYRAMP_FEATURE_TESTBOT: "1"
+
+jobs:
+  skyramp-testbot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Validate PAT token
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          if [ -z "$PAT_TOKEN" ]; then
+            echo "::error::PAT_TOKEN secret is not configured."
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Run Skyramp Testbot
+        id: testbot
+        uses: skyramp/testbot@shiny/test-recom-update
+        with:
+          skyramp_license_file: ${{ secrets.SKYRAMP_LICENSE }}
+          anthropic_api_key: ${{ secrets.SKYRAMP_TESTBOT_API_KEY }}
+          enable_debug: true
+          skyramp_mcp_version: next
+
+      - name: Check execution status
+        run: |
+          echo "Tests modified: ${{ steps.testbot.outputs.tests_modified }}"
+          echo "Tests created: ${{ steps.testbot.outputs.tests_created }}"
+          echo "Tests executed: ${{ steps.testbot.outputs.tests_executed }}"
