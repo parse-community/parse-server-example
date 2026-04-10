@@ -45,7 +45,7 @@
     "mongodb-runner": "6.7.3",
     "nodemon": "3.1.14",
     "nyc": "18.0.0",
-    "prettier": "3.8.1",
+    "prettier": "3.8.2",
     "semantic-release": "25.0.3",
     "tsx": "4.21.0",
     "typescript": "6.0.2",
