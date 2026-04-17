@@ -42,7 +42,7 @@
     "eslint": "10.2.0",
     "globals": "17.5.0",
     "jasmine": "6.2.0",
-    "mongodb-runner": "6.7.3",
+    "mongodb-runner": "6.7.7",
     "nodemon": "3.1.14",
     "nyc": "18.0.0",
     "prettier": "3.8.3",
