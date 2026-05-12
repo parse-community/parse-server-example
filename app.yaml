@@ -3,7 +3,7 @@ env: flex
 
 runtime_config:
   operating_system: "ubuntu22"
-  runtime_version: "18"
+  runtime_version: "22"
 
 env_variables:
   # --REQUIRED--
