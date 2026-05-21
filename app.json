@@ -18,7 +18,7 @@
       "value": "myMasterKey"
     },
     "DATABASE_URI": {
-      "description": "MongoDB connection string for this Parse Server deployment, for example a MongoDB Atlas connection string.",
+      "description": "MongoDB connection string for this Parse Server deployment, for example a MongoDB Atlas connection string. Keep this secret because it can contain credentials.",
       "required": true
     },
     "SERVER_URL": {

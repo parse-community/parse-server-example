@@ -108,9 +108,9 @@ Alternatively, to deploy manually:
 * Clone the repo and change directory to it
 * Log in with the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) and create an app: `heroku create`
 * Create a MongoDB database, for example with [MongoDB Atlas](https://www.mongodb.com/atlas/database), and copy its connection string
-* Configure the database connection: `heroku config:set DATABASE_URI='<replace with MongoDB connection string>'`
+* Configure the database connection: `heroku config:set DATABASE_URI=<replace-with-mongodb-connection-string>`; quote or escape special characters as required by your shell.
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
-* Configure the public server URL: `heroku config:set SERVER_URL=https://YourAppName.herokuapp.com/parse`
+* Configure the public server URL with the same mount path: `heroku config:set SERVER_URL=https://YourAppName.herokuapp.com/parse` or `heroku config:set SERVER_URL=https://YourAppName.herokuapp.com/1`
 * Deploy it with: `git push heroku master`
 
 ## AWS Elastic Beanstalk
