@@ -99,14 +99,18 @@ Configuration is located in `config.ts`.
 
 ## Heroku
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/parse-community/parse-server-example)
+
+The Heroku button uses `app.json` and asks for a `DATABASE_URI` during setup. Create a MongoDB database first, for example with [MongoDB Atlas](https://www.mongodb.com/atlas/database), then paste its connection string into the Heroku form.
 
 Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
-* Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
+* Log in with the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) and create an app: `heroku create`
+* Create a MongoDB database, for example with [MongoDB Atlas](https://www.mongodb.com/atlas/database), and copy its connection string
+* Configure the database connection: `heroku config:set DATABASE_URI='<replace with MongoDB connection string>'`
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
+* Configure the public server URL: `heroku config:set SERVER_URL=https://YourAppName.herokuapp.com/parse`
 * Deploy it with: `git push heroku master`
 
 ## AWS Elastic Beanstalk
@@ -135,10 +139,10 @@ Detailed information is available here:
 1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
 1. Setup a MongoDB server.  You have a few options:
   1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
-  1. Use [mLab](https://mlab.com/google/) to create a free MongoDB deployment on Google Cloud Platform (only US-central).
+  1. Use a hosted MongoDB service such as [MongoDB Atlas](https://www.mongodb.com/atlas/database).
 1. Modify `app.yaml` to update your environment variables.
 1. Delete `Dockerfile`
-1. Deploy it with `gcloud preview app deploy`
+1. Deploy it with `gcloud app deploy`
 
 A detailed tutorial is available here:
 [Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
