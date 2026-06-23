@@ -81,6 +81,7 @@ CREATE TABLE public.books (
   features TEXT[],
   publisher TEXT,
   original_publisher TEXT,
+  publisher_book_id TEXT,
   phash_of_first_content_image TEXT,
   branding_project_name TEXT,
   book_lineage_array TEXT[],

@@ -540,6 +540,7 @@ Parse.Cloud.beforeSave(
                     "librarianNote",
                     "publisher",
                     "originalPublisher",
+                    "publisherBookId",
                 ];
                 scalarColumnsWithFallback.forEach((columnName) => {
                     const newValue = book.get(columnName);
@@ -799,6 +800,9 @@ Parse.Cloud.define("setupTables", async () => {
                 // shellbooks that have a "publisher" also have that same value in "originalPublisher".
                 // "originalPublisher" will never be cleared by BloomDesktop.
                 { name: "originalPublisher", type: "String" },
+                // The publisher's own identifier for this book (e.g. a catalog/SKU number the
+                // publisher uses to track it). E.g. for StoryWeaver, "sw-1234". May be null.
+                { name: "publisherBookId", type: "String" },
                 // This is a "perceptual hash" (http://phash.org/) of the image in the first bloom-imageContainer
                 // we find on the first page after any xmatter pages. We use this to suggest which books are
                 // probably related to each other. This allows us to link, for example, books that are translations
