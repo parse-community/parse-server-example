@@ -29,6 +29,7 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
   - [Heroku](#heroku)
   - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
   - [Microsoft Azure App Service](#microsoft-azure-app-service)
+  - [Alibaba Cloud](#alibaba-cloud)
   - [Google App Engine](#google-app-engine)
   - [Scalingo](#scalingo)
   - [OpenShift Online (Next Gen)](#openshift-online-next-gen)
@@ -126,6 +127,14 @@ Alternatively, deploy your local changes manually:
 Detailed information is available here:
 * [Parse Server with Azure Managed Services](https://azure.microsoft.com/en-us/marketplace/partners/microsoft/parseserver/)
 * [Parse Server Azure Blog Post](https://azure.microsoft.com/en-us/blog/announcing-the-publication-of-parse-server-with-azure-managed-services/)
+
+## Alibaba Cloud
+
+[![Deploy to Alibaba Cloud](https://github.com/alibabacloud-howto/solution-applicationstack-parse/raw/main/images/deploy.png)](https://github.com/alibabacloud-howto/solution-applicationstack-parse)
+
+Deploy the Parse Server either with MongoDB or RDS for PostgreSQL as the backend database:
+* [Deploy Application Stack Parse Server with MongoDB on Alibaba Cloud](https://github.com/alibabacloud-howto/solution-applicationstack-parse/tree/main/parse-server-mongodb)
+* [Deploy Application Stack Parse Server with RDS for PostgreSQL on Alibaba Cloud](https://github.com/alibabacloud-howto/solution-applicationstack-parse/tree/main/parse-server-postgresql)
 
 ## Google App Engine
 
