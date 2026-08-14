@@ -101,11 +101,13 @@ Configuration is located in `config.ts`.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+The deploy button reads `app.json` and prompts for the required configuration. Heroku no longer offers the retired mLab add-on used by older versions of this example, so create a MongoDB database first and paste its connection string into `DATABASE_URI` when Heroku asks for config vars. After selecting your Heroku app name, update `SERVER_URL` to match it, for example `https://yourappname.herokuapp.com/parse`.
+
 Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
 * Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
+* Create a MongoDB database and set its connection string: `heroku config:set DATABASE_URI=<replace with MongoDB connection string> --app YourAppName`
 * By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
 * Deploy it with: `git push heroku master`
 
