@@ -1,3 +1,20 @@
+# [3.1.0](https://github.com/parse-community/parse-server-example/compare/3.0.0...3.1.0) (2026-10-25)
+
+
+### Bug Fixes
+
+* Bump ip-address from 10.1.0 to 10.7.4 and parse-server from 9.10.0 to 9.10.7 ([#946](https://github.com/parse-community/parse-server-example/issues/946)) ([62c53da](https://github.com/parse-community/parse-server-example/commit/62c53da6f377df52e17370cfa7acbc32f16aa52d))
+* Bump moment from 2.30.1 to 2.31.0 ([#952](https://github.com/parse-community/parse-server-example/issues/952)) ([6e042b4](https://github.com/parse-community/parse-server-example/commit/6e042b4790d253ca6d1a7820c86b20a0ed194436))
+* Bump parse-server from 9.2.0 to 9.6.1 ([#819](https://github.com/parse-community/parse-server-example/issues/819)) ([85afc1f](https://github.com/parse-community/parse-server-example/commit/85afc1fda8b5850d13fe61f884862c1381518b50))
+* Bump websocket-driver from 0.7.4 to 0.7.5 ([#912](https://github.com/parse-community/parse-server-example/issues/912)) ([70f7a44](https://github.com/parse-community/parse-server-example/commit/70f7a44c1268b9c8559a7255697c4fa3140ce270))
+* Security upgrade brace-expansion from 5.0.5 to 5.0.7 ([#923](https://github.com/parse-community/parse-server-example/issues/923)) ([888e594](https://github.com/parse-community/parse-server-example/commit/888e594b1464bbcc141bcdd60e5ae3dfb2e68708))
+* Security upgrade jws ([#749](https://github.com/parse-community/parse-server-example/issues/749)) ([198e1c9](https://github.com/parse-community/parse-server-example/commit/198e1c911a7d6707a642f80937b3c41b2ca23e80))
+
+### Features
+
+* Add TypeScript support ([#595](https://github.com/parse-community/parse-server-example/issues/595)) ([c9b119a](https://github.com/parse-community/parse-server-example/commit/c9b119af53484bec387c5b5189fef4d756de2b78))
+* Upgrade to parse-server 9.2.0 ([#788](https://github.com/parse-community/parse-server-example/issues/788)) ([eef10d5](https://github.com/parse-community/parse-server-example/commit/eef10d500d15f5635c2e62a24a4a9efdf61abb60))
+
 # [3.0.0](https://github.com/parse-community/parse-server-example/compare/2.0.0...3.0.0) (2025-03-06)
 
 
