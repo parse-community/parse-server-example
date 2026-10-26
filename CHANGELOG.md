@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/parse-community/parse-server-example/compare/3.1.1...3.1.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* Bump proxy-addr from 2.0.7 to 2.0.8 ([#959](https://github.com/parse-community/parse-server-example/issues/959)) ([9d86153](https://github.com/parse-community/parse-server-example/commit/9d861530212fcf51251d731026234529300ee534))
+
 ## [3.1.1](https://github.com/parse-community/parse-server-example/compare/3.1.0...3.1.1) (2026-10-26)
 
 
