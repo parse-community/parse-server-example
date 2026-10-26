@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/parse-community/parse-server-example/compare/3.1.0...3.1.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* Bump qs from 6.15.2 to 6.16.1 ([#954](https://github.com/parse-community/parse-server-example/issues/954)) ([511efc8](https://github.com/parse-community/parse-server-example/commit/511efc858f526f61bca62f9890ff3e82f39116f0))
+
 # [3.1.0](https://github.com/parse-community/parse-server-example/compare/3.0.0...3.1.0) (2026-10-25)
 
 
