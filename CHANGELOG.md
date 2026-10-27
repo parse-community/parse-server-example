@@ -1,3 +1,10 @@
+## [3.1.4](https://github.com/parse-community/parse-server-example/compare/3.1.3...3.1.4) (2026-10-27)
+
+
+### Bug Fixes
+
+* Bump parse from 8.6.0 to 8.6.2 ([#964](https://github.com/parse-community/parse-server-example/issues/964)) ([fc4e731](https://github.com/parse-community/parse-server-example/commit/fc4e73188d67d9d2b9be461405539152724de77b))
+
 ## [3.1.3](https://github.com/parse-community/parse-server-example/compare/3.1.2...3.1.3) (2026-10-27)
 
 
