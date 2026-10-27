@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/parse-community/parse-server-example/compare/3.1.2...3.1.3) (2026-10-27)
+
+
+### Bug Fixes
+
+* Bump body-parser from 2.3.0 to 2.4.0 ([#960](https://github.com/parse-community/parse-server-example/issues/960)) ([8d76e46](https://github.com/parse-community/parse-server-example/commit/8d76e46e28baaba261cbfa223a741d832eb4a4d7))
+
 ## [3.1.2](https://github.com/parse-community/parse-server-example/compare/3.1.1...3.1.2) (2026-10-26)
 
 
