@@ -1,7 +1,7 @@
 {
   "name": "Parse Server Example",
   "description": "An example Parse API server using the parse-server module",
-  "repository": "https://github.com/ParsePlatform/parse-server-example",
+  "repository": "https://github.com/parse-community/parse-server-example",
   "logo": "https://avatars0.githubusercontent.com/u/1294580?v=3&s=200",
   "env": {
     "PARSE_MOUNT": {
@@ -10,16 +10,25 @@
     },
     "APP_ID": {
       "description": "A unique identifier for your app.",
-      "value": ""
+      "generator": "secret"
     },
     "MASTER_KEY": {
       "description": "A key that overrides all permissions. Keep this secret.",
-      "value": ""
+      "generator": "secret"
     },
     "DATABASE_URI": {
       "description": "Connection string for your database.",
       "value": "$SCALINGO_MONGO_URL"
+    },
+    "SERVER_URL": {
+      "description": "Public URL for your deployed Parse API.",
+      "generator": "url",
+      "template": "%URL%/parse"
     }
   },
-  "addons": ["scalingo-mongodb"]
+  "addons": [
+    {
+      "plan": "mongodb:mongo-starter-256"
+    }
+  ]
 }

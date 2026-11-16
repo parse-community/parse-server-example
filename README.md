@@ -26,12 +26,13 @@ The [Parse Server guide](https://docs.parseplatform.org/parse-server/guide/) is 
   - [Docker Deployment](#docker-deployment)
   - [Helpful Scripts](#helpful-scripts)
 - [Remote Deployment](#remote-deployment)
+  - [Required configuration](#required-configuration)
   - [Heroku](#heroku)
   - [AWS Elastic Beanstalk](#aws-elastic-beanstalk)
   - [Microsoft Azure App Service](#microsoft-azure-app-service)
   - [Google App Engine](#google-app-engine)
   - [Scalingo](#scalingo)
-  - [OpenShift Online (Next Gen)](#openshift-online-next-gen)
+  - [OpenShift](#openshift)
 - [Using Parse Server](#using-parse-server)
   - [Health Check](#health-check)
   - [APIs and SDKs](#apis-and-sdks)
@@ -97,80 +98,82 @@ Configuration is located in `config.ts`.
 
 # Remote Deployment
 
+Create a hosted MongoDB database before deploying this example to a remote provider. Remote deployments should not use the local `mongodb://localhost:27017/dev` fallback.
+
+## Required configuration
+
+Set these values before starting the remote app:
+
+| Variable | Description |
+| --- | --- |
+| `DATABASE_URI` | MongoDB connection string for your hosted database. |
+| `APP_ID` | Parse application ID. |
+| `MASTER_KEY` | Parse master key. Keep this secret. |
+| `SERVER_URL` | Public URL for your deployed Parse API, including `PARSE_MOUNT`, for example `https://example.com/parse`. |
+| `PARSE_MOUNT` | Parse API route. Defaults to `/parse`. |
+
 ## Heroku
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/parse-community/parse-server-example)
+
+The Heroku button reads `app.json` and prompts for the required configuration. The old mLab add-on is no longer provisioned by this project, so provide a MongoDB connection string from MongoDB Atlas or another hosted MongoDB provider.
 
 Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
-* Log in with the [Heroku Toolbelt](https://toolbelt.heroku.com/) and create an app: `heroku create`
-* Use the [mLab addon](https://elements.heroku.com/addons/mongolab): `heroku addons:create mongolab:sandbox --app YourAppName`
-* By default it will use a path of /parse for the API routes.  To change this, or use older client SDKs, run `heroku config:set PARSE_MOUNT=/1`
-* Deploy it with: `git push heroku master`
+* Log in with the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) and create an app: `heroku create`
+* Configure the required variables: `heroku config:set DATABASE_URI="<mongodb-uri>" APP_ID="<app-id>" MASTER_KEY="<master-key>" SERVER_URL="https://<your-app>.herokuapp.com/parse"`
+* To change the API route, run `heroku config:set PARSE_MOUNT=/1` and update `SERVER_URL` to match.
+* Deploy it with: `git push heroku HEAD:main`
 
 ## AWS Elastic Beanstalk
 
-<a title="Deploy to AWS" href="https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/newApplication?applicationName=ParseServer&solutionStackName=Node.js&tierName=WebServer&sourceBundleUrl=https://s3.amazonaws.com/elasticbeanstalk-samples-us-east-1/eb-parse-server-sample/parse-server-example.zip" target="_blank"><img src="https://d0.awsstatic.com/product-marketing/Elastic%20Beanstalk/deploy-to-aws.png" height="40"></a>
-
-Alternatively, deploy your local changes manually:
+The previous Elastic Beanstalk button used a static sample bundle that did not track this repository. Deploy your local checkout with the EB CLI instead:
 
 * Clone the repo and change directory to it
 * Log in with the [AWS Elastic Beanstalk CLI](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), select a region, and create an app: `eb init`
-* Create an environment and pass in MongoDB URI, App ID, and Master Key: `eb create --envvars DATABASE_URI=<replace with URI>,APP_ID=<replace with Parse app ID>,MASTER_KEY=<replace with Parse master key>`
+* Create an environment and pass in MongoDB URI, App ID, and Master Key: `eb create --envvars DATABASE_URI=<mongodb-uri>,APP_ID=<app-id>,MASTER_KEY=<master-key>,PARSE_MOUNT=/parse`
+* After Elastic Beanstalk prints the environment URL, set `SERVER_URL`: `eb setenv SERVER_URL=https://<environment-url>/parse`
 
 ## Microsoft Azure App Service
 
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.ParseServer)
+The old Azure Marketplace Parse Server template is no longer maintained by this repository. Deploy as a Node.js app on [Azure App Service](https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs) and set the required configuration as App Service application settings.
 
-Detailed information is available here:
-* [Parse Server with Azure Managed Services](https://azure.microsoft.com/en-us/marketplace/partners/microsoft/parseserver/)
-* [Parse Server Azure Blog Post](https://azure.microsoft.com/en-us/blog/announcing-the-publication-of-parse-server-with-azure-managed-services/)
+For GitHub-based deployments, see [Deploy to Azure App Service by using GitHub Actions](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions). Build the TypeScript output before deployment or enable App Service build automation.
 
 ## Google App Engine
 
 1. Clone the repo and change directory to it 
 1. Create a project in the [Google Cloud Platform Console](https://console.cloud.google.com/).
 1. [Enable billing](https://console.cloud.google.com/project/_/settings) for your project.
-1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/).
-1. Setup a MongoDB server.  You have a few options:
-  1. Create a Google Compute Engine virtual machine with [MongoDB pre-installed](https://cloud.google.com/launcher/?q=mongodb).
-  1. Use [mLab](https://mlab.com/google/) to create a free MongoDB deployment on Google Cloud Platform (only US-central).
-1. Modify `app.yaml` to update your environment variables.
-1. Delete `Dockerfile`
-1. Deploy it with `gcloud preview app deploy`
+1. Install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install).
+1. Create a hosted MongoDB database and copy its connection string.
+1. Modify `app.yaml` to set the required configuration.
+1. Deploy it with `gcloud app deploy`.
 
-A detailed tutorial is available here:
-[Running Parse server on Google App Engine](https://cloud.google.com/nodejs/resources/frameworks/parse-server)
+For `app.yaml` settings, see [Configure your app with app.yaml](https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app-with-app-yaml).
 
 ## Scalingo
 
-[![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy)
+[![Deploy to Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://dashboard.scalingo.com/create/app?source=https://github.com/parse-community/parse-server-example#master)
 
 Alternatively, to deploy manually:
 
 * Clone the repo and change directory to it
 * Log in with the [Scalingo CLI](https://cli.scalingo.com/) and create an app: `scalingo create my-parse`
-* Use the [Scalingo MongoDB addon](https://scalingo.com/addons/scalingo-mongodb): `scalingo addons-add scalingo-mongodb free`
-* Setup MongoDB connection string: `scalingo env-set DATABASE_URI='$SCALINGO_MONGO_URL'`
-* By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo env-set PARSE_MOUNT=/1`
-* Deploy it with: `git push scalingo master`
+* Use the [Scalingo for MongoDB add-on](https://doc.scalingo.com/databases/mongodb/start): `scalingo --app my-parse addons-plans mongodb`, then `scalingo --app my-parse addons-add mongodb <plan>`
+* Configure the required variables: `scalingo --app my-parse env-set DATABASE_URI='$SCALINGO_MONGO_URL' APP_ID="<app-id>" MASTER_KEY="<master-key>" SERVER_URL="https://<your-app>.osc-fr1.scalingo.io/parse"`
+* By default it will use a path of /parse for the API routes. To change this, or use older client SDKs, run `scalingo --app my-parse env-set PARSE_MOUNT=/1`
+* Deploy it with: `git push scalingo HEAD:master`
 
-## OpenShift Online (Next Gen)
+## OpenShift
 
-1. Register for a free [OpenShift Online (Next Gen) account](https://www.openshift.com/devpreview/register.html)
-1. Create a project in the [OpenShift Online Console](https://console.preview.openshift.com/console/).
-1. Install the [OpenShift CLI](https://docs.openshift.com/online/getting_started/beyond_the_basics.html#btb-installing-the-openshift-cli).
-1. Add the Parse Server template to your project: `oc create -f https://raw.githubusercontent.com/ParsePlatform/parse-server-example/master/openshift.json`
-1. Deploy Parse Server from the web console
-  1. Open your project in the [OpenShift Online Console](https://console.preview.openshift.com/console/):
-  1. Click **Add to Project** from the top navigation
-  1. Scroll down and select **NodeJS > Parse Server**
-  1. (Optionally) Update the Parse Server settings (parameters)
-  1. Click **Create**
-
-A detailed tutorial is available here:
-[Running Parse Server on OpenShift Online (Next Gen)](https://blog.openshift.com/parse-server/)
+1. Create an OpenShift project.
+1. Install the OpenShift CLI (`oc`).
+1. Create the application from this repository: `oc new-app https://github.com/parse-community/parse-server-example.git --name=parse-server-example`
+1. Set the required configuration: `oc set env deployment/parse-server-example DATABASE_URI=<mongodb-uri> APP_ID=<app-id> MASTER_KEY=<master-key> PARSE_MOUNT=/parse`
+1. Expose the service: `oc expose service/parse-server-example`
+1. After the route is created, set `SERVER_URL`: `oc set env deployment/parse-server-example SERVER_URL=https://<route-host>/parse`
 
 # Using Parse Server
 
